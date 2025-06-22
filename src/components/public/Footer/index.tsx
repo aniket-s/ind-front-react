@@ -8,8 +8,23 @@ import {
     EnvelopeIcon,
     MapPinIcon,
     ArrowRightIcon,
-
 } from '@heroicons/react/24/outline';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faCcVisa,
+    faCcMastercard,
+    faCcPaypal,
+    faGooglePay,
+    faFacebook,
+    faTwitter,
+    faLinkedin,
+    faInstagram,
+    faYoutube
+} from '@fortawesome/free-brands-svg-icons';
+import {
+    faUniversity,
+    faCreditCard
+} from '@fortawesome/free-solid-svg-icons';
 
 // Logo component (same as in Header)
 const Logo: React.FC<{ className?: string }> = ({ className }) => (
@@ -37,20 +52,20 @@ const Footer: React.FC = () => {
     ];
 
     const socialLinks = [
-        { icon: "F", href: info?.social?.facebook || "#", name: "Facebook" },
-        { icon: "T", href: info?.social?.twitter || "#", name: "Twitter" },
-        { icon: "L", href: info?.social?.linkedin || "#", name: "LinkedIn" },
-        { icon: "I", href: info?.social?.instagram || "#", name: "Instagram" },
-        { icon: "Y", href: info?.social?.youtube || "#", name: "YouTube" },
+        { icon: faFacebook, href: info?.social?.facebook || "#", name: "Facebook" },
+        { icon: faTwitter, href: info?.social?.twitter || "#", name: "Twitter" },
+        { icon: faLinkedin, href: info?.social?.linkedin || "#", name: "LinkedIn" },
+        { icon: faInstagram, href: info?.social?.instagram || "#", name: "Instagram" },
+        { icon: faYoutube, href: info?.social?.youtube || "#", name: "YouTube" },
     ];
 
     const paymentMethods = [
-        { icon: "V", color: "text-blue-800", name: "Visa" },
-        { icon: "M", color: "text-red-600", name: "Mastercard" },
-        { icon: "P", color: "text-blue-700", name: "PayPal" },
-        { icon: "G", color: "text-gray-700", name: "Google Pay" },
-        { icon: "B", color: "text-gray-700", name: "Bank Transfer" },
-        { icon: "C", color: "text-gray-700", name: "Credit Card" },
+        { icon: faCcVisa, color: "text-blue-800" },
+        { icon: faCcMastercard, color: "text-red-600" },
+        { icon: faCcPaypal, color: "text-blue-700" },
+        { icon: faGooglePay, color: "text-gray-700" },
+        { icon: faUniversity, color: "text-gray-700" },
+        { icon: faCreditCard, color: "text-gray-700" },
     ];
 
     return (
@@ -61,7 +76,7 @@ const Footer: React.FC = () => {
                     {/* Company Info */}
                     <div>
                         <div className="flex items-center mb-4">
-                            <Logo className="w-12 h-12 mr-3" />
+                            <Logo className="w-12 h-12 mr-3"/>
                             <span className="text-2xl font-bold">INDPOWER</span>
                         </div>
                         <p className="text-white/80 mb-6 text-sm leading-relaxed">
@@ -79,7 +94,7 @@ const Footer: React.FC = () => {
                                     className="w-10 h-10 bg-white/20 rounded flex items-center justify-center hover:bg-white/30 transition"
                                     aria-label={social.name}
                                 >
-                                    <span className="font-bold text-sm">{social.icon}</span>
+                                    <FontAwesomeIcon icon={social.icon} className="text-lg" />
                                 </a>
                             ))}
                         </div>
@@ -94,8 +109,9 @@ const Footer: React.FC = () => {
                         <ul className="space-y-2 mt-6">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
-                                    <Link to={link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, '-')}`} className="text-white/80 hover:text-white transition flex items-center">
-                                        <ArrowRightIcon className="h-3 w-3 mr-2" />
+                                    <Link to={link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, '-')}`}
+                                          className="text-white/80 hover:text-white transition flex items-center">
+                                        <ArrowRightIcon className="h-3 w-3 mr-2"/>
                                         {link}
                                     </Link>
                                 </li>
@@ -112,8 +128,9 @@ const Footer: React.FC = () => {
                         <ul className="space-y-2 mt-6">
                             {products.map((product, index) => (
                                 <li key={index}>
-                                    <Link to="/products" className="text-white/80 hover:text-white transition flex items-center">
-                                        <ArrowRightIcon className="h-3 w-3 mr-2" />
+                                    <Link to="/products"
+                                          className="text-white/80 hover:text-white transition flex items-center">
+                                        <ArrowRightIcon className="h-3 w-3 mr-2"/>
                                         {product}
                                     </Link>
                                 </li>
@@ -129,14 +146,14 @@ const Footer: React.FC = () => {
                         </h3>
                         <div className="space-y-4 mt-6">
                             <div className="flex items-start">
-                                <MapPinIcon className="h-5 w-5 mt-1 mr-3 text-yellow-400 flex-shrink-0" />
+                                <MapPinIcon className="h-5 w-5 mt-1 mr-3 text-yellow-400 flex-shrink-0"/>
                                 <div>
                                     <p className="font-semibold">IndPower India Pvt. Ltd.</p>
                                     <p className="text-white/80 text-sm">
                                         {info?.contact?.address || (
                                             <>
-                                                Corporate Office, Tower A,<br />
-                                                Sector 16<br />
+                                                Corporate Office, Tower A,<br/>
+                                                Sector 16<br/>
                                                 Noida, Uttar Pradesh - 201301
                                             </>
                                         )}
@@ -144,14 +161,14 @@ const Footer: React.FC = () => {
                                 </div>
                             </div>
                             <div className="flex items-center">
-                                <PhoneIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0" />
+                                <PhoneIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0"/>
                                 <div>
                                     <p className="text-white/80 text-sm">Toll-Free: 1800-XXX-XXXX</p>
                                     <p className="text-white/80 text-sm">Support: {info?.contact?.phone || '+91-XXX-XXX-XXXX'}</p>
                                 </div>
                             </div>
                             <div className="flex items-center">
-                                <EnvelopeIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0" />
+                                <EnvelopeIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0"/>
                                 <div>
                                     <p className="text-white/80 text-sm">{info?.contact?.email || 'info@indpower.com'}</p>
                                     <p className="text-white/80 text-sm">support@indpower.com</p>
@@ -186,7 +203,10 @@ const Footer: React.FC = () => {
                     <div className="flex justify-center gap-4 flex-wrap">
                         {paymentMethods.map((method, index) => (
                             <div key={index} className="w-16 h-10 bg-white rounded flex items-center justify-center">
-                                <span className={`${method.color} text-2xl font-bold`}>{method.icon}</span>
+                                <FontAwesomeIcon
+                                    icon={method.icon}
+                                    className={`${method.color} text-2xl`}
+                                />
                             </div>
                         ))}
                     </div>
@@ -198,7 +218,8 @@ const Footer: React.FC = () => {
                         © {new Date().getFullYear()} IndPower - All Rights Reserved. Desh Ki Shakti, Desh Ka Bharosa
                     </p>
                     <div className="flex justify-center gap-6 text-sm">
-                        <Link to="/terms" className="text-white/80 hover:text-white transition">Terms & Conditions</Link>
+                        <Link to="/terms" className="text-white/80 hover:text-white transition">Terms &
+                            Conditions</Link>
                         <Link to="/privacy" className="text-white/80 hover:text-white transition">Privacy Policy</Link>
                         <Link to="/sitemap" className="text-white/80 hover:text-white transition">Sitemap</Link>
                         <Link to="/disclaimer" className="text-white/80 hover:text-white transition">Disclaimer</Link>

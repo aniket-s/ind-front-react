@@ -1,87 +1,204 @@
 // src/components/public/Home/ProductsSection.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { publicService } from '@/services/public.service';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { getImageUrl, truncateText } from '@/utils';
-import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faBolt,
+    faBatteryThreeQuarters,
+    faMotorcycle,
+    faSolarPanel,
+    faCheck,
+    faShieldAlt,
+    IconDefinition
+} from '@fortawesome/free-solid-svg-icons';
+
+interface Category {
+    icon?: IconDefinition | string;
+    name: string;
+    active?: boolean;
+    isText?: boolean;
+}
 
 interface ProductsSectionProps {
     section: any;
 }
 
-const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
-    const { data, isLoading } = useQuery({
-        queryKey: ['featured-products'],
-        queryFn: () => publicService.getProducts({ isFeatured: true, limit: 8 }),
-    });
+// Icon mapping for string-based icons from backend
+const iconMap: { [key: string]: IconDefinition } = {
+    'fas fa-bolt': faBolt,
+    'fas fa-battery-three-quarters': faBatteryThreeQuarters,
+    'fas fa-motorcycle': faMotorcycle,
+    'fas fa-solar-panel': faSolarPanel,
+    'fas fa-check': faCheck,
+    'fas fa-shield-alt': faShieldAlt,
+};
 
-    if (isLoading) {
-        return (
-            <section className="py-16 bg-gray-50">
-                <div className="container">
-                    <LoadingSpinner />
-                </div>
-            </section>
-        );
-    }
+const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
+    const content = section.content || {};
+
+    const defaultCategories: Category[] = [
+        { icon: faBolt, name: "Inverter", active: true },
+        { icon: faBatteryThreeQuarters, name: "Inverter Batteries" },
+        { icon: "2W", name: "2 W Batteries", isText: true },
+        { icon: "3W", name: "3 W Batteries", isText: true },
+        { icon: "4W", name: "4 W Batteries", isText: true },
+        { icon: faMotorcycle, name: "e-Rickshaw Batteries" },
+        { icon: faSolarPanel, name: "Solar" },
+    ];
+
+    const features = content.features || [
+        "Pure Sine Wave Output",
+        "LED Display Panel",
+        "Microprocessor Control",
+        "Overload Protection",
+        "Short Circuit Protection",
+        "Battery Deep Discharge",
+    ];
+
+    const product = content.product || {
+        category: "INVERTER",
+        name: "Premium Power Inverter Series",
+        description: "Our premium inverters are engineered to provide reliable backup power for homes and businesses with advanced technology and sturdy construction for uninterrupted power supply.",
+        warranty: "36 Months Standard Warranty",
+        image: "https://www.claudeusercontent.com/api/placeholder/500/500"
+    };
+
+    // Process categories from backend if they exist
+    const categories = content.categories
+        ? content.categories.map((category: any) => ({
+            ...category,
+            icon: category.isText || typeof category.icon === 'string' && category.icon.length <= 3
+                ? category.icon  // Keep text icons as is
+                : typeof category.icon === 'string'
+                    ? iconMap[category.icon] || faBolt
+                    : category.icon
+        }))
+        : defaultCategories;
+
+    const getIcon = (icon: IconDefinition | string): IconDefinition => {
+        if (typeof icon === 'string') {
+            return iconMap[icon] || faBolt;
+        }
+        return icon;
+    };
 
     return (
-        <section className="py-16 bg-gray-50">
-            <div className="container">
+        <section className="bg-gray-50 py-16">
+            <div className="container mx-auto px-4">
+                {/* Section Header */}
                 <div className="text-center mb-12">
-                    {section.title && (
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                            {section.title}
-                        </h2>
-                    )}
-                    {section.subtitle && (
-                        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                            {section.subtitle}
-                        </p>
-                    )}
+                    <h2 className="text-4xl font-bold text-gray-800 mb-4">OUR PRODUCTS</h2>
+                    <div className="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                        Browse our range of premium power solutions designed for your specific needs.
+                    </p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    {data?.products.map((product) => (
-                        <Link
-                            key={product.id}
-                            to={`/products/${product.slug}`}
-                            className="group bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden"
-                        >
-                            <div className="aspect-w-1 aspect-h-1 bg-gray-200">
-                                <img
-                                    src={getImageUrl(product.images[0])}
-                                    alt={product.name}
-                                    className="w-full h-full object-center object-cover group-hover:opacity-90 transition-opacity"
-                                />
+                {/* Products Content */}
+                <div className="flex gap-8">
+                    {/* Left Sidebar */}
+                    <div className="w-80 flex-shrink-0">
+                        {/* Product Categories Card */}
+                        <div className="bg-white rounded-lg shadow-sm overflow-hidden mb-6">
+                            <div className="bg-blue-600 text-white p-4">
+                                <h3 className="text-xl font-semibold">Product Categories</h3>
+                                <p className="text-sm mt-1 opacity-90">Find your perfect power solution</p>
                             </div>
-                            <div className="p-4">
-                                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
-                                    {product.name}
-                                </h3>
-                                {product.model && (
-                                    <p className="text-sm text-gray-500 mb-2">{product.model}</p>
-                                )}
-                                {product.shortDescription && (
-                                    <p className="text-sm text-gray-600">
-                                        {truncateText(product.shortDescription, 100)}
-                                    </p>
-                                )}
+                            <div className="p-4 space-y-3">
+                                {categories.map((category: Category, index: number) => (
+                                    <Link
+                                        key={index}
+                                        to="/products"
+                                        className={`flex items-center p-2 rounded transition ${
+                                            category.active
+                                                ? "text-blue-600 font-medium hover:bg-blue-50"
+                                                : "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
+                                        }`}
+                                    >
+                                        {category.isText ? (
+                                            <span className={`mr-3 font-bold ${category.active ? "" : "text-gray-400"}`}>
+                                                {category.icon}
+                                            </span>
+                                        ) : (
+                                            <FontAwesomeIcon
+                                                icon={getIcon(category.icon!)}
+                                                className={`mr-3 ${category.active ? "" : "text-gray-400"}`}
+                                            />
+                                        )}
+                                        {category.name}
+                                    </Link>
+                                ))}
                             </div>
-                        </Link>
-                    ))}
-                </div>
+                        </div>
 
-                <div className="text-center">
-                    <Link
-                        to="/products"
-                        className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
-                    >
-                        View All Products
-                        <ArrowRightIcon className="ml-2 h-4 w-4" />
-                    </Link>
+                        {/* Need Help Card */}
+                        <div className="bg-yellow-100 rounded-lg p-6 text-center">
+                            <h4 className="text-xl font-semibold text-gray-800 mb-3">Need Help?</h4>
+                            <p className="text-gray-700 text-sm mb-4">
+                                Talk to our experts for personalized product recommendations.
+                            </p>
+                            <Link to="/contact" className="bg-white text-blue-600 px-6 py-2 rounded-full font-medium hover:bg-gray-50 transition border border-gray-200 inline-block">
+                                Contact Us
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Main Product Display */}
+                    <div className="flex-1 bg-white rounded-lg shadow-sm p-8">
+                        {/* Best Seller Badge */}
+                        <div className="mb-6">
+                            <span className="bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                Best Seller
+                            </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-8">
+                            {/* Product Info */}
+                            <div>
+                                <p className="text-blue-600 font-semibold mb-2">{product.category}</p>
+                                <h3 className="text-3xl font-bold text-gray-800 mb-4">{product.name}</h3>
+                                <p className="text-gray-600 mb-6 leading-relaxed">
+                                    {product.description}
+                                </p>
+
+                                <div className="mb-8">
+                                    <h4 className="font-semibold text-gray-800 mb-4">Key Features</h4>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {features.map((feature, index) => (
+                                            <div key={index} className="flex items-center text-gray-700">
+                                                <FontAwesomeIcon
+                                                    icon={faCheck}
+                                                    className="text-green-500 mr-2"
+                                                />
+                                                <span className="text-sm">{feature}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Warranty Badge */}
+                                <div className="bg-blue-600 text-white rounded-lg p-4 inline-flex items-center">
+                                    <FontAwesomeIcon
+                                        icon={faShieldAlt}
+                                        className="mr-3 text-2xl"
+                                    />
+                                    <span className="font-semibold text-lg">{product.warranty}</span>
+                                </div>
+                            </div>
+
+                            {/* Product Image */}
+                            <div className="relative">
+                                <div className="bg-yellow-200 rounded-full absolute inset-0 transform scale-75"></div>
+                                <div className="relative z-10 flex items-center justify-center h-full">
+                                    <img
+                                        src={product.image}
+                                        alt={product.name}
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

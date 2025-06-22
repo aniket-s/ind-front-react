@@ -1,27 +1,103 @@
 // src/components/public/Home/ConnectSection.tsx
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faGlobe,
+    faImage,
+    faHeart,
+    faThumbsUp,
+    faComment,
+    faBookmark,
+    faShare,
+    IconDefinition
+} from '@fortawesome/free-solid-svg-icons';
+import {
+    faFacebook,
+    faInstagram,
+    faLinkedin,
+    faYoutube
+} from '@fortawesome/free-brands-svg-icons';
 
 interface ConnectSectionProps {
     section: any;
 }
 
+// Icon mapping for string-based icons from backend
+const iconMap: { [key: string]: IconDefinition } = {
+    'fas fa-globe': faGlobe,
+    'fab fa-facebook': faFacebook,
+    'fab fa-instagram': faInstagram,
+    'fab fa-linkedin': faLinkedin,
+    'fab fa-youtube': faYoutube,
+    'fas fa-image': faImage,
+    'fas fa-heart': faHeart,
+    'fas fa-thumbs-up': faThumbsUp,
+    'fas fa-comment': faComment,
+    'fas fa-bookmark': faBookmark,
+    'fas fa-share': faShare,
+};
+
 const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
     const [activeTab, setActiveTab] = useState("all");
     const content = section.content || {};
 
-    const tabs = content.tabs || [
-        { id: "all", label: "All Posts", icon: "fas fa-globe" },
-        { id: "facebook", label: "Facebook", icon: "fab fa-facebook" },
-        { id: "instagram", label: "Instagram", icon: "fab fa-instagram" },
-        { id: "linkedin", label: "LinkedIn", icon: "fab fa-linkedin" },
-        { id: "youtube", label: "YouTube", icon: "fab fa-youtube" },
+    const defaultTabs = [
+        { id: "all", label: "All Posts", icon: faGlobe },
+        { id: "facebook", label: "Facebook", icon: faFacebook },
+        { id: "instagram", label: "Instagram", icon: faInstagram },
+        { id: "linkedin", label: "LinkedIn", icon: faLinkedin },
+        { id: "youtube", label: "YouTube", icon: faYoutube },
     ];
 
-    const posts = content.posts || [];
+    const defaultPosts = [
+        {
+            platform: "facebook",
+            icon: faFacebook,
+            iconColor: "text-blue-600",
+            author: "IndPower India",
+            date: "April 23, 2025",
+            content: "Providing reliable power backup solutions for homes and businesses across India. Our high-quality inverters ensure uninterrupted power supply when you need it most! #PowerBackup #IndPower",
+            engagement: { likes: 245, comments: 42, shares: 38 },
+        },
+        {
+            platform: "instagram",
+            icon: faInstagram,
+            iconColor: "text-pink-600",
+            author: "IndPower India",
+            date: "April 20, 2025",
+            content: 'Customer spotlight! Mr. Sharma from Delhi shares his experience with our Premium Power Inverter Series. "Zero power cuts and maintenance-free operation for over a year!" #CustomerTestimonial',
+            engagement: { likes: 387, comments: 29, saves: 15 },
+        },
+        {
+            platform: "linkedin",
+            icon: faLinkedin,
+            iconColor: "text-blue-700",
+            author: "IndPower India",
+            date: "April 18, 2025",
+            content: "Proud to announce that IndPower has expanded its dealer network to over 3000+ authorized dealers across India! Looking to join our growing family? Apply now and grow your business with us. #BusinessOpportunity",
+            engagement: { likes: 156, comments: 34, shares: 58 },
+        },
+    ];
+
+    // Process tabs from backend if they exist
+    const tabs = content.tabs
+        ? content.tabs.map((tab: any) => ({
+            ...tab,
+            icon: typeof tab.icon === 'string' ? iconMap[tab.icon] || faGlobe : tab.icon
+        }))
+        : defaultTabs;
+
+    // Process posts from backend if they exist
+    const posts = content.posts
+        ? content.posts.map((post: any) => ({
+            ...post,
+            icon: typeof post.icon === 'string' ? iconMap[post.icon] || faGlobe : post.icon
+        }))
+        : defaultPosts;
 
     const filteredPosts = activeTab === "all"
         ? posts
-        : posts.filter(post => post.platform === activeTab);
+        : posts.filter((post: any) => post.platform === activeTab);
 
     return (
         <section className="bg-gray-50 py-16">
@@ -39,17 +115,17 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
                 {/* Social Media Tabs */}
                 <div className="flex justify-center gap-4 mb-10 flex-wrap">
-                    {tabs.map((tab) => (
+                    {tabs.map((tab: any) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`px-6 py-2 rounded-full font-medium flex items-center gap-2 transition ${
                                 activeTab === tab.id
-                                    ? "bg-blue-600 text-white"
+                                    ? "bg-blue-600 text-black"
                                     : "text-gray-600 hover:bg-gray-200"
                             }`}
                         >
-                            <i className={tab.icon}></i>
+                            <FontAwesomeIcon icon={tab.icon} />
                             {tab.label}
                         </button>
                     ))}
@@ -57,12 +133,15 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
                 {/* Social Media Posts Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    {filteredPosts.map((post, index) => (
+                    {filteredPosts.map((post: any, index: number) => (
                         <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
                             <div className="p-4">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                                        <i className={`${post.icon} ${post.iconColor} text-xl`}></i>
+                                        <FontAwesomeIcon
+                                            icon={post.icon}
+                                            className={`${post.iconColor} text-xl`}
+                                        />
                                     </div>
                                     <div>
                                         <h4 className="font-semibold">{post.author}</h4>
@@ -72,24 +151,27 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
                                 <p className="text-gray-700 mb-4">{post.content}</p>
                             </div>
                             <div className="bg-gray-200 h-48 flex items-center justify-center">
-                                <i className="fas fa-image text-gray-400 text-4xl"></i>
+                                <FontAwesomeIcon
+                                    icon={faImage}
+                                    className="text-gray-400 text-4xl"
+                                />
                             </div>
                             <div className="p-4 border-t">
                                 <div className="flex justify-between text-sm text-gray-600">
                                     <div className="flex items-center gap-2">
-                                        <i className={post.platform === "linkedin" ? "fas fa-thumbs-up" : "fas fa-heart"}></i>
+                                        <FontAwesomeIcon
+                                            icon={post.platform === "linkedin" ? faThumbsUp : faHeart}
+                                        />
                                         <span>{post.engagement.likes}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <i className="fas fa-comment"></i>
+                                        <FontAwesomeIcon icon={faComment} />
                                         <span>{post.engagement.comments}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <i className={
-                                            post.platform === "instagram"
-                                                ? "fas fa-bookmark"
-                                                : "fas fa-share"
-                                        }></i>
+                                        <FontAwesomeIcon
+                                            icon={post.platform === "instagram" ? faBookmark : faShare}
+                                        />
                                         <span>{
                                             post.platform === "instagram"
                                                 ? post.engagement.saves

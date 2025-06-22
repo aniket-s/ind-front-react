@@ -39,6 +39,7 @@ const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) 
                             placeholder={content.placeholder || "Enter Pin Code To Locate Nearby Dealer"}
                             className="flex-1 px-6 py-4 bg-transparent text-gray-600 placeholder-gray-500 focus:outline-none"
                         />
+
                         <button className="bg-blue-600 text-white px-8 py-4 font-semibold hover:bg-blue-700 transition flex items-center">
                             {content.buttonText || "FIND DEALER"}
                             <div className="ml-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[10px] border-l-white"></div>

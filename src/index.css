@@ -16,14 +16,6 @@
 #root {
   width: 100%;
 }
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
 
 body {
   margin: 0;
@@ -62,9 +54,7 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
-  }
+
   button {
     background-color: #f9f9f9;
   }
@@ -106,4 +96,8 @@ button:focus-visible {
 
 .animate-slide-in {
   animation: slide-in 0.3s ease-out;
+}
+.bg-blue-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
 }

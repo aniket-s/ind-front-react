@@ -1,17 +1,42 @@
 // src/components/public/Home/StillHaveQuestionsSection.tsx
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faComments,
+    faEnvelope,
+    faPhone,
+    IconDefinition
+} from '@fortawesome/free-solid-svg-icons';
 
 interface StillHaveQuestionsSectionProps {
     section: any;
 }
 
+// Icon mapping for string-based icons from backend
+const iconMap: { [key: string]: IconDefinition } = {
+    'fas fa-comments': faComments,
+    'fas fa-envelope': faEnvelope,
+    'fas fa-phone': faPhone,
+};
+
 const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ section }) => {
     const content = section.content || {};
-    const contactOptions = content.contactOptions || [
-        { icon: "fas fa-comments", text: "Live Chat", style: "primary" },
-        { icon: "fas fa-envelope", text: "Email Support", style: "outline" },
-        { icon: "fas fa-phone", text: "Call Us: 1800-XXX-XXXX", style: "accent" }
+
+    // Default contact options with Font Awesome icon objects
+    const defaultContactOptions = [
+        { icon: faComments, text: "Live Chat", style: "primary" },
+        { icon: faEnvelope, text: "Email Support", style: "outline" },
+        { icon: faPhone, text: "Call Us: 1800-XXX-XXXX", style: "accent" }
     ];
+
+    // Process contact options from backend
+    const contactOptions = content.contactOptions
+        ? content.contactOptions.map((option: any) => ({
+            ...option,
+            // Convert string icon to Font Awesome object if needed
+            icon: typeof option.icon === 'string' ? iconMap[option.icon] || faComments : option.icon
+        }))
+        : defaultContactOptions;
 
     return (
         <section className="py-8 px-4">
@@ -36,13 +61,16 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
                                 const baseClasses = "px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition";
                                 const styleClasses = {
                                     primary: "bg-white text-blue-600 hover:bg-gray-100",
-                                    outline: "border-2 border-white text-white hover:bg-white hover:text-blue-600",
+                                    outline: "border-2 border-white text-black hover:bg-white hover:text-blue-600",
                                     accent: "bg-yellow-400 text-gray-800 hover:bg-yellow-300"
                                 };
 
                                 return (
-                                    <button key={index} className={`${baseClasses} ${styleClasses[option.style] || styleClasses.primary}`}>
-                                        <i className={option.icon}></i>
+                                    <button
+                                        key={index}
+                                        className={`${baseClasses} ${styleClasses[option.style as keyof typeof styleClasses] || styleClasses.primary}`}
+                                    >
+                                        <FontAwesomeIcon icon={option.icon} className="text-lg" />
                                         {option.text}
                                     </button>
                                 );

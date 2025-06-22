@@ -59,7 +59,7 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="min-h-screen">
             {data?.sections
                 .filter(s => s.isActive)
                 .sort((a, b) => a.sortOrder - b.sortOrder)

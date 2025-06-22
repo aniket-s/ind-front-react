@@ -21,7 +21,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ section }) => {
                         <div className="flex justify-center items-center">
                             <div className="relative w-[500px] h-[500px]">
                                 <img
-                                    src="https://www.claudeusercontent.com/api/placeholder/500/500"
+                                    src={content.image || "https://www.claudeusercontent.com/api/placeholder/500/500"}
                                     alt="About IndPower"
                                     className="w-full h-full object-cover rounded-lg"
                                 />
