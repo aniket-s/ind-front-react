@@ -1,5 +1,5 @@
 // src/components/public/Header/index.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';

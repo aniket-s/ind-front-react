@@ -59,3 +59,12 @@ export const formatPhoneNumber = (phone: string): string => {
 
     return phone;
 };
+export const getImageUrl = (path: string): string => {
+    if (!path) return '/placeholder.png';
+    if (path.startsWith('http')) return path;
+    return `${import.meta.env.VITE_UPLOAD_URL}${path}`;
+};
+export const truncateText = (text: string, maxLength: number): string => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+};

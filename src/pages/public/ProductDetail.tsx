@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
-import { getImageUrl, formatCurrency } from '@/utils';
+import { formatCurrency } from '@/utils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import ProductImageGallery from '@/components/public/Products/ProductImageGallery';
 import ProductSpecifications from '@/components/public/Products/ProductSpecificationDisplay';

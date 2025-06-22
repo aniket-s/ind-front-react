@@ -2,6 +2,7 @@
 import React from 'react';
 import Modal from './Modal';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import {cn} from "@/utils";
 
 interface ConfirmDialogProps {
     isOpen: boolean;

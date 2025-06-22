@@ -1,9 +1,4 @@
 // src/utils/helpers.ts
-export const getImageUrl = (path: string): string => {
-    if (!path) return '/placeholder.png';
-    if (path.startsWith('http')) return path;
-    return `${import.meta.env.VITE_UPLOAD_URL}${path}`;
-};
 
 export const generateSlug = (text: string): string => {
     return text
@@ -12,10 +7,7 @@ export const generateSlug = (text: string): string => {
         .replace(/ +/g, '-');
 };
 
-export const truncateText = (text: string, maxLength: number): string => {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength) + '...';
-};
+
 
 export const getInitials = (name: string): string => {
     return name

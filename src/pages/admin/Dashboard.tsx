@@ -11,9 +11,8 @@ import {
     CubeIcon,
     TagIcon,
     EnvelopeIcon,
-    UserGroupIcon,
     ExclamationTriangleIcon,
-    CheckCircleIcon,
+
 } from '@heroicons/react/24/outline';
 
 const Dashboard: React.FC = () => {

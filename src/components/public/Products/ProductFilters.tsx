@@ -1,7 +1,6 @@
 // src/components/public/Products/ProductFilters.tsx
 import React from 'react';
 import { Category } from '@/types';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 interface ProductFiltersProps {
     categories: Category[];

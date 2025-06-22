@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { getImageUrl } from '@/utils';
+import {cn, getImageUrl} from '@/utils';
 import { Banner } from '@/types';
 
 interface HeroSectionProps {
