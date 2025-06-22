@@ -7,161 +7,203 @@ import {
     PhoneIcon,
     EnvelopeIcon,
     MapPinIcon,
+    ArrowRightIcon,
+
 } from '@heroicons/react/24/outline';
 
-const Footer: React.FC = () => {
-    const { data: menus } = useQuery({
-        queryKey: ['public-menus', 'footer'],
-        queryFn: () => publicService.getMenus('footer'),
-    });
+// Logo component (same as in Header)
+const Logo: React.FC<{ className?: string }> = ({ className }) => (
+    <svg className={className} viewBox="0 0 100 100" fill="currentColor">
+        <circle cx="50" cy="50" r="45" className="text-yellow-400" />
+        <text x="50" y="70" textAnchor="middle" className="text-blue-600 font-bold text-4xl">IP</text>
+    </svg>
+);
 
+const Footer: React.FC = () => {
     const { data: info } = useQuery({
         queryKey: ['public-info'],
         queryFn: () => publicService.getInfo(),
     });
 
-    const groupedMenus = menus?.reduce((acc: any, menu: any) => {
-        if (menu.parentId === null) {
-            acc[menu.id] = {
-                ...menu,
-                children: [],
-            };
-        }
-        return acc;
-    }, {});
+    const quickLinks = [
+        "Home", "About Us", "Products", "Services",
+        "Dealer Locator", "Blog", "Contact Us", "Career"
+    ];
 
-    menus?.forEach((menu: any) => {
-        if (menu.parentId && groupedMenus[menu.parentId]) {
-            groupedMenus[menu.parentId].children.push(menu);
-        }
-    });
+    const products = [
+        "Home Inverters", "Tubular Batteries", "Solar Solutions",
+        "Commercial Inverters", "Industrial UPS", "Accessories",
+        "Product Comparison", "Warranty Information"
+    ];
+
+    const socialLinks = [
+        { icon: "F", href: info?.social?.facebook || "#", name: "Facebook" },
+        { icon: "T", href: info?.social?.twitter || "#", name: "Twitter" },
+        { icon: "L", href: info?.social?.linkedin || "#", name: "LinkedIn" },
+        { icon: "I", href: info?.social?.instagram || "#", name: "Instagram" },
+        { icon: "Y", href: info?.social?.youtube || "#", name: "YouTube" },
+    ];
+
+    const paymentMethods = [
+        { icon: "V", color: "text-blue-800", name: "Visa" },
+        { icon: "M", color: "text-red-600", name: "Mastercard" },
+        { icon: "P", color: "text-blue-700", name: "PayPal" },
+        { icon: "G", color: "text-gray-700", name: "Google Pay" },
+        { icon: "B", color: "text-gray-700", name: "Bank Transfer" },
+        { icon: "C", color: "text-gray-700", name: "Credit Card" },
+    ];
 
     return (
-        <footer className="bg-gray-900 text-white">
-            <div className="container py-12">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <footer className="bg-blue-600 text-white pt-16 pb-8">
+            <div className="container mx-auto px-4">
+                {/* Main Footer Content */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                     {/* Company Info */}
-                    <div className="col-span-1 md:col-span-2">
-                        <h3 className="text-2xl font-bold mb-4">IndPower</h3>
-                        <p className="text-gray-400 mb-6">
-                            Leading manufacturer of high-quality power solutions for homes and businesses.
+                    <div>
+                        <div className="flex items-center mb-4">
+                            <Logo className="w-12 h-12 mr-3" />
+                            <span className="text-2xl font-bold">INDPOWER</span>
+                        </div>
+                        <p className="text-white/80 mb-6 text-sm leading-relaxed">
+                            IndPower provides reliable power backup solutions for homes and businesses across India
+                            with a commitment to quality, innovation, and customer satisfaction.
                         </p>
-
-                        <div className="space-y-3">
-                            {info?.contact?.phone && (
-                                <div className="flex items-center space-x-3">
-                                    <PhoneIcon className="h-5 w-5 text-gray-400" />
-                                    <a href={`tel:${info.contact.phone}`} className="hover:text-primary-400">
-                                        {info.contact.phone}
-                                    </a>
-                                </div>
-                            )}
-
-                            {info?.contact?.email && (
-                                <div className="flex items-center space-x-3">
-                                    <EnvelopeIcon className="h-5 w-5 text-gray-400" />
-                                    <a href={`mailto:${info.contact.email}`} className="hover:text-primary-400">
-                                        {info.contact.email}
-                                    </a>
-                                </div>
-                            )}
-
-                            {info?.contact?.address && (
-                                <div className="flex items-start space-x-3">
-                                    <MapPinIcon className="h-5 w-5 text-gray-400 mt-0.5" />
-                                    <span className="text-gray-400">{info.contact.address}</span>
-                                </div>
-                            )}
+                        {/* Social Media Icons */}
+                        <div className="flex gap-3">
+                            {socialLinks.map((social, index) => (
+                                <a
+                                    key={index}
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/20 rounded flex items-center justify-center hover:bg-white/30 transition"
+                                    aria-label={social.name}
+                                >
+                                    <span className="font-bold text-sm">{social.icon}</span>
+                                </a>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Footer Menus */}
-                    {Object.values(groupedMenus || {}).map((menu: any) => (
-                        <div key={menu.id}>
-                            <h4 className="text-lg font-semibold mb-4">{menu.title}</h4>
-                            <ul className="space-y-2">
-                                {menu.children.map((child: any) => (
-                                    <li key={child.id}>
-                                        <Link
-                                            to={child.url || '#'}
-                                            className="text-gray-400 hover:text-white transition-colors"
-                                            target={child.target}
-                                        >
-                                            {child.title}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
+                    {/* Quick Links */}
+                    <div>
+                        <h3 className="text-xl font-bold mb-4 relative">
+                            Quick Links
+                            <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-400"></div>
+                        </h3>
+                        <ul className="space-y-2 mt-6">
+                            {quickLinks.map((link, index) => (
+                                <li key={index}>
+                                    <Link to={link === "Home" ? "/" : `/${link.toLowerCase().replace(/\s+/g, '-')}`} className="text-white/80 hover:text-white transition flex items-center">
+                                        <ArrowRightIcon className="h-3 w-3 mr-2" />
+                                        {link}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Our Products */}
+                    <div>
+                        <h3 className="text-xl font-bold mb-4 relative">
+                            Our Products
+                            <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-400"></div>
+                        </h3>
+                        <ul className="space-y-2 mt-6">
+                            {products.map((product, index) => (
+                                <li key={index}>
+                                    <Link to="/products" className="text-white/80 hover:text-white transition flex items-center">
+                                        <ArrowRightIcon className="h-3 w-3 mr-2" />
+                                        {product}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Contact Info */}
+                    <div>
+                        <h3 className="text-xl font-bold mb-4 relative">
+                            Contact Info
+                            <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-400"></div>
+                        </h3>
+                        <div className="space-y-4 mt-6">
+                            <div className="flex items-start">
+                                <MapPinIcon className="h-5 w-5 mt-1 mr-3 text-yellow-400 flex-shrink-0" />
+                                <div>
+                                    <p className="font-semibold">IndPower India Pvt. Ltd.</p>
+                                    <p className="text-white/80 text-sm">
+                                        {info?.contact?.address || (
+                                            <>
+                                                Corporate Office, Tower A,<br />
+                                                Sector 16<br />
+                                                Noida, Uttar Pradesh - 201301
+                                            </>
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center">
+                                <PhoneIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0" />
+                                <div>
+                                    <p className="text-white/80 text-sm">Toll-Free: 1800-XXX-XXXX</p>
+                                    <p className="text-white/80 text-sm">Support: {info?.contact?.phone || '+91-XXX-XXX-XXXX'}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center">
+                                <EnvelopeIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0" />
+                                <div>
+                                    <p className="text-white/80 text-sm">{info?.contact?.email || 'info@indpower.com'}</p>
+                                    <p className="text-white/80 text-sm">support@indpower.com</p>
+                                </div>
+                            </div>
                         </div>
-                    ))}
+
+                        {/* Newsletter */}
+                        <div className="mt-6">
+                            <p className="text-sm mb-3">
+                                Subscribe to our newsletter for updates on new products, offers, and power backup tips.
+                            </p>
+                            <form onSubmit={(e) => e.preventDefault()} className="flex">
+                                <input
+                                    type="email"
+                                    placeholder="Your Email Address"
+                                    className="flex-1 px-4 py-2 bg-blue-700 border border-blue-500 rounded-l text-white placeholder-white/60 focus:outline-none focus:bg-blue-800"
+                                />
+                                <button
+                                    type="submit"
+                                    className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-r font-semibold hover:bg-yellow-300 transition"
+                                >
+                                    Subscribe
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
-                {/* Social Links */}
-                {info?.social && Object.keys(info.social).length > 0 && (
-                    <div className="mt-8 pt-8 border-t border-gray-800">
-                        <div className="flex space-x-6">
-                            {info.social.facebook && (
-                                <a
-                                    href={info.social.facebook}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-gray-400 hover:text-white"
-                                >
-                                    <span className="sr-only">Facebook</span>
-                                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-                                    </svg>
-                                </a>
-                            )}
-
-                            {info.social.twitter && (
-                                <a
-                                    href={info.social.twitter}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-gray-400 hover:text-white"
-                                >
-                                    <span className="sr-only">Twitter</span>
-                                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                                    </svg>
-                                </a>
-                            )}
-
-                            {info.social.linkedin && (
-                                <a
-                                    href={info.social.linkedin}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-gray-400 hover:text-white"
-                                >
-                                    <span className="sr-only">LinkedIn</span>
-                                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                                    </svg>
-                                </a>
-                            )}
-
-                            {info.social.youtube && (
-                                <a
-                                    href={info.social.youtube}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-gray-400 hover:text-white"
-                                >
-                                    <span className="sr-only">YouTube</span>
-                                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                                    </svg>
-                                </a>
-                            )}
-                        </div>
+                {/* Payment Methods */}
+                <div className="border-t border-blue-500 pt-8 mb-8">
+                    <div className="flex justify-center gap-4 flex-wrap">
+                        {paymentMethods.map((method, index) => (
+                            <div key={index} className="w-16 h-10 bg-white rounded flex items-center justify-center">
+                                <span className={`${method.color} text-2xl font-bold`}>{method.icon}</span>
+                            </div>
+                        ))}
                     </div>
-                )}
+                </div>
 
-                {/* Bottom Bar */}
-                <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
-                    <p>&copy; {new Date().getFullYear()} IndPower. All rights reserved.</p>
+                {/* Copyright */}
+                <div className="border-t border-blue-500 pt-6 text-center">
+                    <p className="text-white/80 text-sm mb-4">
+                        © {new Date().getFullYear()} IndPower - All Rights Reserved. Desh Ki Shakti, Desh Ka Bharosa
+                    </p>
+                    <div className="flex justify-center gap-6 text-sm">
+                        <Link to="/terms" className="text-white/80 hover:text-white transition">Terms & Conditions</Link>
+                        <Link to="/privacy" className="text-white/80 hover:text-white transition">Privacy Policy</Link>
+                        <Link to="/sitemap" className="text-white/80 hover:text-white transition">Sitemap</Link>
+                        <Link to="/disclaimer" className="text-white/80 hover:text-white transition">Disclaimer</Link>
+                        <a href="/admin/login" className="text-white/80 hover:text-white transition">Dealer Login</a>
+                    </div>
                 </div>
             </div>
         </footer>
