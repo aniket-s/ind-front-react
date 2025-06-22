@@ -8,7 +8,6 @@ import {
     ChevronRightIcon,
     ChevronDownIcon,
     LinkIcon,
-    ExternalLinkIcon,
     Bars2Icon,
 } from '@heroicons/react/24/outline';
 import { cn } from '@/utils';
@@ -113,7 +112,7 @@ const MenuTree: React.FC<MenuTreeProps> = ({
 
         const typeIcons = {
             internal: LinkIcon,
-            external: ExternalLinkIcon,
+            external: LinkIcon,
             dropdown: Bars3Icon,
         };
 

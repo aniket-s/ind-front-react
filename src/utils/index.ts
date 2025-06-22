@@ -59,6 +59,15 @@ export const formatPhoneNumber = (phone: string): string => {
 
     return phone;
 };
+export const copyToClipboard = async (text: string): Promise<boolean> => {
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch (error) {
+        return false;
+    }
+};
+
 export const getImageUrl = (path: string): string => {
     if (!path) return '/placeholder.png';
     if (path.startsWith('http')) return path;

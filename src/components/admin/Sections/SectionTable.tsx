@@ -11,7 +11,101 @@ import {
 } from '@heroicons/react/24/outline';
 import EmptyState from '@/components/shared/EmptyState';
 import { Squares2X2Icon } from '@heroicons/react/24/outline';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    arrayMove,
+    SortableContext,
+    sortableKeyboardCoordinates,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+    useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+interface SortableItemProps {
+    section: Section;
+}
+
+const SortableItem: React.FC<SortableItemProps> = ({ section }) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({ id: section.id });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    const sectionTypeLabels = {
+        banner: 'Hero Banner',
+        products: 'Featured Products',
+        whyIndpower: 'Why IndPower',
+        about: 'About Section',
+        viewDetails: 'View Details',
+        dealerLocator: 'Dealer Locator',
+        joinDealer: 'Join as Dealer',
+        connect: 'Connect With Us',
+        faq: 'FAQs',
+        stillHaveQuestions: 'Still Have Questions',
+        custom: 'Custom Section',
+    };
+
+    const sectionTypeColors = {
+        banner: 'badge-info',
+        products: 'badge-success',
+        whyIndpower: 'badge-warning',
+        about: 'badge-info',
+        viewDetails: 'badge-danger',
+        dealerLocator: 'badge-warning',
+        joinDealer: 'badge-success',
+        connect: 'badge-info',
+        faq: 'badge-warning',
+        stillHaveQuestions: 'badge-danger',
+        custom: 'badge-info',
+    };
+
+    return (
+        <div
+            ref={setNodeRef}
+            style={style}
+            className={cn(
+                'bg-white border rounded-lg p-4 flex items-center space-x-4',
+                isDragging && 'shadow-lg opacity-50'
+            )}
+        >
+            <div {...attributes} {...listeners} className="cursor-move">
+                <Bars3Icon className="h-5 w-5 text-gray-400" />
+            </div>
+            <div className="flex-1">
+                <div className="flex items-center space-x-3">
+                    <span className={cn('badge', sectionTypeColors[section.type])}>
+                        {sectionTypeLabels[section.type]}
+                    </span>
+                    {section.title && (
+                        <span className="text-sm font-medium text-gray-900">
+                            {section.title}
+                        </span>
+                    )}
+                </div>
+            </div>
+            <span className="text-sm text-gray-500">Order: {section.sortOrder}</span>
+        </div>
+    );
+};
 
 interface SectionTableProps {
     sections: Section[];
@@ -30,6 +124,13 @@ const SectionTable: React.FC<SectionTableProps> = ({
                                                        onDelete,
                                                        onReorder,
                                                    }) => {
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        })
+    );
+
     if (sections.length === 0) {
         return (
             <div className="card-body">
@@ -42,19 +143,21 @@ const SectionTable: React.FC<SectionTableProps> = ({
         );
     }
 
-    const handleDragEnd = (result: any) => {
-        if (!result.destination) return;
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
 
-        const items = Array.from(sections);
-        const [reorderedItem] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, reorderedItem);
+        if (over && active.id !== over.id) {
+            const oldIndex = sections.findIndex((section) => section.id === active.id);
+            const newIndex = sections.findIndex((section) => section.id === over.id);
 
-        const updatedSections = items.map((item, index) => ({
-            id: item.id,
-            sortOrder: index,
-        }));
+            const newOrder = arrayMove(sections, oldIndex, newIndex);
+            const updatedSections = newOrder.map((section, index) => ({
+                id: section.id,
+                sortOrder: index,
+            }));
 
-        onReorder(updatedSections);
+            onReorder(updatedSections);
+        }
     };
 
     const sectionTypeLabels = {
@@ -87,45 +190,22 @@ const SectionTable: React.FC<SectionTableProps> = ({
 
     if (isReordering) {
         return (
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <Droppable droppableId="sections">
-                    {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef} className="p-4 space-y-2">
-                            {sections.map((section, index) => (
-                                <Draggable key={section.id} draggableId={section.id} index={index}>
-                                    {(provided, snapshot) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            className={cn(
-                                                'bg-white border rounded-lg p-4 flex items-center space-x-4',
-                                                snapshot.isDragging && 'shadow-lg'
-                                            )}
-                                        >
-                                            <Bars3Icon className="h-5 w-5 text-gray-400" />
-                                            <div className="flex-1">
-                                                <div className="flex items-center space-x-3">
-                          <span className={cn('badge', sectionTypeColors[section.type])}>
-                            {sectionTypeLabels[section.type]}
-                          </span>
-                                                    {section.title && (
-                                                        <span className="text-sm font-medium text-gray-900">
-                              {section.title}
-                            </span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <span className="text-sm text-gray-500">Order: {section.sortOrder}</span>
-                                        </div>
-                                    )}
-                                </Draggable>
-                            ))}
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </DragDropContext>
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <SortableContext
+                    items={sections.map(s => s.id)}
+                    strategy={verticalListSortingStrategy}
+                >
+                    <div className="p-4 space-y-2">
+                        {sections.map((section) => (
+                            <SortableItem key={section.id} section={section} />
+                        ))}
+                    </div>
+                </SortableContext>
+            </DndContext>
         );
     }
 
@@ -165,19 +245,19 @@ const SectionTable: React.FC<SectionTableProps> = ({
                             </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                <span className={cn('badge', sectionTypeColors[section.type])}>
-                  {sectionTypeLabels[section.type]}
-                </span>
+                                <span className={cn('badge', sectionTypeColors[section.type])}>
+                                    {sectionTypeLabels[section.type]}
+                                </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                <span
-                    className={cn(
-                        'badge',
-                        section.isActive ? 'badge-success' : 'badge-danger'
-                    )}
-                >
-                  {section.isActive ? 'Active' : 'Inactive'}
-                </span>
+                                <span
+                                    className={cn(
+                                        'badge',
+                                        section.isActive ? 'badge-success' : 'badge-danger'
+                                    )}
+                                >
+                                    {section.isActive ? 'Active' : 'Inactive'}
+                                </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {section.sortOrder}
