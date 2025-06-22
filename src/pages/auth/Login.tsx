@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { LoginCredentials } from '@/types';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import {cn} from "@/utils";
 
 const schema = yup.object({
     email: yup.string().email('Invalid email').required('Email is required'),
