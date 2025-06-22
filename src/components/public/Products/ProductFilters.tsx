@@ -1,6 +1,7 @@
 // src/components/public/Products/ProductFilters.tsx
 import React from 'react';
 import { Category } from '@/types';
+import {cn} from "@/utils";
 
 interface ProductFiltersProps {
     categories: Category[];
