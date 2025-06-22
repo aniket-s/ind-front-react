@@ -7,10 +7,12 @@ interface AboutSectionProps {
 
 const AboutSection: React.FC<AboutSectionProps> = ({ section }) => {
     const content = section.content || {};
-    const features = content.features || [
-        { icon: "fas fa-tools", title: "Easy Installation", description: "Take a look at our up of the round shows" },
-        { icon: "fas fa-shield-alt", title: "Quality Material", description: "Take a look at our up of the round shows" }
-    ];
+    const features = content.features && content.features.length > 0
+        ? content.features
+        : [
+            { icon: "fas fa-tools", title: "Easy Installation", description: "Take a look at our up of the round shows" },
+            { icon: "fas fa-shield-alt", title: "Quality Material", description: "Take a look at our up of the round shows" }
+        ];
 
     return (
         <section className="bg-white py-16">

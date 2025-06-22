@@ -46,28 +46,31 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
         { icon: faSolarPanel, name: "Solar" },
     ];
 
-    const features = content.features || [
-        "Pure Sine Wave Output",
-        "LED Display Panel",
-        "Microprocessor Control",
-        "Overload Protection",
-        "Short Circuit Protection",
-        "Battery Deep Discharge",
-    ];
+    // Use API data if available, otherwise use defaults
+    const features = content.features && content.features.length > 0
+        ? content.features
+        : [
+            "Pure Sine Wave Output",
+            "LED Display Panel",
+            "Microprocessor Control",
+            "Overload Protection",
+            "Short Circuit Protection",
+            "Battery Deep Discharge",
+        ];
 
-    const product = content.product || {
-        category: "INVERTER",
-        name: "Premium Power Inverter Series",
-        description: "Our premium inverters are engineered to provide reliable backup power for homes and businesses with advanced technology and sturdy construction for uninterrupted power supply.",
-        warranty: "36 Months Standard Warranty",
-        image: "https://www.claudeusercontent.com/api/placeholder/500/500"
+    const product = {
+        category: content.product?.category || "INVERTER",
+        name: content.product?.name || "Premium Power Inverter Series",
+        description: content.product?.description || "Our premium inverters are engineered to provide reliable backup power for homes and businesses with advanced technology and sturdy construction for uninterrupted power supply.",
+        warranty: content.product?.warranty || "36 Months Standard Warranty",
+        image: content.product?.image || "https://www.claudeusercontent.com/api/placeholder/500/500"
     };
 
     // Process categories from backend if they exist
-    const categories = content.categories
+    const categories = content.categories && content.categories.length > 0
         ? content.categories.map((category: any) => ({
             ...category,
-            icon: category.isText || typeof category.icon === 'string' && category.icon.length <= 3
+            icon: category.isText || (typeof category.icon === 'string' && category.icon.length <= 3)
                 ? category.icon  // Keep text icons as is
                 : typeof category.icon === 'string'
                     ? iconMap[category.icon] || faBolt

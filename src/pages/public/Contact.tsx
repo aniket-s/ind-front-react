@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import {cn} from "@/utils";
 
 const schema = yup.object({
     name: yup.string().required('Name is required'),

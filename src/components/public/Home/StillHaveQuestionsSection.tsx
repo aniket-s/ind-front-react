@@ -30,7 +30,7 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
     ];
 
     // Process contact options from backend
-    const contactOptions = content.contactOptions
+    const contactOptions = content.contactOptions && content.contactOptions.length > 0
         ? content.contactOptions.map((option: any) => ({
             ...option,
             // Convert string icon to Font Awesome object if needed
@@ -61,7 +61,7 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
                                 const baseClasses = "px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition";
                                 const styleClasses = {
                                     primary: "bg-white text-blue-600 hover:bg-gray-100",
-                                    outline: "border-2 border-white text-black hover:bg-white hover:text-blue-600",
+                                    outline: "border-2 border-white text-white hover:bg-white hover:text-blue-600",
                                     accent: "bg-yellow-400 text-gray-800 hover:bg-yellow-300"
                                 };
 

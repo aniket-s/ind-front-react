@@ -27,6 +27,11 @@ const Header: React.FC = () => {
         queryFn: () => publicService.getInfo(),
     });
 
+    const { data: menus } = useQuery({
+        queryKey: ['public-menus', 'header'],
+        queryFn: () => publicService.getMenus('header'),
+    });
+
     // Social media icons using Heroicons (as Font Awesome is not available)
     const socialIcons = [
         { name: 'Facebook', href: info?.social?.facebook, icon: 'M' },
@@ -35,7 +40,12 @@ const Header: React.FC = () => {
         { name: 'LinkedIn', href: info?.social?.linkedin, icon: 'L' },
     ];
 
-    const navLinks = [
+    const navLinks = menus?.map(menu => ({
+        name: menu.title,
+        href: menu.url || '#',
+        type: menu.type,
+        children: menu.children
+    })) || [
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Services', href: '/services' },

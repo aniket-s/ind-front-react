@@ -105,10 +105,12 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
     ];
 
     // Use features from backend or default features
-    const features = section.content?.features?.map(feature => ({
-        ...feature,
-        icon: typeof feature.icon === 'string' ? iconMap[feature.icon] || faUsers : feature.icon
-    })) || defaultFeatures;
+    const features = section.content?.features && section.content.features.length > 0
+        ? section.content.features.map(feature => ({
+            ...feature,
+            icon: typeof feature.icon === 'string' ? iconMap[feature.icon] || faUsers : feature.icon
+        }))
+        : defaultFeatures;
 
     const getIcon = (icon: IconDefinition | string): IconDefinition => {
         if (typeof icon === 'string') {

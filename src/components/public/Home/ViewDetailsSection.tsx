@@ -8,27 +8,48 @@ interface ViewDetailsSectionProps {
 
 const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
     const content = section.content || {};
-    const buttons = content.buttons || [
-        { link: "/products", text: "OUR PRODUCT RANGE", style: "primary" },
-        { icon: "fas fa-download", link: "/download/brochure", text: "DOWNLOAD BROCHURE", style: "primary" }
+    const buttons = content.buttons && content.buttons.length > 0
+        ? content.buttons
+        : [
+            { link: "/products", text: "OUR PRODUCT RANGE", style: "primary" },
+            { icon: "fas fa-download", link: "/download/brochure", text: "DOWNLOAD BROCHURE", style: "primary" }
+        ];
+
+    const floatingIcons = content.floatingIcons || [
+        { icon: "fas fa-battery-full", position: "top-left" },
+        { icon: "fas fa-bolt", position: "top-right" },
+        { icon: "fas fa-plug", position: "bottom-left" },
+        { icon: "fas fa-solar-panel", position: "bottom-right" }
     ];
 
     return (
         <section className="bg-yellow-300 py-16 relative overflow-hidden">
             <div className="container mx-auto px-4">
                 {/* Floating Icons */}
-                <div className="absolute top-12 left-12 bg-white p-4 rounded-lg shadow-lg transform rotate-12">
-                    <i className="fas fa-battery-full text-blue-600 text-2xl"></i>
-                </div>
-                <div className="absolute top-12 right-12 bg-white p-4 rounded-lg shadow-lg transform -rotate-12">
-                    <i className="fas fa-bolt text-blue-600 text-2xl"></i>
-                </div>
-                <div className="absolute bottom-12 left-12 bg-white p-4 rounded-lg shadow-lg transform -rotate-6">
-                    <i className="fas fa-plug text-blue-600 text-2xl"></i>
-                </div>
-                <div className="absolute bottom-12 right-12 bg-white p-4 rounded-lg shadow-lg transform rotate-6">
-                    <i className="fas fa-solar-panel text-blue-600 text-2xl"></i>
-                </div>
+                {floatingIcons.map((item, index) => {
+                    const positionClasses = {
+                        'top-left': 'top-12 left-12',
+                        'top-right': 'top-12 right-12',
+                        'bottom-left': 'bottom-12 left-12',
+                        'bottom-right': 'bottom-12 right-12'
+                    };
+
+                    const rotationClasses = {
+                        'top-left': 'rotate-12',
+                        'top-right': '-rotate-12',
+                        'bottom-left': '-rotate-6',
+                        'bottom-right': 'rotate-6'
+                    };
+
+                    return (
+                        <div
+                            key={index}
+                            className={`absolute ${positionClasses[item.position] || positionClasses['top-left']} bg-white p-4 rounded-lg shadow-lg transform ${rotationClasses[item.position] || rotationClasses['top-left']}`}
+                        >
+                            <i className={`${item.icon} text-blue-600 text-2xl`}></i>
+                        </div>
+                    );
+                })}
 
                 {/* Content */}
                 <div className="text-center relative z-10">

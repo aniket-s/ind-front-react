@@ -30,7 +30,8 @@ const Home: React.FC = () => {
 
         switch (section.type) {
             case 'banner':
-                return <HeroSection key={section.id} banners={data?.banners || []} />;
+                // Don't render banner section directly - it's handled by HeroSection with banners data
+                return null;
             case 'products':
                 return <ProductsSection key={section.id} section={section} />;
             case 'whyIndpower':
@@ -60,8 +61,14 @@ const Home: React.FC = () => {
 
     return (
         <div className="min-h-screen">
+            {/* Render HeroSection with banners data */}
+            {data?.banners && data.banners.length > 0 && (
+                <HeroSection banners={data.banners} />
+            )}
+
+            {/* Render other sections */}
             {data?.sections
-                .filter(s => s.isActive)
+                .filter(s => s.isActive && s.type !== 'banner')
                 .sort((a, b) => a.sortOrder - b.sortOrder)
                 .map(renderSection)}
         </div>
