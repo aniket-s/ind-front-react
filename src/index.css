@@ -37,7 +37,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #153bb0;
+  color: #fff;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -55,9 +56,7 @@ button:focus-visible {
     background-color: #ffffff;
   }
 
-  button {
-    background-color: #f9f9f9;
-  }
+
 }
 
 @layer base {
@@ -100,4 +99,67 @@ button:focus-visible {
 .bg-blue-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
+@keyframes ken-burns {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+  100% {
+    transform: scale(1.1) translateX(-2%);
+  }
+}
+
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-ken-burns {
+  animation: ken-burns 20s ease-out infinite alternate;
+}
+
+.animate-progress {
+  animation: progress linear forwards;
+}
+.hero-nav-button {
+  /* Positioning */
+  position: absolute;
+  left: 1.5rem; /* left-6 */
+  top: 50%; /* top-1/2 */
+  transform: translateY(-50%); /* -translate-y-1/2 */
+
+  /* Spacing */
+  padding: 0.75rem; /* p-3 */
+
+  /* Visual */
+  border-radius: 9999px; /* rounded-full */
+  background-color: rgba(255, 255, 255, 0.1); /* bg-white/10 */
+  color: white; /* text-white */
+  backdrop-filter: blur(4px); /* backdrop-blur-sm */
+  -webkit-backdrop-filter: blur(4px); /* Safari support */
+
+  /* Transitions */
+  transition-property: all; /* transition-all */
+  transition-duration: 300ms; /* duration-300 */
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* Tailwind default */
+
+  /* Reset button styles */
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover state */
+.hero-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* hover:bg-white/20 */
+  transform: translateY(-50%) scale(1.1); /* Combining -translate-y-1/2 and hover:scale-110 */
+}
+
+/* Focus state */
+.hero-nav-button:focus {
+  outline: none; /* focus:outline-none */
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); /* focus:ring-2 focus:ring-white/50 */
 }

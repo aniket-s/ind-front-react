@@ -98,7 +98,7 @@ const FAQSection: React.FC<FAQSectionProps> = ({ section }) => {
                                         onClick={() => toggleFAQ(index)}
                                         className="w-full text-left p-5 flex items-center justify-between hover:bg-gray-100 transition"
                                     >
-                                        <h3 className="font-semibold text-gray-800 pr-4">{faq.question}</h3>
+                                        <h3 className="font-semibold text-white-800 pr-4">{faq.question}</h3>
                                         <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ml-4 transition-colors ${
                                             openFAQ === index ? "bg-blue-600" : "bg-gray-300"
                                         }`}>

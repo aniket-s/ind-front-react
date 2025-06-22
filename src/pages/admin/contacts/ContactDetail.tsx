@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient } from '@/services/api';
 import { Contact } from '@/types';
-import { formatDate } from '@/utils';
+import {cn, formatDate} from '@/utils';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { ArrowLeftIcon, CheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
