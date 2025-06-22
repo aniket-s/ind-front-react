@@ -40,7 +40,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
             <button
                 onClick={() => onCategoryChange(category.slug)}
                 className={cn(
-                    'w-full text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors',
+                    'w-full text-left cl-white px-3 py-2 text-sm hover:bg-gray-50 transition-colors',
                     selectedCategory === category.slug
                         ? 'text-primary-600 font-medium bg-primary-50'
                         : 'text-gray-700'
@@ -82,9 +82,9 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     <button
                         onClick={() => onCategoryChange('')}
                         className={cn(
-                            'w-full text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors',
+                            'w-full cl-white text-left px-3 py-2 text-sm hover:bg-gray-50 transition-colors',
                             selectedCategory === ''
-                                ? 'text-primary-600 font-medium bg-primary-50'
+                                ? 'text-gray-900 font-medium bg-white'
                                 : 'text-gray-700'
                         )}
                     >

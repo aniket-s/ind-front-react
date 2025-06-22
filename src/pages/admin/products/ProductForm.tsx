@@ -12,6 +12,7 @@ import ProductSpecifications from '@/components/admin/Products/ProductSpecificat
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
+import {cn} from "@/utils";
 
 const schema = yup.object({
     name: yup.string().required('Name is required'),

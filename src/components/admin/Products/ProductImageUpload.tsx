@@ -2,7 +2,7 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PhotoIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { getImageUrl, formatFileSize } from '@/utils';
+import {getImageUrl, formatFileSize, cn} from '@/utils';
 import { ACCEPTED_IMAGE_TYPES, FILE_SIZE_LIMIT } from '@/utils/constants';
 import toast from 'react-hot-toast';
 
