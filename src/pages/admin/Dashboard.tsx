@@ -12,8 +12,10 @@ import {
     TagIcon,
     EnvelopeIcon,
     ExclamationTriangleIcon,
-
 } from '@heroicons/react/24/outline';
+
+// Define the changeType type if not already defined in StatsCard
+type ChangeType = 'neutral' | 'positive' | 'negative';
 
 const Dashboard: React.FC = () => {
     const { data, isLoading } = useQuery({
@@ -25,34 +27,38 @@ const Dashboard: React.FC = () => {
         return <LoadingSpinner />;
     }
 
+    // Extract values with proper defaults to avoid undefined issues
+    const pendingContactsCount = data?.stats.pendingContacts ?? 0;
+    const newContactsCount = data?.stats.newContacts ?? 0;
+
     const stats = [
         {
             name: 'Total Products',
             value: data?.stats.totalProducts || 0,
             icon: CubeIcon,
             change: `${data?.stats.activeProducts || 0} active`,
-            changeType: 'neutral' as const,
+            changeType: 'neutral' as ChangeType,
         },
         {
             name: 'Categories',
             value: data?.stats.totalCategories || 0,
             icon: TagIcon,
             change: 'All active',
-            changeType: 'positive' as const,
+            changeType: 'positive' as ChangeType,
         },
         {
             name: 'Total Contacts',
             value: data?.stats.totalContacts || 0,
             icon: EnvelopeIcon,
-            change: `${data?.stats.newContacts || 0} new today`,
-            changeType: data?.stats.newContacts ? 'positive' : 'neutral' as const,
+            change: `${newContactsCount} new today`,
+            changeType: (newContactsCount > 0 ? 'positive' : 'neutral') as ChangeType,
         },
         {
             name: 'Pending Contacts',
-            value: data?.stats.pendingContacts || 0,
+            value: pendingContactsCount,
             icon: ExclamationTriangleIcon,
             change: 'Needs attention',
-            changeType: data?.stats.pendingContacts > 0 ? 'negative' : 'positive' as const,
+            changeType: (pendingContactsCount > 0 ? 'negative' : 'positive') as ChangeType,
         },
     ];
 

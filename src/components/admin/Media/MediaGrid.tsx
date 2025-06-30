@@ -67,7 +67,7 @@ const MediaGrid: React.FC<MediaGridProps> = ({
                     >
                         {isImage(item.mimeType) ? (
                             <img
-                                src={getImageUrl(item.thumbnail || item.path)}
+                                src={getImageUrl(item.url || item.path)}
                                 alt={item.alt || item.originalName}
                                 className="w-full h-full object-cover"
                             />

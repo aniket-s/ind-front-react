@@ -1,7 +1,7 @@
 // src/components/admin/Admins/AdminForm.tsx
 import React, { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { apiClient } from '@/services/api';
@@ -10,26 +10,16 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { cn } from '@/utils';
+import { AxiosError } from 'axios';
 
-const createSchema = yup.object({
-    name: yup.string().required('Name is required'),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
-    role: yup.string().oneOf(['super_admin', 'admin', 'editor']).required('Role is required'),
-    isActive: yup.boolean(),
-});
-
-const editSchema = yup.object({
-    name: yup.string().required('Name is required'),
-    email: yup.string().email('Invalid email').required('Email is required'),
-    password: yup.string().min(6, 'Password must be at least 6 characters').nullable(),
-    role: yup.string().oneOf(['super_admin', 'admin', 'editor']).required('Role is required'),
-    isActive: yup.boolean(),
-});
-
-type CreateFormData = yup.InferType<typeof createSchema>;
-type EditFormData = yup.InferType<typeof editSchema>;
-type FormData = CreateFormData | EditFormData;
+// Define the form data type
+interface FormData {
+    name: string;
+    email: string;
+    password: string;
+    role: 'super_admin' | 'admin' | 'editor';
+    isActive: boolean;
+}
 
 interface AdminFormProps {
     adminId?: string | null;
@@ -46,6 +36,27 @@ const AdminForm: React.FC<AdminFormProps> = ({
     const [showPassword, setShowPassword] = React.useState(false);
     const isEdit = !!adminId;
 
+    // Create schema with conditional validation
+    const schema = yup.object({
+        name: yup.string().required('Name is required'),
+        email: yup.string().email('Invalid email').required('Email is required'),
+        password: yup.string()
+            .test('password', 'Password must be at least 6 characters', function(value) {
+                if (!isEdit && !value) {
+                    return this.createError({ message: 'Password is required' });
+                }
+                if (value && value.length > 0 && value.length < 6) {
+                    return this.createError({ message: 'Password must be at least 6 characters' });
+                }
+                return true;
+            })
+            .default(''),
+        role: yup.mixed<'super_admin' | 'admin' | 'editor'>()
+            .oneOf(['super_admin', 'admin', 'editor'] as const)
+            .required('Role is required'),
+        isActive: yup.boolean().required().default(true),
+    });
+
     const { data: admin, isLoading: adminLoading } = useQuery({
         queryKey: ['admin', adminId],
         queryFn: async () => {
@@ -61,10 +72,13 @@ const AdminForm: React.FC<AdminFormProps> = ({
         formState: { errors },
         reset,
     } = useForm<FormData>({
-        resolver: yupResolver(isEdit ? editSchema : createSchema),
+        resolver: yupResolver(schema),
         defaultValues: {
-            isActive: true,
+            name: '',
+            email: '',
+            password: '',
             role: 'admin',
+            isActive: true,
         },
     });
 
@@ -73,7 +87,7 @@ const AdminForm: React.FC<AdminFormProps> = ({
             reset({
                 name: admin.name,
                 email: admin.email,
-                password: null,
+                password: '', // Empty string for edit mode
                 role: admin.role,
                 isActive: admin.isActive,
             });
@@ -82,17 +96,34 @@ const AdminForm: React.FC<AdminFormProps> = ({
 
     const mutation = useMutation({
         mutationFn: async (data: FormData) => {
-            const payload = { ...data };
+            // Create payload
+            const payload: {
+                name: string;
+                email: string;
+                password?: string;
+                role: 'super_admin' | 'admin' | 'editor';
+                isActive: boolean;
+            } = {
+                name: data.name,
+                email: data.email,
+                role: data.role,
+                isActive: data.isActive,
+            };
 
-            // Remove password if it's empty on edit
-            if (isEdit && !payload.password) {
-                delete (payload as any).password;
+            // Only include password if it's provided and not empty
+            if (data.password && data.password.trim() !== '') {
+                payload.password = data.password;
             }
 
             if (isEdit) {
                 const { data: response } = await apiClient.axios.put(`/admins/${adminId}`, payload);
                 return response;
             } else {
+                // For create, password is required
+                if (!data.password || data.password.trim() === '') {
+                    throw new Error('Password is required for new admin');
+                }
+                payload.password = data.password;
                 const { data: response } = await apiClient.axios.post('/admins', payload);
                 return response;
             }
@@ -102,12 +133,18 @@ const AdminForm: React.FC<AdminFormProps> = ({
             toast.success(`Admin ${isEdit ? 'updated' : 'created'} successfully`);
             onSuccess();
         },
-        onError: (error: any) => {
-            toast.error(error.response?.data?.message || 'Failed to save admin');
+        onError: (error: unknown) => {
+            if (error instanceof AxiosError) {
+                toast.error(error.response?.data?.message || 'Failed to save admin');
+            } else if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error('Failed to save admin');
+            }
         },
     });
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit: SubmitHandler<FormData> = (data) => {
         mutation.mutate(data);
     };
 
@@ -116,9 +153,9 @@ const AdminForm: React.FC<AdminFormProps> = ({
     }
 
     const roleOptions = [
-        { value: 'super_admin', label: 'Super Admin', description: 'Full system access' },
-        { value: 'admin', label: 'Admin', description: 'Manage content and users' },
-        { value: 'editor', label: 'Editor', description: 'Manage content only' },
+        { value: 'super_admin' as const, label: 'Super Admin', description: 'Full system access' },
+        { value: 'admin' as const, label: 'Admin', description: 'Manage content and users' },
+        { value: 'editor' as const, label: 'Editor', description: 'Manage content only' },
     ];
 
     return (

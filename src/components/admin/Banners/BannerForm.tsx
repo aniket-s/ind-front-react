@@ -13,17 +13,27 @@ import { cn, getImageUrl } from '@/utils';
 
 const schema = yup.object({
     title: yup.string().required('Title is required'),
-    subtitle: yup.string(),
-    description: yup.string(),
-    link: yup.string().url('Must be a valid URL'),
-    linkText: yup.string(),
+    subtitle: yup.string().default(''),
+    description: yup.string().default(''),
+    link: yup.string().url('Must be a valid URL').default(''),
+    linkText: yup.string().default(''),
     position: yup.string().required('Position is required'),
-    isActive: yup.boolean(),
-    sortOrder: yup.number(),
-    startDate: yup.date().nullable(),
-    endDate: yup.date().nullable()
-        .when('startDate', (startDate, schema) => {
-            return startDate ? schema.min(startDate, 'End date must be after start date') : schema;
+    isActive: yup.boolean().default(true),
+    sortOrder: yup.number().default(0),
+    startDate: yup.date().nullable().default(null),
+    endDate: yup.date().nullable().default(null)
+        .when('startDate', {
+            is: (startDate: Date | null | undefined) => !!startDate,
+            then: (schema) => schema.test(
+                'is-after-start',
+                'End date must be after start date',
+                function(endDate) {
+                    const { startDate } = this.parent;
+                    if (!startDate || !endDate) return true;
+                    return endDate > startDate;
+                }
+            ),
+            otherwise: (schema) => schema,
         }),
 });
 

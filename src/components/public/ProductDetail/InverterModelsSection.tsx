@@ -57,7 +57,7 @@ export const InverterModelsSection: React.FC<InverterModelsSectionProps> = ({
 
                 {/* Product Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto mb-8">
-                    {visibleProducts.map((model, index) => (
+                    {visibleProducts.map((model) => (
                         <div key={model.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
                             {/* Highlight current product */}
                             {model.id === currentProduct.id && (

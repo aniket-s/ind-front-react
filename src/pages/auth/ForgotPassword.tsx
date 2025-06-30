@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
+import {cn} from "@/utils";
 
 const schema = yup.object({
     email: yup.string().email('Invalid email').required('Email is required'),
@@ -28,7 +29,7 @@ const ForgotPassword: React.FC = () => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit = async () => {
         setIsLoading(true);
         try {
             // TODO: Implement password reset API call
@@ -36,7 +37,11 @@ const ForgotPassword: React.FC = () => {
             setIsSuccess(true);
             toast.success('Password reset instructions sent to your email');
         } catch (error) {
-            toast.error('Failed to send reset instructions');
+            console.error('Password reset failed:', error);
+            const errorMessage = error instanceof Error
+                ? error.message
+                : 'Failed to send reset instructions';
+            toast.error(errorMessage);
         } finally {
             setIsLoading(false);
         }

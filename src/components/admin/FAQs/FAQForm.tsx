@@ -1,7 +1,7 @@
 // src/components/admin/FAQs/FAQForm.tsx
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import {Resolver, useForm} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { apiClient } from '@/services/api';
@@ -10,15 +10,21 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { cn } from '@/utils';
 
-const schema = yup.object({
+type FormData = {
+    category: string;
+    question: string;
+    answer: string;
+    isActive?: boolean;
+    sortOrder?: number;
+};
+
+const schema = yup.object().shape({
     category: yup.string().required('Category is required'),
     question: yup.string().required('Question is required'),
     answer: yup.string().required('Answer is required'),
-    isActive: yup.boolean(),
-    sortOrder: yup.number(),
+    isActive: yup.boolean().notRequired(),
+    sortOrder: yup.number().notRequired(),
 });
-
-type FormData = yup.InferType<typeof schema>;
 
 interface FAQFormProps {
     faqId?: string | null;
@@ -52,9 +58,8 @@ const FAQForm: React.FC<FAQFormProps> = ({
         handleSubmit,
         formState: { errors },
         reset,
-        setValue,
     } = useForm<FormData>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(schema) as never as Resolver<FormData>,
         defaultValues: {
             isActive: true,
             sortOrder: 0,

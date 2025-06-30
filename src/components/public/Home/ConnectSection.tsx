@@ -18,8 +18,43 @@ import {
     faYoutube
 } from '@fortawesome/free-brands-svg-icons';
 
+interface Tab {
+    id: string;
+    label: string;
+    icon: IconDefinition | string;
+}
+
+interface Engagement {
+    likes: number;
+    comments: number;
+    shares?: number;
+    saves?: number;
+}
+
+interface Post {
+    platform: string;
+    icon: IconDefinition | string;
+    iconColor: string;
+    author: string;
+    date: string;
+    content: string;
+    engagement: Engagement;
+}
+
+interface ConnectContent {
+    tabs?: Tab[];
+    posts?: Post[];
+    viewMoreText?: string;
+}
+
+interface ConnectSectionData {
+    title?: string;
+    subtitle?: string;
+    content?: ConnectContent;
+}
+
 interface ConnectSectionProps {
-    section: any;
+    section: ConnectSectionData;
 }
 
 // Icon mapping for string-based icons from backend
@@ -41,7 +76,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
     const [activeTab, setActiveTab] = useState("all");
     const content = section.content || {};
 
-    const defaultTabs = [
+    const defaultTabs: Tab[] = [
         { id: "all", label: "All Posts", icon: faGlobe },
         { id: "facebook", label: "Facebook", icon: faFacebook },
         { id: "instagram", label: "Instagram", icon: faInstagram },
@@ -49,7 +84,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
         { id: "youtube", label: "YouTube", icon: faYoutube },
     ];
 
-    const defaultPosts = [
+    const defaultPosts: Post[] = [
         {
             platform: "facebook",
             icon: faFacebook,
@@ -81,7 +116,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
     // Process tabs from backend if they exist
     const tabs = content.tabs
-        ? content.tabs.map((tab: any) => ({
+        ? content.tabs.map((tab: Tab) => ({
             ...tab,
             icon: typeof tab.icon === 'string' ? iconMap[tab.icon] || faGlobe : tab.icon
         }))
@@ -89,7 +124,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
     // Process posts from backend if they exist
     const posts = content.posts
-        ? content.posts.map((post: any) => ({
+        ? content.posts.map((post: Post) => ({
             ...post,
             icon: typeof post.icon === 'string' ? iconMap[post.icon] || faGlobe : post.icon
         }))
@@ -97,7 +132,14 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
     const filteredPosts = activeTab === "all"
         ? posts
-        : posts.filter((post: any) => post.platform === activeTab);
+        : posts.filter((post) => post.platform === activeTab);
+
+    const getIcon = (icon: IconDefinition | string): IconDefinition => {
+        if (typeof icon === 'string') {
+            return iconMap[icon] || faGlobe;
+        }
+        return icon;
+    };
 
     return (
         <section className="bg-gray-50 py-16">
@@ -115,7 +157,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
                 {/* Social Media Tabs */}
                 <div className="flex justify-center gap-4 mb-10 flex-wrap">
-                    {tabs.map((tab: any) => (
+                    {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
@@ -125,7 +167,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
                                     : "text-gray-600 hover:bg-gray-200"
                             }`}
                         >
-                            <FontAwesomeIcon icon={tab.icon} />
+                            <FontAwesomeIcon icon={getIcon(tab.icon)} />
                             {tab.label}
                         </button>
                     ))}
@@ -133,13 +175,13 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
                 {/* Social Media Posts Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    {filteredPosts.map((post: any, index: number) => (
+                    {filteredPosts.map((post, index) => (
                         <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
                             <div className="p-4">
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
                                         <FontAwesomeIcon
-                                            icon={post.icon}
+                                            icon={getIcon(post.icon)}
                                             className={`${post.iconColor} text-xl`}
                                         />
                                     </div>

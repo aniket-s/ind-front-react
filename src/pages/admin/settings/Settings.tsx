@@ -16,10 +16,27 @@ import {
 import toast from 'react-hot-toast';
 import { cn } from '@/utils';
 
+// Type definitions for settings
+type SettingValue = string | number | boolean | null | undefined | string[] | SettingObject;
+type SettingObject = { [key: string]: SettingValue };
+
+interface SettingUpdate {
+    key: string;
+    value: SettingValue;
+    type: string;
+}
+
+interface SettingsData {
+    general?: SettingObject;
+    contact?: SettingObject;
+    social?: SettingObject;
+    seo?: SettingObject;
+}
+
 const Settings: React.FC = () => {
     const [activeTab, setActiveTab] = useState('general');
 
-    const { data: settings, isLoading } = useQuery({
+    const { data: settings, isLoading } = useQuery<SettingsData>({
         queryKey: ['settings'],
         queryFn: async () => {
             const { data } = await apiClient.axios.get('/settings');
@@ -28,7 +45,7 @@ const Settings: React.FC = () => {
     });
 
     const updateMutation = useMutation({
-        mutationFn: async (updates: Array<{ key: string; value: any; type: string }>) => {
+        mutationFn: async (updates: SettingUpdate[]) => {
             const { data } = await apiClient.axios.put('/settings', { settings: updates });
             return data;
         },
@@ -48,8 +65,8 @@ const Settings: React.FC = () => {
         return <LoadingSpinner />;
     }
 
-    const handleSave = (type: string, data: Record<string, any>) => {
-        const updates = Object.entries(data).map(([key, value]) => ({
+    const handleSave = (type: string, data: Record<string, SettingValue>) => {
+        const updates: SettingUpdate[] = Object.entries(data).map(([key, value]) => ({
             key,
             value,
             type,

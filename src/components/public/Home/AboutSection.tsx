@@ -1,8 +1,26 @@
 // src/components/public/Home/AboutSection.tsx
 import React from 'react';
 
+interface Feature {
+    icon: string;
+    title: string;
+    description: string;
+}
+
+interface AboutContent {
+    features?: Feature[];
+    image?: string;
+    buttonText?: string;
+    description?: string;
+}
+
+interface AboutSectionData {
+    title?: string;
+    content?: AboutContent;
+}
+
 interface AboutSectionProps {
-    section: any;
+    section: AboutSectionData;
 }
 
 const AboutSection: React.FC<AboutSectionProps> = ({ section }) => {

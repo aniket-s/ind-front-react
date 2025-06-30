@@ -71,40 +71,6 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
     ];
 
     // Additional feature examples for CMS flexibility
-    const additionalFeatureExamples: Feature[] = [
-        {
-            icon: faShieldAlt,
-            title: "Quality Assurance",
-            description: "All our products undergo rigorous testing to ensure maximum reliability and performance."
-        },
-        {
-            icon: faCertificate,
-            title: "ISO Certified",
-            description: "We maintain international quality standards with ISO 9001:2015 certification."
-        },
-        {
-            icon: faTruck,
-            title: "Pan India Delivery",
-            description: "Fast and secure delivery network covering all major cities and towns across India."
-        },
-        {
-            icon: faBolt,
-            title: "Energy Efficient",
-            description: "Our products are designed to minimize power consumption while maximizing output."
-        },
-        {
-            icon: faAward,
-            title: "Award Winning",
-            description: "Recognized as the best power solutions provider by industry experts."
-        },
-        {
-            icon: faHandshake,
-            title: "Trusted Partner",
-            description: "Over 1 million satisfied customers trust us for their power backup needs."
-        }
-    ];
-
-    // Use features from backend or default features
     const features = section.content?.features && section.content.features.length > 0
         ? section.content.features.map(feature => ({
             ...feature,

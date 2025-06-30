@@ -35,7 +35,7 @@ const MediaDetails: React.FC<MediaDetailsProps> = ({ media, onClose, onDelete })
     });
 
     const isImage = media.mimeType.startsWith('image/');
-    const fileUrl = getImageUrl(media.path);
+    const fileUrl = getImageUrl(media.url);
 
     const handleCopyUrl = async () => {
         const success = await copyToClipboard(fileUrl);

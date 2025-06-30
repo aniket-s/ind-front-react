@@ -8,8 +8,24 @@ import {
     IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
 
+interface ContactOption {
+    icon: IconDefinition | string;
+    text: string;
+    style: 'primary' | 'outline' | 'accent';
+}
+
+interface StillHaveQuestionsContent {
+    contactOptions?: ContactOption[];
+}
+
+interface StillHaveQuestionsSectionData {
+    title?: string;
+    subtitle?: string;
+    content?: StillHaveQuestionsContent;
+}
+
 interface StillHaveQuestionsSectionProps {
-    section: any;
+    section: StillHaveQuestionsSectionData;
 }
 
 // Icon mapping for string-based icons from backend
@@ -23,7 +39,7 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
     const content = section.content || {};
 
     // Default contact options with Font Awesome icon objects
-    const defaultContactOptions = [
+    const defaultContactOptions: ContactOption[] = [
         { icon: faComments, text: "Live Chat", style: "primary" },
         { icon: faEnvelope, text: "Email Support", style: "outline" },
         { icon: faPhone, text: "Call Us: 1800-XXX-XXXX", style: "accent" }
@@ -31,7 +47,7 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
 
     // Process contact options from backend
     const contactOptions = content.contactOptions && content.contactOptions.length > 0
-        ? content.contactOptions.map((option: any) => ({
+        ? content.contactOptions.map((option: ContactOption) => ({
             ...option,
             // Convert string icon to Font Awesome object if needed
             icon: typeof option.icon === 'string' ? iconMap[option.icon] || faComments : option.icon
@@ -68,9 +84,12 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
                                 return (
                                     <button
                                         key={index}
-                                        className={`${baseClasses} ${styleClasses[option.style as keyof typeof styleClasses] || styleClasses.primary}`}
+                                        className={`${baseClasses} ${styleClasses[option.style] || styleClasses.primary}`}
                                     >
-                                        <FontAwesomeIcon icon={option.icon} className="text-lg" />
+                                        <FontAwesomeIcon
+                                            icon={typeof option.icon === 'string' ? iconMap[option.icon] || faComments : option.icon}
+                                            className="text-lg"
+                                        />
                                         {option.text}
                                     </button>
                                 );

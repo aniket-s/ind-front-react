@@ -16,7 +16,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const About: React.FC = () => {
-    const { data: info } = useQuery({
+    useQuery({
         queryKey: ['public-info'],
         queryFn: () => publicService.getInfo(),
     });

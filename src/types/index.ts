@@ -154,6 +154,7 @@ export interface FAQ {
 
 // Media Types
 export interface Media {
+    url: string;
     id: string;
     filename: string;
     originalName: string;

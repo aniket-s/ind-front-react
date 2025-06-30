@@ -1,6 +1,6 @@
 // src/pages/public/Contact.tsx
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { publicService } from '@/services/public.service';
@@ -21,8 +21,8 @@ import {cn} from "@/utils";
 const schema = yup.object({
     name: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
-    phone: yup.string().matches(/^[0-9]{10}$/, 'Phone must be 10 digits'),
-    subject: yup.string(),
+    phone: yup.string().matches(/^[0-9]{10}$/, 'Phone must be 10 digits').default(''),
+    subject: yup.string().default(''),
     message: yup.string().required('Message is required').min(10, 'Message too short'),
 });
 
@@ -46,14 +46,14 @@ const Contact: React.FC = () => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = async (data: FormData) => {
+    const onSubmit: SubmitHandler<FormData> = async (data) => {
         setIsSubmitting(true);
         try {
             await publicService.submitContact(data);
             setIsSuccess(true);
             reset();
             toast.success('Thank you for contacting us. We will get back to you soon!');
-        } catch (error) {
+        } catch {
             toast.error('Failed to submit. Please try again.');
         } finally {
             setIsSubmitting(false);
@@ -170,7 +170,7 @@ const Contact: React.FC = () => {
                                     </div>
                                     <div className="flex items-center space-x-3">
                                         <PhoneIcon className="h-5 w-5 text-gray-400" />
-                                        <a href={`tel:${info?.contact?.phone}`} className="text-gray-600 hover:text-blue-600">
+                                        <a href={`tel:${info?.contact?.phone || "+91 123 456 7890"}`} className="text-gray-600 hover:text-blue-600">
                                             {info?.contact?.phone || "+91 123 456 7890"}
                                         </a>
                                     </div>

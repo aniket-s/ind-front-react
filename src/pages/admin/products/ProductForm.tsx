@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { productsService } from '@/services/products.service';
@@ -14,23 +14,31 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import {cn} from "@/utils";
 
+// Type definitions for specifications and technical specs
+type SpecificationValue = string | number | boolean | null | undefined | SpecificationObject | SpecificationArray;
+type SpecificationObject = { [key: string]: SpecificationValue };
+type SpecificationArray = SpecificationValue[];
+type Specifications = Record<string, SpecificationValue>;
+
+// Define the schema
 const schema = yup.object({
     name: yup.string().required('Name is required'),
     categoryId: yup.string().required('Category is required'),
-    model: yup.string(),
-    slug: yup.string(),
-    description: yup.string(),
-    shortDescription: yup.string(),
-    price: yup.number().nullable(),
-    discountPrice: yup.number().nullable(),
-    warranty: yup.string(),
-    isActive: yup.boolean(),
-    isFeatured: yup.boolean(),
-    metaTitle: yup.string(),
-    metaDescription: yup.string(),
-    metaKeywords: yup.string(),
+    model: yup.string().default(''),
+    slug: yup.string().default(''),
+    description: yup.string().default(''),
+    shortDescription: yup.string().default(''),
+    price: yup.number().nullable().default(null),
+    discountPrice: yup.number().nullable().default(null),
+    warranty: yup.string().default(''),
+    isActive: yup.boolean().default(true),
+    isFeatured: yup.boolean().default(false),
+    metaTitle: yup.string().default(''),
+    metaDescription: yup.string().default(''),
+    metaKeywords: yup.string().default(''),
 });
 
+// Infer the type from the schema
 type FormData = yup.InferType<typeof schema>;
 
 const ProductForm: React.FC = () => {
@@ -41,9 +49,9 @@ const ProductForm: React.FC = () => {
 
     const [images, setImages] = useState<File[]>([]);
     const [existingImages, setExistingImages] = useState<string[]>([]);
-    const [specifications, setSpecifications] = useState<Record<string, any>>({});
+    const [specifications, setSpecifications] = useState<Specifications>({});
     const [features, setFeatures] = useState<string[]>([]);
-    const [technicalSpecs, setTechnicalSpecs] = useState<Record<string, any>>({});
+    const [technicalSpecs, setTechnicalSpecs] = useState<Specifications>({});
 
     const { data: product, isLoading: productLoading } = useQuery({
         queryKey: ['product', id],
@@ -59,15 +67,10 @@ const ProductForm: React.FC = () => {
     const {
         register,
         handleSubmit,
-        control,
         formState: { errors },
         reset,
     } = useForm<FormData>({
         resolver: yupResolver(schema),
-        defaultValues: {
-            isActive: true,
-            isFeatured: false,
-        },
     });
 
     useEffect(() => {
@@ -76,14 +79,14 @@ const ProductForm: React.FC = () => {
                 name: product.name,
                 categoryId: product.categoryId,
                 model: product.model || '',
-                slug: product.slug,
+                slug: product.slug || '',
                 description: product.description || '',
                 shortDescription: product.shortDescription || '',
                 price: product.price || null,
                 discountPrice: product.discountPrice || null,
                 warranty: product.warranty || '',
-                isActive: product.isActive,
-                isFeatured: product.isFeatured,
+                isActive: product.isActive ?? true,
+                isFeatured: product.isFeatured ?? false,
                 metaTitle: product.metaTitle || '',
                 metaDescription: product.metaDescription || '',
                 metaKeywords: product.metaKeywords || '',
@@ -112,7 +115,7 @@ const ProductForm: React.FC = () => {
             });
 
             // Add JSON fields
-            formData.append('images', JSON.stringify(existingImages));
+            formData.append('existingImages', JSON.stringify(existingImages));
             formData.append('specifications', JSON.stringify(specifications));
             formData.append('features', JSON.stringify(features));
             formData.append('technicalSpecs', JSON.stringify(technicalSpecs));
@@ -128,9 +131,12 @@ const ProductForm: React.FC = () => {
             toast.success(`Product ${isEdit ? 'updated' : 'created'} successfully`);
             navigate('/admin/products');
         },
+        onError: () => {
+            toast.error(`Failed to ${isEdit ? 'update' : 'create'} product`);
+        },
     });
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit: SubmitHandler<FormData> = (data) => {
         mutation.mutate(data);
     };
 
@@ -140,7 +146,7 @@ const ProductForm: React.FC = () => {
                 await productsService.deleteProductImage(id!, index);
                 setExistingImages(existingImages.filter((_, i) => i !== index));
                 toast.success('Image deleted successfully');
-            } catch (error) {
+            } catch {
                 toast.error('Failed to delete image');
             }
         }

@@ -8,15 +8,15 @@ import { categoriesService } from '@/services/categories.service';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import { PhotoIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import { cn } from '@/utils';
+import {cn, getImageUrl} from '@/utils';
 
 const schema = yup.object({
     name: yup.string().required('Name is required'),
-    slug: yup.string(),
-    description: yup.string(),
-    parentId: yup.string().nullable(),
-    isActive: yup.boolean(),
-    sortOrder: yup.number(),
+    slug: yup.string().default(''),
+    description: yup.string().default(''),
+    parentId: yup.string().nullable().default(null),
+    isActive: yup.boolean().default(true),
+    sortOrder: yup.number().default(0),
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -56,6 +56,10 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
     } = useForm<FormData>({
         resolver: yupResolver(schema),
         defaultValues: {
+            name: '',
+            slug: '',
+            description: '',
+            parentId: null,
             isActive: true,
             sortOrder: 0,
         },
@@ -65,11 +69,11 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
         if (category) {
             reset({
                 name: category.name,
-                slug: category.slug,
+                slug: category.slug || '',
                 description: category.description || '',
                 parentId: category.parentId || null,
-                isActive: category.isActive,
-                sortOrder: category.sortOrder,
+                isActive: category.isActive ?? true,
+                sortOrder: category.sortOrder ?? 0,
             });
             if (category.image) {
                 setImagePreview(getImageUrl(category.image));

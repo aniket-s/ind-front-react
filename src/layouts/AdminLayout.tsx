@@ -45,7 +45,7 @@ const navigation: NavItem[] = [
 const AdminLayout: React.FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const location = useLocation();
-    const navigate = useNavigate();
+    useNavigate();
     const { user, logout } = useAuth();
     const { hasPermission } = usePermission();
 

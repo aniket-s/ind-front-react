@@ -2,6 +2,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
+import { Banner } from '@/types';
 import HeroSection from '@/components/public/Home/HeroSection';
 import ProductsSection from '@/components/public/Home/ProductsSection';
 import WhyIndpowerSection from '@/components/public/Home/WhyIndpowerSection';
@@ -14,8 +15,36 @@ import ConnectSection from '@/components/public/Home/ConnectSection';
 import StillHaveQuestionsSection from '@/components/public/Home/StillHaveQuestionsSection';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 
+type SectionType =
+    | 'banner'
+    | 'products'
+    | 'whyIndpower'
+    | 'about'
+    | 'viewDetails'
+    | 'dealerLocator'
+    | 'joinDealer'
+    | 'connect'
+    | 'faq'
+    | 'stillHaveQuestions'
+    | 'custom';
+
+interface Section {
+    id: string | number;
+    type: SectionType;
+    isActive: boolean;
+    sortOrder: number;
+    title?: string;
+    subtitle?: string;
+    content?: Record<string, unknown>;
+}
+
+interface HomepageData {
+    banners: Banner[];
+    sections: Section[];
+}
+
 const Home: React.FC = () => {
-    const { data, isLoading } = useQuery({
+    const { data, isLoading } = useQuery<HomepageData>({
         queryKey: ['homepage'],
         queryFn: () => publicService.getHomepage(),
     });
@@ -24,7 +53,7 @@ const Home: React.FC = () => {
         return <LoadingSpinner fullScreen />;
     }
 
-    const renderSection = (section: any) => {
+    const renderSection = (section: Section) => {
         // Only render active sections
         if (!section.isActive) return null;
 
@@ -54,7 +83,7 @@ const Home: React.FC = () => {
                 // Handle custom sections if needed
                 return null;
             default:
-                console.warn(`Unknown section type: ${section.type}`);
+                console.warn(`Unknown section type: ${(section as Section).type}`);
                 return null;
         }
     };
@@ -68,8 +97,8 @@ const Home: React.FC = () => {
 
             {/* Render other sections */}
             {data?.sections
-                .filter(s => s.isActive && s.type !== 'banner')
-                .sort((a, b) => a.sortOrder - b.sortOrder)
+                .filter((s: Section) => s.isActive && s.type !== 'banner')
+                .sort((a: Section, b: Section) => a.sortOrder - b.sortOrder)
                 .map(renderSection)}
         </div>
     );

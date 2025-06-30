@@ -2,8 +2,30 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+interface Category {
+    id: string;
+    label: string;
+}
+
+interface FAQ {
+    category: string;
+    question: string;
+    answer: string;
+}
+
+interface FAQContent {
+    categories?: Category[];
+    faqs?: FAQ[];
+}
+
+interface FAQSectionData {
+    title?: string;
+    subtitle?: string;
+    content?: FAQContent;
+}
+
 interface FAQSectionProps {
-    section: any;
+    section: FAQSectionData;
 }
 
 const FAQSection: React.FC<FAQSectionProps> = ({ section }) => {

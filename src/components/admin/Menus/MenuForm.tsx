@@ -1,7 +1,7 @@
 // src/components/admin/Menus/MenuForm.tsx
 import React, { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
+import {Resolver, useForm} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { apiClient } from '@/services/api';
@@ -65,7 +65,7 @@ const MenuForm: React.FC<MenuFormProps> = ({
         reset,
         watch,
     } = useForm<FormData>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(schema) as never as Resolver<FormData>,
         defaultValues: {
             type: 'internal',
             target: '_self',

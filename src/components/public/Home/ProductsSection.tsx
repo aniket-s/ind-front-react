@@ -19,8 +19,28 @@ interface Category {
     isText?: boolean;
 }
 
+interface Product {
+    category?: string;
+    name?: string;
+    description?: string;
+    warranty?: string;
+    image?: string;
+}
+
+interface ProductsContent {
+    features?: string[];
+    product?: Product;
+    categories?: Category[];
+}
+
+interface ProductsSectionData {
+    title?: string;
+    subtitle?: string;
+    content?: ProductsContent;
+}
+
 interface ProductsSectionProps {
-    section: any;
+    section: ProductsSectionData;
 }
 
 // Icon mapping for string-based icons from backend
@@ -68,7 +88,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
 
     // Process categories from backend if they exist
     const categories = content.categories && content.categories.length > 0
-        ? content.categories.map((category: any) => ({
+        ? content.categories.map((category: Category) => ({
             ...category,
             icon: category.isText || (typeof category.icon === 'string' && category.icon.length <= 3)
                 ? category.icon  // Keep text icons as is
@@ -120,7 +140,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
                                     >
                                         {category.isText ? (
                                             <span className={`mr-3 font-bold ${category.active ? "" : "text-gray-400"}`}>
-                                                {category.icon}
+                                                {typeof category.icon === 'string' ? category.icon : ''}
                                             </span>
                                         ) : (
                                             <FontAwesomeIcon

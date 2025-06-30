@@ -1,11 +1,26 @@
 // src/components/admin/Settings/ContactSettings.tsx
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
-import { cn } from '@/utils';
+
+interface ContactSettingsData {
+    companyName: string;
+    email: string;
+    phone: string;
+    alternatePhone: string;
+    whatsapp: string;
+    address: string;
+    city: string;
+    state: string;
+    country: string;
+    pincode: string;
+    mapUrl: string;
+    workingHours: string;
+    workingDays: string;
+}
 
 interface ContactSettingsProps {
-    settings: Record<string, any>;
-    onSave: (data: Record<string, any>) => void;
+    settings: Partial<ContactSettingsData>;
+    onSave: (data: ContactSettingsData) => void;
     isLoading: boolean;
 }
 
@@ -14,7 +29,7 @@ const ContactSettings: React.FC<ContactSettingsProps> = ({
                                                              onSave,
                                                              isLoading,
                                                          }) => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<ContactSettingsData>({
         companyName: '',
         email: '',
         phone: '',

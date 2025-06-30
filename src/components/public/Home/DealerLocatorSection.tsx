@@ -1,8 +1,26 @@
 // src/components/public/Home/DealerLocatorSection.tsx
 import React from 'react';
 
+interface Stat {
+    icon: string;
+    value: string;
+    label: string;
+}
+
+interface DealerLocatorContent {
+    stats?: Stat[];
+    placeholder?: string;
+    buttonText?: string;
+}
+
+interface DealerLocatorSectionData {
+    title?: string;
+    subtitle?: string;
+    content?: DealerLocatorContent;
+}
+
 interface DealerLocatorSectionProps {
-    section: any;
+    section: DealerLocatorSectionData;
 }
 
 const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) => {

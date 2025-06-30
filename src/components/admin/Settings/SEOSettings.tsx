@@ -1,11 +1,24 @@
 // src/components/admin/Settings/SEOSettings.tsx
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
-import { cn } from '@/utils';
+
+interface SEOSettingsData {
+    defaultTitle: string;
+    titleSeparator: string;
+    defaultDescription: string;
+    defaultKeywords: string;
+    ogImage: string;
+    twitterUsername: string;
+    robotsTxt: string;
+    sitemapUrl: string;
+    googleVerificationCode: string;
+    bingVerificationCode: string;
+    schemaType: string;
+}
 
 interface SEOSettingsProps {
-    settings: Record<string, any>;
-    onSave: (data: Record<string, any>) => void;
+    settings: Partial<SEOSettingsData>;
+    onSave: (data: SEOSettingsData) => void;
     isLoading: boolean;
 }
 
@@ -14,7 +27,7 @@ const SEOSettings: React.FC<SEOSettingsProps> = ({
                                                      onSave,
                                                      isLoading,
                                                  }) => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<SEOSettingsData>({
         defaultTitle: '',
         titleSeparator: '',
         defaultDescription: '',

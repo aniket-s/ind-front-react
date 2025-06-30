@@ -2,8 +2,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+interface JoinDealerContent {
+    buttonLink?: string;
+    buttonText?: string;
+}
+
+interface JoinDealerSectionData {
+    title?: string;
+    subtitle?: string;
+    content?: JoinDealerContent;
+}
+
 interface JoinDealerSectionProps {
-    section: any;
+    section: JoinDealerSectionData;
 }
 
 const JoinDealerSection: React.FC<JoinDealerSectionProps> = ({ section }) => {

@@ -18,8 +18,6 @@ interface MediaUploadProps {
 const MediaUpload: React.FC<MediaUploadProps> = ({ onSuccess, onCancel }) => {
     const [files, setFiles] = useState<File[]>([]);
     const [folder, setFolder] = useState('misc');
-    const [uploadProgress, setUploadProgress] = useState(0);
-
     const uploadMutation = useMutation({
         mutationFn: () => mediaService.uploadMedia(files, folder),
         onSuccess: () => {

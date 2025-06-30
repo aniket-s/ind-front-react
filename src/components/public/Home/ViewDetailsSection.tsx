@@ -2,8 +2,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+type Position = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
+interface Button {
+    link: string;
+    text: string;
+    style: string;
+    icon?: string;
+}
+
+interface FloatingIcon {
+    icon: string;
+    position: Position;
+}
+
+interface ViewDetailsContent {
+    buttons?: Button[];
+    floatingIcons?: FloatingIcon[];
+}
+
+interface ViewDetailsSectionData {
+    title?: string;
+    content?: ViewDetailsContent;
+}
+
 interface ViewDetailsSectionProps {
-    section: any;
+    section: ViewDetailsSectionData;
 }
 
 const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
@@ -16,10 +40,10 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
         ];
 
     const floatingIcons = content.floatingIcons || [
-        { icon: "fas fa-battery-full", position: "top-left" },
-        { icon: "fas fa-bolt", position: "top-right" },
-        { icon: "fas fa-plug", position: "bottom-left" },
-        { icon: "fas fa-solar-panel", position: "bottom-right" }
+        { icon: "fas fa-battery-full", position: "top-left" as Position },
+        { icon: "fas fa-bolt", position: "top-right" as Position },
+        { icon: "fas fa-plug", position: "bottom-left" as Position },
+        { icon: "fas fa-solar-panel", position: "bottom-right" as Position }
     ];
 
     return (
@@ -27,14 +51,14 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
             <div className="container mx-auto px-4">
                 {/* Floating Icons */}
                 {floatingIcons.map((item, index) => {
-                    const positionClasses = {
+                    const positionClasses: Record<Position, string> = {
                         'top-left': 'top-12 left-12',
                         'top-right': 'top-12 right-12',
                         'bottom-left': 'bottom-12 left-12',
                         'bottom-right': 'bottom-12 right-12'
                     };
 
-                    const rotationClasses = {
+                    const rotationClasses: Record<Position, string> = {
                         'top-left': 'rotate-12',
                         'top-right': '-rotate-12',
                         'bottom-left': '-rotate-6',
@@ -44,7 +68,7 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
                     return (
                         <div
                             key={index}
-                            className={`absolute ${positionClasses[item.position] || positionClasses['top-left']} bg-white p-4 rounded-lg shadow-lg transform ${rotationClasses[item.position] || rotationClasses['top-left']}`}
+                            className={`absolute ${positionClasses[item.position]} bg-white p-4 rounded-lg shadow-lg transform ${rotationClasses[item.position]}`}
                         >
                             <i className={`${item.icon} text-blue-600 text-2xl`}></i>
                         </div>

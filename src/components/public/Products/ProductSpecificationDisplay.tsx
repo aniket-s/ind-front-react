@@ -1,14 +1,31 @@
 // src/components/public/Products/ProductSpecificationDisplay.tsx
 import React from 'react';
 
+type SpecificationValue = string | number | boolean | null | undefined | SpecificationObject | SpecificationArray;
+type SpecificationObject = { [key: string]: SpecificationValue };
+type SpecificationArray = SpecificationValue[];
+
 interface ProductSpecificationsProps {
-    specifications?: Record<string, any>;
+    specifications?: Record<string, SpecificationValue>;
 }
 
 const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ specifications }) => {
     if (!specifications || Object.keys(specifications).length === 0) {
         return <p className="text-gray-500">No specifications available.</p>;
     }
+
+    const formatValue = (value: SpecificationValue): string => {
+        if (value === null || value === undefined) {
+            return 'N/A';
+        }
+        if (typeof value === 'boolean') {
+            return value ? 'Yes' : 'No';
+        }
+        if (typeof value === 'object') {
+            return JSON.stringify(value, null, 2);
+        }
+        return String(value);
+    };
 
     return (
         <div className="overflow-x-auto">
@@ -20,7 +37,7 @@ const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ specifica
                             {key}
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-600">
-                            {typeof value === 'object' ? JSON.stringify(value) : value}
+                            {formatValue(value)}
                         </td>
                     </tr>
                 ))}

@@ -2,17 +2,33 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
-import { MapPinIcon, PhoneIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { MapPinIcon, PhoneIcon, EnvelopeIcon, StarIcon } from '@heroicons/react/24/outline';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import toast from 'react-hot-toast';
+import { cn } from '@/utils';
+
+type DealerType = 'distributor' | 'service_center' | 'dealer';
+
+interface Dealer {
+    id: string | number;
+    name: string;
+    type: DealerType;
+    address: string;
+    city: string;
+    state: string;
+    pincode: string;
+    phone: string;
+    email: string;
+    rating?: number;
+}
 
 const DealerLocator: React.FC = () => {
     const [pincode, setPincode] = useState('');
-    const [dealers, setDealers] = useState<any[]>([]);
+    const [dealers, setDealers] = useState<Dealer[]>([]);
 
     const searchMutation = useMutation({
         mutationFn: (pincode: string) => publicService.getDealersByPincode(pincode),
-        onSuccess: (data) => {
+        onSuccess: (data: Dealer[]) => {
             setDealers(data);
             if (data.length === 0) {
                 toast.error('No dealers found in this area');
@@ -30,6 +46,21 @@ const DealerLocator: React.FC = () => {
             return;
         }
         searchMutation.mutate(pincode);
+    };
+
+    const getDealerTypeBadgeClass = (type: DealerType): string => {
+        switch (type) {
+            case 'distributor':
+                return 'badge-info';
+            case 'service_center':
+                return 'badge-warning';
+            default:
+                return 'badge-success';
+        }
+    };
+
+    const formatDealerType = (type: DealerType): string => {
+        return type.replace('_', ' ');
     };
 
     return (
@@ -85,14 +116,9 @@ const DealerLocator: React.FC = () => {
                                             <h3 className="text-lg font-semibold text-gray-900">
                                                 {dealer.name}
                                             </h3>
-                                            <span className={cn(
-                                                'badge',
-                                                dealer.type === 'distributor' ? 'badge-info' :
-                                                    dealer.type === 'service_center' ? 'badge-warning' :
-                                                        'badge-success'
-                                            )}>
-                        {dealer.type.replace('_', ' ')}
-                      </span>
+                                            <span className={cn('badge', getDealerTypeBadgeClass(dealer.type))}>
+                                                {formatDealerType(dealer.type)}
+                                            </span>
                                         </div>
 
                                         <div className="space-y-3 text-sm">
@@ -121,7 +147,7 @@ const DealerLocator: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        {dealer.rating > 0 && (
+                                        {dealer.rating && dealer.rating > 0 && (
                                             <div className="mt-4 pt-4 border-t">
                                                 <div className="flex items-center">
                                                     <div className="flex items-center">
@@ -130,7 +156,7 @@ const DealerLocator: React.FC = () => {
                                                                 key={i}
                                                                 className={cn(
                                                                     'h-4 w-4',
-                                                                    i < Math.floor(dealer.rating)
+                                                                    i < Math.floor(dealer.rating!)
                                                                         ? 'text-yellow-400 fill-current'
                                                                         : 'text-gray-300'
                                                                 )}
@@ -138,8 +164,8 @@ const DealerLocator: React.FC = () => {
                                                         ))}
                                                     </div>
                                                     <span className="ml-2 text-sm text-gray-600">
-                            {dealer.rating.toFixed(1)}
-                          </span>
+                                                        {dealer.rating.toFixed(1)}
+                                                    </span>
                                                 </div>
                                             </div>
                                         )}
