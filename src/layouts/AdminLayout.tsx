@@ -21,11 +21,14 @@ import {
 } from '@heroicons/react/24/outline';
 import { cn } from '@/utils';
 
+// Import the Permission type from the usePermission hook
+type Permission = 'super_admin' | 'admin' | 'editor';
+
 interface NavItem {
     name: string;
     href: string;
     icon: React.ComponentType<{ className?: string }>;
-    permission?: string[];
+    permission?: Permission[];
 }
 
 const navigation: NavItem[] = [
@@ -50,7 +53,7 @@ const AdminLayout: React.FC = () => {
     const { hasPermission } = usePermission();
 
     const filteredNavigation = navigation.filter(
-        (item) => !item.permission || hasPermission(item.permission as any)
+        (item) => !item.permission || hasPermission(item.permission)
     );
 
     return (

@@ -2,7 +2,7 @@
 import axios, {type AxiosInstance, AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://ind.mozget.com/api';
 
 class ApiClient {
     private client: AxiosInstance;
