@@ -14,17 +14,28 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
     const [isPlaying, setIsPlaying] = useState(true);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+    const [loadedMobileImages, setLoadedMobileImages] = useState<Set<number>>(new Set());
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const touchStartX = useRef<number | null>(null);
 
-    // Preload images
+    // Preload both desktop and mobile images
     useEffect(() => {
         banners.forEach((banner, index) => {
+            // Preload desktop image
             const img = new Image();
             img.src = getImageUrl(banner.image);
             img.onload = () => {
                 setLoadedImages(prev => new Set(prev).add(index));
             };
+
+            // Preload mobile image if available
+            if (banner.mobileImage) {
+                const mobileImg = new Image();
+                mobileImg.src = getImageUrl(banner.mobileImage);
+                mobileImg.onload = () => {
+                    setLoadedMobileImages(prev => new Set(prev).add(index));
+                };
+            }
         });
     }, [banners]);
 
@@ -94,6 +105,46 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handlePrev, handleNext]);
 
+    // Helper function to render responsive image
+    const renderBannerImage = (banner: Banner, index: number) => {
+        const isLoaded = loadedImages.has(index);
+        const isMobileLoaded = banner.mobileImage ? loadedMobileImages.has(index) : true;
+        const showImage = isLoaded && isMobileLoaded;
+
+        if (!showImage) {
+            return <div className="w-full h-full bg-gray-800 animate-pulse" />;
+        }
+
+        const imageElement = (
+            <picture className="w-full h-full">
+                {/* Mobile image source - shown on screens smaller than 768px */}
+                {banner.mobileImage && (
+                    <source
+                        media="(max-width: 767px)"
+                        srcSet={getImageUrl(banner.mobileImage)}
+                    />
+                )}
+                {/* Desktop image - default/fallback */}
+                <img
+                    src={getImageUrl(banner.image)}
+                    alt={banner.title}
+                    className="w-full h-full object-cover animate-ken-burns"
+                />
+            </picture>
+        );
+
+        // Wrap in Link if banner has a link
+        if (banner.link) {
+            return (
+                <Link to={banner.link} className="block w-full h-full">
+                    {imageElement}
+                </Link>
+            );
+        }
+
+        return imageElement;
+    };
+
     if (banners.length === 0) return null;
 
     return (
@@ -112,25 +163,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                             index === currentIndex ? "opacity-100 scale-100" : "opacity-0 scale-110"
                         )}
                     >
-                        {loadedImages.has(index) ? (
-                            banner.link ? (
-                                <Link to={banner.link} className="block w-full h-full">
-                                    <img
-                                        src={getImageUrl(banner.image)}
-                                        alt={banner.title}
-                                        className="w-full h-full object-cover animate-ken-burns"
-                                    />
-                                </Link>
-                            ) : (
-                                <img
-                                    src={getImageUrl(banner.image)}
-                                    alt={banner.title}
-                                    className="w-full h-full object-cover animate-ken-burns"
-                                />
-                            )
-                        ) : (
-                            <div className="w-full h-full bg-gray-800 animate-pulse" />
-                        )}
+                        {renderBannerImage(banner, index)}
                     </div>
                 ))}
             </div>
