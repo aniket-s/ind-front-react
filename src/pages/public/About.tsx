@@ -90,40 +90,33 @@ const About: React.FC = () => {
 
     const teamMembers = [
         {
-            name: 'Rajesh Kumar',
-            position: 'CEO & Founder',
-            image: 'https://www.claudeusercontent.com/api/placeholder/300/300',
-            bio: '25+ years in power industry'
+            name: 'Rakesh Malhotra',
+            position: 'Founder',
+            image: '/member1.jpg',
         },
         {
-            name: 'Priya Sharma',
-            position: 'CTO',
-            image: 'https://www.claudeusercontent.com/api/placeholder/300/300',
-            bio: 'Expert in renewable energy'
+            name: 'Navneet Kapoor',
+            position: 'CoFounder',
+            image: '/member2.jpg',
         },
         {
-            name: 'Amit Patel',
-            position: 'Head of Operations',
-            image: 'https://www.claudeusercontent.com/api/placeholder/300/300',
-            bio: 'Supply chain specialist'
+            name: 'Sameer Nagpal',
+            position: 'CEO & MD',
+            image: '/member3.jpg',
         },
-        {
-            name: 'Sneha Gupta',
-            position: 'Head of Marketing',
-            image: 'https://www.claudeusercontent.com/api/placeholder/300/300',
-            bio: 'Brand building expert'
-        },
+
     ];
 
     return (
         <div className="min-h-screen bg-white">
             {/* Hero Section with Parallax Effect */}
-            <div className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 text-white overflow-hidden">
+            <div
+                className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-600 text-white overflow-hidden">
                 {/* Animated Background Pattern */}
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute inset-0" style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                    }} />
+                    }}/>
                 </div>
 
                 <div className="relative container mx-auto px-4 py-24 md:py-32">
@@ -136,10 +129,12 @@ const About: React.FC = () => {
                             for millions of Indians, delivering reliable power solutions that never let you down.
                         </p>
                         <div className="flex flex-wrap justify-center gap-4">
-                            <a href="/products" className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105">
+                            <a href="/products"
+                               className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105">
                                 Explore Products
                             </a>
-                            <a href="/dealer-locator" className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-600 transition-all">
+                            <a href="/dealer-locator"
+                               className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-blue-600 transition-all">
                                 Find a Dealer
                             </a>
                         </div>
@@ -149,8 +144,9 @@ const About: React.FC = () => {
                 {/* Wave SVG */}
                 <div className="absolute bottom-0 left-0 right-0">
                     <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
-                              fill="white"/>
+                        <path
+                            d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
+                            fill="white"/>
                     </svg>
                 </div>
             </div>
@@ -159,8 +155,10 @@ const About: React.FC = () => {
             <div className="container mx-auto px-4 -mt-20 relative z-10">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {stats.map((stat, index) => (
-                        <div key={index} className="bg-white rounded-2xl shadow-xl p-6 text-center group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                            <stat.icon className="h-12 w-12 mx-auto mb-4 text-blue-600 group-hover:scale-110 transition-transform" />
+                        <div key={index}
+                             className="bg-white rounded-2xl shadow-xl p-6 text-center group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                            <stat.icon
+                                className="h-12 w-12 mx-auto mb-4 text-blue-600 group-hover:scale-110 transition-transform"/>
                             <h3 className="text-4xl font-bold text-gray-900 mb-2">{stat.number}</h3>
                             <p className="text-gray-600 font-medium">{stat.label}</p>
                         </div>
@@ -179,8 +177,9 @@ const About: React.FC = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
                         <div className="bg-white rounded-3xl shadow-lg p-8 md:p-10 hover:shadow-xl transition-shadow">
-                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6">
-                                <BoltIcon className="h-8 w-8 text-white" />
+                            <div
+                                className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                                <BoltIcon className="h-8 w-8 text-white"/>
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h3>
                             <p className="text-lg text-gray-600 leading-relaxed">
@@ -191,8 +190,9 @@ const About: React.FC = () => {
                         </div>
 
                         <div className="bg-white rounded-3xl shadow-lg p-8 md:p-10 hover:shadow-xl transition-shadow">
-                            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6">
-                                <SparklesIcon className="h-8 w-8 text-white" />
+                            <div
+                                className="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6">
+                                <SparklesIcon className="h-8 w-8 text-white"/>
                             </div>
                             <h3 className="text-3xl font-bold text-gray-900 mb-4">Our Vision</h3>
                             <p className="text-lg text-gray-600 leading-relaxed">
@@ -220,9 +220,11 @@ const About: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
                         {values.map((value, index) => (
                             <div key={index} className="group perspective">
-                                <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                                    <div className={`w-16 h-16 bg-gradient-to-br ${value.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                                        <value.icon className="h-8 w-8 text-white" />
+                                <div
+                                    className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                                    <div
+                                        className={`w-16 h-16 bg-gradient-to-br ${value.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                                        <value.icon className="h-8 w-8 text-white"/>
                                     </div>
                                     <h3 className="text-xl font-bold text-gray-900 mb-3">
                                         {value.title}
@@ -252,18 +254,22 @@ const About: React.FC = () => {
                     <div className="max-w-5xl mx-auto">
                         <div className="relative">
                             {/* Timeline line */}
-                            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600"></div>
+                            <div
+                                className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600"></div>
 
                             {/* Timeline items */}
                             <div className="space-y-12">
                                 {milestones.map((milestone, index) => (
-                                    <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                                    <div key={index}
+                                         className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                                         {/* Content */}
                                         <div className="flex-1 md:w-1/2">
-                                            <div className={`bg-white rounded-2xl shadow-lg p-6 md:p-8 hover:shadow-xl transition-shadow ${index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
+                                            <div
+                                                className={`bg-white rounded-2xl shadow-lg p-6 md:p-8 hover:shadow-xl transition-shadow ${index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
                                                 <div className="flex items-center mb-4">
-                                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
-                                                        <milestone.icon className="h-6 w-6 text-white" />
+                                                    <div
+                                                        className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
+                                                        <milestone.icon className="h-6 w-6 text-white"/>
                                                     </div>
                                                     <div>
                                                         <p className="text-2xl font-bold text-blue-600">{milestone.year}</p>
@@ -275,7 +281,8 @@ const About: React.FC = () => {
                                         </div>
 
                                         {/* Center dot */}
-                                        <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-blue-600 rounded-full border-4 border-white shadow-lg"></div>
+                                        <div
+                                            className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-blue-600 rounded-full border-4 border-white shadow-lg"></div>
 
                                         {/* Empty space for alternating layout */}
                                         <div className="hidden md:block flex-1 w-1/2"></div>
@@ -287,7 +294,6 @@ const About: React.FC = () => {
                 </div>
             </section>
 
-            {/* Team Section */}
             <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
@@ -299,11 +305,13 @@ const About: React.FC = () => {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                    <div className="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
                         {teamMembers.map((member, index) => (
-                            <div key={index} className="group">
-                                <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                                    <div className="aspect-w-1 aspect-h-1 bg-gradient-to-br from-blue-400 to-blue-600 p-1">
+                            <div key={index} className="group w-full sm:w-auto">
+                                <div
+                                    className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 w-full sm:w-72">
+                                    <div
+                                        className="aspect-w-1 aspect-h-1 bg-gradient-to-br from-blue-400 to-blue-600 p-1">
                                         <img
                                             src={member.image}
                                             alt={member.name}
@@ -313,7 +321,6 @@ const About: React.FC = () => {
                                     <div className="p-6 text-center">
                                         <h3 className="text-xl font-bold text-gray-900 mb-1">{member.name}</h3>
                                         <p className="text-blue-600 font-medium mb-2">{member.position}</p>
-                                        <p className="text-gray-600 text-sm">{member.bio}</p>
                                     </div>
                                 </div>
                             </div>
@@ -321,7 +328,6 @@ const About: React.FC = () => {
                     </div>
                 </div>
             </section>
-
             {/* CTA Section */}
             <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-black opacity-10"></div>
@@ -334,10 +340,12 @@ const About: React.FC = () => {
                         efficient, and innovative power solutions. Your journey to uninterrupted power starts here.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                        <a href="/products" className="px-10 py-4 bg-white text-blue-600 font-bold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 text-lg">
+                        <a href="/products"
+                           className="px-10 py-4 bg-white text-blue-600 font-bold rounded-full hover:bg-gray-100 transition-all transform hover:scale-105 text-lg">
                             Explore Our Products
                         </a>
-                        <a href="/contact" className="px-10 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-blue-600 transition-all text-lg">
+                        <a href="/contact"
+                           className="px-10 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-blue-600 transition-all text-lg">
                             Get in Touch
                         </a>
                     </div>

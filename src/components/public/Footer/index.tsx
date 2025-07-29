@@ -16,7 +16,6 @@ import {
     faCcPaypal,
     faGooglePay,
     faFacebook,
-    faTwitter,
     faLinkedin,
     faInstagram,
     faYoutube
@@ -25,14 +24,6 @@ import {
     faUniversity,
     faCreditCard
 } from '@fortawesome/free-solid-svg-icons';
-
-// Logo component (same as in Header)
-const Logo: React.FC<{ className?: string }> = ({ className }) => (
-    <svg className={className} viewBox="0 0 100 100" fill="currentColor">
-        <circle cx="50" cy="50" r="45" className="text-yellow-400" />
-        <text x="50" y="70" textAnchor="middle" className="text-blue-600 font-bold text-4xl">IP</text>
-    </svg>
-);
 
 const Footer: React.FC = () => {
     const { data: info } = useQuery({
@@ -53,7 +44,6 @@ const Footer: React.FC = () => {
 
     const socialLinks = [
         { icon: faFacebook, href: info?.social?.facebook || "#", name: "Facebook" },
-        { icon: faTwitter, href: info?.social?.twitter || "#", name: "Twitter" },
         { icon: faLinkedin, href: info?.social?.linkedin || "#", name: "LinkedIn" },
         { icon: faInstagram, href: info?.social?.instagram || "#", name: "Instagram" },
         { icon: faYoutube, href: info?.social?.youtube || "#", name: "YouTube" },
@@ -76,8 +66,8 @@ const Footer: React.FC = () => {
                     {/* Company Info */}
                     <div>
                         <div className="flex items-center mb-4">
-                            <Logo className="w-12 h-12 mr-3"/>
-                            <span className="text-2xl font-bold">INDPOWER</span>
+                            <img src="./logo.png" alt="Logo" className="h-20 mr-3"/>
+
                         </div>
                         <p className="text-white/80 mb-6 text-sm leading-relaxed">
                             IndPower provides reliable power backup solutions for homes and businesses across India

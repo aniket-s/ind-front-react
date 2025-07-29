@@ -17,6 +17,8 @@ interface Category {
     name: string;
     active?: boolean;
     isText?: boolean;
+    isImage?: boolean;
+    imageUrl?: string;
 }
 
 interface Product {
@@ -59,9 +61,21 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
     const defaultCategories: Category[] = [
         { icon: faBolt, name: "Inverter", active: true },
         { icon: faBatteryThreeQuarters, name: "Inverter Batteries" },
-        { icon: "2W", name: "2 W Batteries", isText: true },
-        { icon: "3W", name: "3 W Batteries", isText: true },
-        { icon: "4W", name: "4 W Batteries", isText: true },
+        {
+            name: "2 W Batteries",
+            isImage: true,
+            imageUrl: "/icons/2w-battery.svg" // Replace with your actual icon image path
+        },
+        {
+            name: "3 W Batteries",
+            isImage: true,
+            imageUrl: "/icons/3w-battery.svg" // Replace with your actual icon image path
+        },
+        {
+            name: "4 W Batteries",
+            isImage: true,
+            imageUrl: "/icons/4w-battery.svg" // Replace with your actual icon image path
+        },
         { icon: faMotorcycle, name: "e-Rickshaw Batteries" },
         { icon: faSolarPanel, name: "Solar" },
     ];
@@ -105,6 +119,31 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
         return icon;
     };
 
+    const renderCategoryIcon = (category: Category) => {
+        if (category.isImage && category.imageUrl) {
+            return (
+                <img
+                    src={category.imageUrl}
+                    alt={category.name}
+                    className={`w-5 h-5 mr-3 object-contain ${category.active ? "" : "opacity-50"}`}
+                />
+            );
+        } else if (category.isText) {
+            return (
+                <span className={`mr-3 font-bold ${category.active ? "" : "text-gray-400"}`}>
+                    {typeof category.icon === 'string' ? category.icon : ''}
+                </span>
+            );
+        } else {
+            return (
+                <FontAwesomeIcon
+                    icon={getIcon(category.icon!)}
+                    className={`mr-3 ${category.active ? "" : "text-gray-400"}`}
+                />
+            );
+        }
+    };
+
     return (
         <section className="bg-gray-50 py-16">
             <div className="container mx-auto px-4">
@@ -138,16 +177,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
                                                 : "text-gray-600 hover:text-blue-600 hover:bg-blue-50"
                                         }`}
                                     >
-                                        {category.isText ? (
-                                            <span className={`mr-3 font-bold ${category.active ? "" : "text-gray-400"}`}>
-                                                {typeof category.icon === 'string' ? category.icon : ''}
-                                            </span>
-                                        ) : (
-                                            <FontAwesomeIcon
-                                                icon={getIcon(category.icon!)}
-                                                className={`mr-3 ${category.active ? "" : "text-gray-400"}`}
-                                            />
-                                        )}
+                                        {renderCategoryIcon(category)}
                                         {category.name}
                                     </Link>
                                 ))}

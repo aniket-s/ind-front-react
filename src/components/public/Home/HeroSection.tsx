@@ -96,16 +96,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
 
     if (banners.length === 0) return null;
 
-    const currentBanner = banners[currentIndex];
-
     return (
         <section
-            className="relative h-[85vh] min-h-[600px] overflow-hidden bg-gray-900"
+            className="relative min-h-[500px] overflow-hidden bg-gray-900"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
             {/* Background Images */}
-            <div className="absolute inset-0">
+            <div className="">
                 {banners.map((banner, index) => (
                     <div
                         key={index}
@@ -115,56 +113,26 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                         )}
                     >
                         {loadedImages.has(index) ? (
-                            <>
+                            banner.link ? (
+                                <Link to={banner.link} className="block w-full h-full">
+                                    <img
+                                        src={getImageUrl(banner.image)}
+                                        alt={banner.title}
+                                        className="w-full h-full object-cover animate-ken-burns"
+                                    />
+                                </Link>
+                            ) : (
                                 <img
                                     src={getImageUrl(banner.image)}
                                     alt={banner.title}
                                     className="w-full h-full object-cover animate-ken-burns"
                                 />
-                                {/* Gradient Overlays */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 via-transparent to-gray-900/20" />
-                            </>
+                            )
                         ) : (
                             <div className="w-full h-full bg-gray-800 animate-pulse" />
                         )}
                     </div>
                 ))}
-            </div>
-
-            {/* Content */}
-            <div className="relative container h-full flex items-center px-4 sm:px-6 lg:px-8">
-                <div className="max-w-3xl">
-                    <div
-                        className={cn(
-                            "transition-all duration-700 ease-out",
-                            isTransitioning ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
-                        )}
-                    >
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                            {currentBanner.title}
-                        </h1>
-                        {currentBanner.subtitle && (
-                            <p className="text-xl sm:text-2xl md:text-3xl text-gray-200 mb-6 font-light">
-                                {currentBanner.subtitle}
-                            </p>
-                        )}
-                        {currentBanner.description && (
-                            <p className="text-lg md:text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl">
-                                {currentBanner.description}
-                            </p>
-                        )}
-                        {currentBanner.link && (
-                            <Link
-                                to={currentBanner.link}
-                                className="inline-flex items-center px-8 py-4 text-lg font-semibold text-gray-900 bg-white rounded-full hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-3xl"
-                            >
-                                {currentBanner.linkText}
-                                <ChevronRightIcon className="ml-2 h-5 w-5" />
-                            </Link>
-                        )}
-                    </div>
-                </div>
             </div>
 
             {/* Navigation Controls */}

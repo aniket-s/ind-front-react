@@ -177,26 +177,7 @@ const Contact: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Regional Office */}
-                            <div className="pt-6 border-t border-gray-200">
-                                <h3 className="font-semibold text-gray-800 mb-3 text-lg">Regional Office</h3>
-                                <div className="space-y-3">
-                                    <div className="flex items-start space-x-3">
-                                        <MapPinIcon className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                                        <p className="text-gray-600">
-                                            Mumbai Office<br/>
-                                            Business Plaza, Andheri East<br/>
-                                            Mumbai - 400093
-                                        </p>
-                                    </div>
-                                    <div className="flex items-center space-x-3">
-                                        <PhoneIcon className="h-5 w-5 text-gray-400" />
-                                        <a href="tel:+912298765432" className="text-gray-600 hover:text-blue-600">
-                                            +91 22 9876 5432
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
 
                         {/* Business Hours */}
