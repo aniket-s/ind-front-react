@@ -39,13 +39,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         });
     }, [banners]);
 
-    // Auto-play functionality
+    // Auto-play functionality - Changed to 5 seconds
     useEffect(() => {
         if (banners.length <= 1 || !isPlaying) return;
 
         intervalRef.current = setInterval(() => {
             handleNext();
-        }, 6000);
+        }, 5000); // Changed from 6000 to 5000 (5 seconds)
 
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current);
@@ -125,10 +125,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                     />
                 )}
                 {/* Desktop image - default/fallback */}
+                {/* Removed animate-ken-burns class to fix zooming issue */}
                 <img
                     src={getImageUrl(banner.image)}
                     alt={banner.title}
-                    className="w-full h-full object-cover animate-ken-burns"
+                    className="w-full h-full object-cover"
                 />
             </picture>
         );
@@ -160,7 +161,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                         key={index}
                         className={cn(
                             "absolute inset-0 transition-all duration-1000 ease-in-out",
-                            index === currentIndex ? "opacity-100 scale-100" : "opacity-0 scale-110"
+                            // Removed scale transforms to fix zooming issue
+                            index === currentIndex ? "opacity-100" : "opacity-0"
                         )}
                     >
                         {renderBannerImage(banner, index)}
@@ -219,17 +221,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                                     {index === currentIndex && (
                                         <div
                                             className="absolute inset-0 bg-white rounded-full animate-progress"
-                                            style={{ animationDuration: isPlaying ? '6s' : '0s' }}
+                                            // Changed animation duration to 5s to match rotation timing
+                                            style={{ animationDuration: isPlaying ? '5s' : '0s' }}
                                         />
                                     )}
                                 </button>
                             ))}
                         </div>
 
-                        {/* Slide Counter */}
-                        <div className="text-white/60 text-sm font-medium">
-                            {String(currentIndex + 1).padStart(2, '0')} / {String(banners.length).padStart(2, '0')}
-                        </div>
+                        {/* Removed Slide Counter (01/03, 02/03, etc.) */}
                     </div>
                 </>
             )}
