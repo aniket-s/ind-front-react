@@ -39,19 +39,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         });
     }, [banners]);
 
-    // Auto-play functionality - Changed to 5 seconds
-    useEffect(() => {
-        if (banners.length <= 1 || !isPlaying) return;
-
-        intervalRef.current = setInterval(() => {
-            handleNext();
-        }, 5000); // Changed from 6000 to 5000 (5 seconds)
-
-        return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        };
-    }, [banners.length, currentIndex, isPlaying]);
-
     const handlePrev = useCallback(() => {
         if (isTransitioning) return;
         setIsTransitioning(true);
@@ -65,6 +52,21 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         setCurrentIndex((prev) => (prev + 1) % banners.length);
         setTimeout(() => setIsTransitioning(false), 600);
     }, [banners.length, isTransitioning]);
+
+    // Auto-play functionality - 5 seconds interval
+    useEffect(() => {
+        if (banners.length <= 1 || !isPlaying) return;
+
+        intervalRef.current = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % banners.length);
+        }, 5000); // 5 seconds
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, [banners.length, isPlaying]);
 
     const handleGoToSlide = useCallback((index: number) => {
         if (isTransitioning || index === currentIndex) return;
@@ -125,7 +127,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                     />
                 )}
                 {/* Desktop image - default/fallback */}
-                {/* Removed animate-ken-burns class to fix zooming issue */}
                 <img
                     src={getImageUrl(banner.image)}
                     alt={banner.title}
@@ -150,19 +151,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
 
     return (
         <section
-            className="relative min-h-[500px] overflow-hidden bg-gray-900"
+            className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden bg-gray-900"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
         >
-            {/* Background Images */}
-            <div className="">
+            {/* Background Images Container - Fixed positioning */}
+            <div className="relative w-full h-full">
                 {banners.map((banner, index) => (
                     <div
                         key={index}
                         className={cn(
-                            "absolute inset-0 transition-all duration-1000 ease-in-out",
-                            // Removed scale transforms to fix zooming issue
-                            index === currentIndex ? "opacity-100" : "opacity-0"
+                            "absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out",
+                            index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
                         )}
                     >
                         {renderBannerImage(banner, index)}
@@ -176,21 +176,21 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                     {/* Side Navigation */}
                     <button
                         onClick={handlePrev}
-                        className="absolute left-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        className="absolute left-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
                         aria-label="Previous slide"
                     >
                         <ChevronLeftIcon className="h-6 w-6" />
                     </button>
                     <button
                         onClick={handleNext}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        className="absolute right-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
                         aria-label="Next slide"
                     >
                         <ChevronRightIcon className="h-6 w-6" />
                     </button>
 
                     {/* Bottom Controls */}
-                    <div className="absolute bottom-8 left-0 right-0 flex items-center justify-center space-x-8">
+                    <div className="absolute bottom-8 left-0 right-0 z-20 flex items-center justify-center space-x-8">
                         {/* Play/Pause Button */}
                         <button
                             onClick={() => setIsPlaying(!isPlaying)}
@@ -218,18 +218,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                                     )}
                                     aria-label={`Go to slide ${index + 1}`}
                                 >
-                                    {index === currentIndex && (
+                                    {index === currentIndex && isPlaying && (
                                         <div
                                             className="absolute inset-0 bg-white rounded-full animate-progress"
-                                            // Changed animation duration to 5s to match rotation timing
-                                            style={{ animationDuration: isPlaying ? '5s' : '0s' }}
+                                            style={{ animationDuration: '5s' }}
                                         />
                                     )}
                                 </button>
                             ))}
                         </div>
-
-                        {/* Removed Slide Counter (01/03, 02/03, etc.) */}
                     </div>
                 </>
             )}
