@@ -53,13 +53,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         setTimeout(() => setIsTransitioning(false), 600);
     }, [banners.length, isTransitioning]);
 
-    // Auto-play functionality - 5 seconds interval
+    // Auto-play functionality - 6 seconds interval
     useEffect(() => {
         if (banners.length <= 1 || !isPlaying) return;
 
         intervalRef.current = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % banners.length);
-        }, 5000); // 5 seconds
+        }, 6000); // 6 seconds
 
         return () => {
             if (intervalRef.current) {
@@ -173,55 +173,55 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
             {/* Navigation Controls */}
             {banners.length > 1 && (
                 <>
-                    {/* Side Navigation */}
+                    {/* Side Navigation - Smaller buttons */}
                     <button
                         onClick={handlePrev}
-                        className="absolute left-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
                         aria-label="Previous slide"
                     >
-                        <ChevronLeftIcon className="h-6 w-6" />
+                        <ChevronLeftIcon className="h-5 w-5" />
                     </button>
                     <button
                         onClick={handleNext}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                        className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
                         aria-label="Next slide"
                     >
-                        <ChevronRightIcon className="h-6 w-6" />
+                        <ChevronRightIcon className="h-5 w-5" />
                     </button>
 
                     {/* Bottom Controls */}
-                    <div className="absolute bottom-8 left-0 right-0 z-20 flex items-center justify-center space-x-8">
-                        {/* Play/Pause Button */}
+                    <div className="absolute bottom-6 md:bottom-8 left-0 right-0 z-20 flex items-center justify-center space-x-6 md:space-x-8">
+                        {/* Play/Pause Button - Smaller size */}
                         <button
                             onClick={() => setIsPlaying(!isPlaying)}
-                            className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300"
+                            className="p-1.5 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300"
                             aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
                         >
                             {isPlaying ? (
-                                <PauseIcon className="h-5 w-5" />
+                                <PauseIcon className="h-4 w-4" />
                             ) : (
-                                <PlayIcon className="h-5 w-5" />
+                                <PlayIcon className="h-4 w-4" />
                             )}
                         </button>
 
                         {/* Dot Indicators */}
-                        <div className="flex items-center space-x-3">
+                        <div className="flex items-center space-x-2 md:space-x-3">
                             {banners.map((_, index) => (
                                 <button
                                     key={index}
                                     onClick={() => handleGoToSlide(index)}
                                     className={cn(
-                                        "relative h-2 rounded-full transition-all duration-500 focus:outline-none",
+                                        "relative h-1.5 md:h-2 rounded-full transition-all duration-500 focus:outline-none",
                                         index === currentIndex
-                                            ? "bg-white w-12"
-                                            : "bg-white/40 hover:bg-white/60 w-2"
+                                            ? "bg-white w-10 md:w-12"
+                                            : "bg-white/40 hover:bg-white/60 w-1.5 md:w-2"
                                     )}
                                     aria-label={`Go to slide ${index + 1}`}
                                 >
                                     {index === currentIndex && isPlaying && (
                                         <div
                                             className="absolute inset-0 bg-white rounded-full animate-progress"
-                                            style={{ animationDuration: '5s' }}
+                                            style={{ animationDuration: '6s' }}
                                         />
                                     )}
                                 </button>
