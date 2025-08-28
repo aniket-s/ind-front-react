@@ -99,7 +99,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
         name: content.product?.name || "Premium Power Inverter Series",
         description: content.product?.description || "Our premium inverters are engineered to provide reliable backup power for homes and businesses with advanced technology and sturdy construction for uninterrupted power supply.",
         warranty: content.product?.warranty || "36 Months Standard Warranty",
-        image: content.product?.image || "https://www.claudeusercontent.com/api/placeholder/500/500"
+        image: content.product?.image || "/main_product.jpg",
     };
 
     const categories = content.categories && content.categories.length > 0
