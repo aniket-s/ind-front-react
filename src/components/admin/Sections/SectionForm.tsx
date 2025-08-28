@@ -1,7 +1,6 @@
-// src/components/admin/Sections/SectionForm.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import {Resolver, useForm} from 'react-hook-form';
+import { Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { apiClient } from '@/services/api';
@@ -9,6 +8,17 @@ import { Section } from '@/types';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import toast from 'react-hot-toast';
 import { cn } from '@/utils';
+
+// Import section editors
+import ProductsSectionEditor from './editors/ProductsSectionEditor';
+import WhyIndpowerSectionEditor from './editors/WhyIndpowerSectionEditor';
+import AboutSectionEditor from './editors/AboutSectionEditor';
+import FAQSectionEditor from './editors/FAQSectionEditor';
+import ConnectSectionEditor from './editors/ConnectSectionEditor';
+import DealerLocatorSectionEditor from './editors/DealerLocatorSectionEditor';
+import ViewDetailsSectionEditor from './editors/ViewDetailsSectionEditor';
+import JoinDealerSectionEditor from './editors/JoinDealerSectionEditor';
+import StillHaveQuestionsSectionEditor from './editors/StillHaveQuestionsSectionEditor';
 
 const schema = yup.object({
     type: yup.string().required('Type is required'),
@@ -33,6 +43,7 @@ const SectionForm: React.FC<SectionFormProps> = ({
                                                  }) => {
     const queryClient = useQueryClient();
     const isEdit = !!sectionId;
+    const [sectionContent, setSectionContent] = useState<any>({});
 
     const { data: section, isLoading: sectionLoading } = useQuery({
         queryKey: ['section', sectionId],
@@ -68,6 +79,7 @@ const SectionForm: React.FC<SectionFormProps> = ({
                 isActive: section.isActive,
                 sortOrder: section.sortOrder,
             });
+            setSectionContent(section.content || {});
         }
     }, [section, reset]);
 
@@ -75,8 +87,8 @@ const SectionForm: React.FC<SectionFormProps> = ({
         mutationFn: async (data: FormData) => {
             const payload = {
                 ...data,
-                content: {}, // Would be populated based on section type
-                settings: {}, // Would be populated based on section type
+                content: sectionContent,
+                settings: {}, // Could be expanded for additional settings
             };
 
             if (isEdit) {
@@ -92,10 +104,66 @@ const SectionForm: React.FC<SectionFormProps> = ({
             toast.success(`Section ${isEdit ? 'updated' : 'created'} successfully`);
             onSuccess();
         },
+        onError: (error: any) => {
+            toast.error(error.response?.data?.message || 'Failed to save section');
+        },
     });
 
     const onSubmit = (data: FormData) => {
         mutation.mutate(data);
+    };
+
+    const renderContentEditor = () => {
+        if (!sectionType) return null;
+
+        const commonProps = {
+            content: sectionContent,
+            onChange: setSectionContent,
+        };
+
+        switch (sectionType) {
+            case 'products':
+                return <ProductsSectionEditor {...commonProps} />;
+            case 'whyIndpower':
+                return <WhyIndpowerSectionEditor {...commonProps} />;
+            case 'about':
+                return <AboutSectionEditor {...commonProps} />;
+            case 'faq':
+                return <FAQSectionEditor {...commonProps} />;
+            case 'connect':
+                return <ConnectSectionEditor {...commonProps} />;
+            case 'dealerLocator':
+                return <DealerLocatorSectionEditor {...commonProps} />;
+            case 'viewDetails':
+                return <ViewDetailsSectionEditor {...commonProps} />;
+            case 'joinDealer':
+                return <JoinDealerSectionEditor {...commonProps} />;
+            case 'stillHaveQuestions':
+                return <StillHaveQuestionsSectionEditor {...commonProps} />;
+            case 'banner':
+                return (
+                    <div className="card bg-blue-50 border-blue-200">
+                        <div className="card-body">
+                            <p className="text-sm text-blue-800">
+                                Banner sections are managed through the Banners menu.
+                                This section type displays the homepage banner carousel.
+                            </p>
+                        </div>
+                    </div>
+                );
+            case 'custom':
+                return (
+                    <div className="card bg-gray-50">
+                        <div className="card-body">
+                            <p className="text-sm text-gray-600">
+                                Custom section content editor coming soon.
+                            </p>
+                        </div>
+                    </div>
+                );
+            default:
+                return null;
+        }
     };
 
     if (sectionLoading) {
@@ -163,14 +231,9 @@ const SectionForm: React.FC<SectionFormProps> = ({
             </div>
 
             {sectionType && (
-                <div className="card bg-gray-50">
-                    <div className="card-body">
-                        <h4 className="text-sm font-medium text-gray-900 mb-4">Section Content</h4>
-                        <p className="text-sm text-gray-600">
-                            Section-specific content configuration would appear here based on the selected type.
-                            This would include fields for images, text content, settings, etc.
-                        </p>
-                    </div>
+                <div className="space-y-4">
+                    <h4 className="text-sm font-medium text-gray-900">Section Content</h4>
+                    {renderContentEditor()}
                 </div>
             )}
 

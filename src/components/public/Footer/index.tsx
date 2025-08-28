@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
                     {/* Company Info */}
                     <div>
                         <div className="flex items-center mb-4">
-                            <img src="./logo.png" alt="Logo" className="h-20 mr-3"/>
+                            <img src="./ind_footer.png" alt="Logo" className="h-20 mr-3"/>
 
                         </div>
                         <p className="text-white/80 mb-6 text-sm leading-relaxed">
@@ -94,7 +94,7 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-xl font-bold mb-4 relative">
                             Quick Links
-                            <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-400"></div>
+                            <div className="absolute bottom-0 left-0 w-28 h-1 bg-yellow-400"></div>
                         </h3>
                         <ul className="space-y-2 mt-6">
                             {quickLinks.map((link, index) => (
@@ -113,7 +113,7 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-xl font-bold mb-4 relative">
                             Our Products
-                            <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-400"></div>
+                            <div className="absolute bottom-0 left-0 w-32 h-1 bg-yellow-400"></div>
                         </h3>
                         <ul className="space-y-2 mt-6">
                             {products.map((product, index) => (
@@ -132,7 +132,7 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-xl font-bold mb-4 relative">
                             Contact Info
-                            <div className="absolute bottom-0 left-0 w-12 h-1 bg-yellow-400"></div>
+                            <div className="absolute bottom-0 left-0 w-30 h-1 bg-yellow-400"></div>
                         </h3>
                         <div className="space-y-4 mt-6">
                             <div className="flex items-start">
