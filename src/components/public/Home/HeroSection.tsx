@@ -1,7 +1,7 @@
 // src/components/public/Home/HeroSection.tsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { cn, getImageUrl } from '@/utils';
 import { Banner } from '@/types';
 
@@ -11,7 +11,6 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(true);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
     const [loadedMobileImages, setLoadedMobileImages] = useState<Set<number>>(new Set());
@@ -53,9 +52,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         setTimeout(() => setIsTransitioning(false), 600);
     }, [banners.length, isTransitioning]);
 
-    // Auto-play functionality - 6 seconds interval
+    // Auto-play functionality - 6 seconds interval (always active)
     useEffect(() => {
-        if (banners.length <= 1 || !isPlaying) return;
+        if (banners.length <= 1) return;
 
         intervalRef.current = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % banners.length);
@@ -66,14 +65,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                 clearInterval(intervalRef.current);
             }
         };
-    }, [banners.length, isPlaying]);
+    }, [banners.length]);
 
     const handleGoToSlide = useCallback((index: number) => {
         if (isTransitioning || index === currentIndex) return;
         setIsTransitioning(true);
         setCurrentIndex(index);
+
+        // Reset the auto-play timer when manually navigating
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = setInterval(() => {
+                setCurrentIndex((prev) => (prev + 1) % banners.length);
+            }, 6000);
+        }
+
         setTimeout(() => setIsTransitioning(false), 600);
-    }, [currentIndex, isTransitioning]);
+    }, [currentIndex, isTransitioning, banners.length]);
 
     // Touch handlers for mobile swipe
     const handleTouchStart = (e: React.TouchEvent) => {
@@ -150,87 +158,87 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
     if (banners.length === 0) return null;
 
     return (
-        <section
-            className="relative w-full h-[500px] md:h-[500px] overflow-hidden bg-gray-900"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-        >
-            {/* Background Images Container - Fixed positioning */}
-            <div className="relative w-full h-full">
-                {banners.map((banner, index) => (
-                    <div
-                        key={index}
-                        className={cn(
-                            "absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out",
-                            index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-                        )}
-                    >
-                        {renderBannerImage(banner, index)}
-                    </div>
-                ))}
-            </div>
-
-            {/* Navigation Controls */}
-            {banners.length > 1 && (
-                <>
-                    {/* Side Navigation - Smaller buttons */}
-                    <button
-                        onClick={handlePrev}
-                        className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
-                        aria-label="Previous slide"
-                    >
-                        <ChevronLeftIcon className="h-5 w-5" />
-                    </button>
-                    <button
-                        onClick={handleNext}
-                        className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
-                        aria-label="Next slide"
-                    >
-                        <ChevronRightIcon className="h-5 w-5" />
-                    </button>
-
-                    {/* Bottom Controls */}
-                    <div className="absolute bottom-6 md:bottom-8 left-0 right-0 z-20 flex items-center justify-center space-x-6 md:space-x-8">
-                        {/* Play/Pause Button - Smaller size */}
-                        <button
-                            onClick={() => setIsPlaying(!isPlaying)}
-                            className="p-1.5 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300"
-                            aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
-                        >
-                            {isPlaying ? (
-                                <PauseIcon className="h-4 w-4" />
-                            ) : (
-                                <PlayIcon className="h-4 w-4" />
+        <div className="w-full ">
+            {/* Image Slider Section */}
+            <section
+                className="relative w-full h-[500px] md:h-[500px] overflow-hidden"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+            >
+                {/* Background Images Container */}
+                <div className="relative w-full h-full">
+                    {banners.map((banner, index) => (
+                        <div
+                            key={index}
+                            className={cn(
+                                "absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out",
+                                index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
                             )}
-                        </button>
+                        >
+                            {renderBannerImage(banner, index)}
+                        </div>
+                    ))}
+                </div>
 
-                        {/* Dot Indicators */}
-                        <div className="flex items-center space-x-2 md:space-x-3">
-                            {banners.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleGoToSlide(index)}
+                {/* Navigation Controls - Only show if multiple banners */}
+                {banners.length > 1 && (
+                    <>
+                        {/* Side Navigation Buttons */}
+                        <button
+                            onClick={handlePrev}
+                            className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            aria-label="Previous slide"
+                        >
+                            <ChevronLeftIcon className="h-5 w-5" />
+                        </button>
+                        <button
+                            onClick={handleNext}
+                            className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            aria-label="Next slide"
+                        >
+                            <ChevronRightIcon className="h-5 w-5" />
+                        </button>
+                    </>
+                )}
+            </section>
+
+            {/* Swiper-style Line Indicators - Below the image */}
+            {banners.length > 1 && (
+                <div className=" py-4 md:py-5">
+                    <div className="flex items-center justify-center gap-1.5 md:gap-2 px-4">
+                        {banners.map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => handleGoToSlide(index)}
+                                className="group relative p-1 focus:outline-none"
+                                aria-label={`Go to slide ${index + 1}`}
+                            >
+                                <div
                                     className={cn(
-                                        "relative h-1.5 md:h-2 rounded-full transition-all duration-500 focus:outline-none",
+                                        "relative h-1 rounded-full transition-all duration-500 overflow-hidden",
                                         index === currentIndex
-                                            ? "bg-white w-10 md:w-12"
-                                            : "bg-white/40 hover:bg-white/60 w-1.5 md:w-2"
+                                            ? "w-12 md:w-16 bg-white"
+                                            : "w-6 md:w-8 bg-white/30 group-hover:bg-white/50"
                                     )}
-                                    aria-label={`Go to slide ${index + 1}`}
                                 >
-                                    {index === currentIndex && isPlaying && (
+                                    {/* Progress animation for active slide */}
+                                    {index === currentIndex && (
                                         <div
-                                            className="absolute inset-0 bg-white rounded-full animate-progress"
-                                            style={{ animationDuration: '6s' }}
+                                            className="absolute inset-0 bg-white rounded-full"
+                                            style={{
+                                                animation: 'slideProgress 6s linear forwards',
+                                                transformOrigin: 'left center',
+                                                transform: 'scaleX(0)'
+                                            }}
                                         />
                                     )}
-                                </button>
-                            ))}
-                        </div>
+                                </div>
+                            </button>
+                        ))}
                     </div>
-                </>
+                </div>
             )}
-        </section>
+        </div>
     );
 };
 
