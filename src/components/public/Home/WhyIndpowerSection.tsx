@@ -1,5 +1,5 @@
 // src/components/public/Home/WhyIndpowerSection.tsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faUsers,
@@ -14,8 +14,6 @@ import {
     faHandshake,
     faBolt,
     faChartLine,
-    faChevronLeft,
-    faChevronRight,
     IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -33,14 +31,12 @@ interface WhyIndpowerSectionProps {
         subtitle?: string;
         content?: {
             features?: Feature[];
-            backgroundImage?: string; // CMS field for background image
-            autoPlay?: boolean; // CMS field for auto-play
-            autoPlayInterval?: number; // CMS field for auto-play interval
+            backgroundImage?: string;
         };
     };
 }
 
-// Extended icon mapping for more options
+// Icon mapping for CMS integration
 const iconMap: { [key: string]: IconDefinition } = {
     'fas fa-users': faUsers,
     'fas fa-tag': faTag,
@@ -68,119 +64,27 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
         {
             icon: faUsers,
             title: "Expert Staff",
-            description: "Our team consists of certified professionals with years of experience in power solutions, ensuring you receive the best service and support."
+            description: "Our team consists of certified professionals with years of experience in power solutions."
         },
         {
             icon: faTag,
             title: "Affordable Pricing",
-            description: "We offer competitive pricing without compromising on quality, making reliable power solutions accessible to everyone."
+            description: "We offer competitive pricing without compromising on quality, making power solutions accessible."
         },
         {
             icon: faHeadset,
             title: "24/7 Support",
-            description: "Our dedicated customer support team is available round the clock to assist you with any queries or concerns."
-        },
-        {
-            icon: faShieldAlt,
-            title: "Quality Assurance",
-            description: "All our products undergo rigorous quality checks to ensure maximum reliability and performance for your needs."
-        },
-        {
-            icon: faAward,
-            title: "Industry Recognition",
-            description: "Trusted by thousands of customers and recognized as a leading provider in the power solutions industry."
-        },
-        {
-            icon: faTruck,
-            title: "Fast Delivery",
-            description: "Quick and reliable delivery service ensuring your power solutions reach you when you need them most."
+            description: "Our dedicated customer support team is available round the clock to assist you."
         }
     ];
 
+    // Use provided features or default features (limit to 3 for optimal display)
     const features = section.content?.features && section.content.features.length > 0
-        ? section.content.features.map(feature => ({
+        ? section.content.features.slice(0, 3).map(feature => ({
             ...feature,
             icon: typeof feature.icon === 'string' ? iconMap[feature.icon] || faUsers : feature.icon
         }))
         : defaultFeatures;
-
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isTransitioning, setIsTransitioning] = useState(false);
-    const [touchStart, setTouchStart] = useState(0);
-    const [touchEnd, setTouchEnd] = useState(0);
-
-    // Determine how many cards to show based on screen size
-    const [cardsToShow, setCardsToShow] = useState(2);
-
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth < 768) {
-                setCardsToShow(1);
-            } else if (window.innerWidth < 1280) {
-                setCardsToShow(1);
-            } else {
-                setCardsToShow(2);
-            }
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // Auto-play functionality
-    useEffect(() => {
-        if (section.content?.autoPlay !== false) {
-            const interval = setInterval(() => {
-                handleNext();
-            }, section.content?.autoPlayInterval || 5000);
-
-            return () => clearInterval(interval);
-        }
-    }, [currentIndex, features.length, cardsToShow]);
-
-    const handlePrevious = () => {
-        if (isTransitioning) return;
-        setIsTransitioning(true);
-        setCurrentIndex((prevIndex) => {
-            const newIndex = prevIndex - cardsToShow;
-            return newIndex < 0 ? features.length - cardsToShow : newIndex;
-        });
-        setTimeout(() => setIsTransitioning(false), 300);
-    };
-
-    const handleNext = () => {
-        if (isTransitioning) return;
-        setIsTransitioning(true);
-        setCurrentIndex((prevIndex) => {
-            const newIndex = prevIndex + cardsToShow;
-            return newIndex >= features.length ? 0 : newIndex;
-        });
-        setTimeout(() => setIsTransitioning(false), 300);
-    };
-
-    // Touch handlers for mobile swipe
-    const handleTouchStart = (e: React.TouchEvent) => {
-        setTouchStart(e.targetTouches[0].clientX);
-    };
-
-    const handleTouchMove = (e: React.TouchEvent) => {
-        setTouchEnd(e.targetTouches[0].clientX);
-    };
-
-    const handleTouchEnd = () => {
-        if (!touchStart || !touchEnd) return;
-        const distance = touchStart - touchEnd;
-        const isLeftSwipe = distance > 50;
-        const isRightSwipe = distance < -50;
-
-        if (isLeftSwipe) {
-            handleNext();
-        }
-        if (isRightSwipe) {
-            handlePrevious();
-        }
-    };
 
     const getIcon = (icon: IconDefinition | string): IconDefinition => {
         if (typeof icon === 'string') {
@@ -199,24 +103,12 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
         return customIconMap[title];
     };
 
-    const getVisibleFeatures = () => {
-        const visible = [];
-        for (let i = 0; i < cardsToShow; i++) {
-            const index = (currentIndex + i) % features.length;
-            visible.push(features[index]);
-        }
-        return visible;
-    };
-
-    const maxSlides = Math.ceil(features.length / cardsToShow);
-    const currentSlide = Math.floor(currentIndex / cardsToShow);
-
-    // Default background image (you can replace this with the actual image URL)
+    // Default background image
     const backgroundImage = section.content?.backgroundImage || '/why.jpg';
 
     return (
         <section className="relative bg-blue-600 overflow-hidden">
-            {/* Background Image - No Overlay */}
+            {/* Background Image */}
             <div
                 className="absolute inset-0 z-0"
                 style={{
@@ -227,114 +119,86 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                 }}
             />
 
-            {/* Content Container */}
-            <div className="relative z-10 container mx-auto px-4 py-16 lg:py-20">
-                {/* Title Section - Centered at Top */}
-                <div className="text-center text-white mb-12">
-                    <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-                        {section.title || "Why INDPOWER?"}
-                    </h2>
-                    {section.subtitle && (
-                        <div className="w-20 h-1 bg-yellow-400 mx-auto mb-6"></div>
-                    )}
-                    {section.subtitle && (
-                        <p className="text-white/90 text-lg max-w-2xl mx-auto">
-                            {section.subtitle}
-                        </p>
-                    )}
-                </div>
+            {/* Main Content Container - 2 Column Layout */}
+            <div className="relative z-10 min-h-screen lg:min-h-[600px] flex items-center">
+                <div className="container mx-auto px-4 py-16 lg:py-20">
+                    {/* Desktop: Grid Layout | Mobile: Stack */}
+                    <div className="lg:grid lg:grid-cols-5 gap-8">
 
-                {/* Slider Container - Positioned to the Right */}
-                <div className="flex justify-end">
-                    <div className="w-full lg:w-3/5 xl:w-1/2">
-                        <div className="relative">
-                            {/* Navigation Buttons */}
-                            <button
-                                onClick={handlePrevious}
-                                className="absolute left-0 lg:-left-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
-                                aria-label="Previous"
-                                disabled={isTransitioning}
-                            >
-                                <FontAwesomeIcon icon={faChevronLeft} className="text-lg" />
-                            </button>
+                        {/* Left Column - Empty space for brand ambassador (40%) */}
+                        <div className="lg:col-span-2">
+                            {/* Title Section - Positioned on left side */}
+                            <div className="text-white mb-8 lg:mb-0">
 
-                            <button
-                                onClick={handleNext}
-                                className="absolute right-0 lg:-right-12 top-1/2 -translate-y-1/2 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
-                                aria-label="Next"
-                                disabled={isTransitioning}
-                            >
-                                <FontAwesomeIcon icon={faChevronRight} className="text-lg" />
-                            </button>
+                            </div>
+                        </div>
 
-                            {/* Cards Container */}
-                            <div
-                                className="overflow-hidden px-2"
-                                onTouchStart={handleTouchStart}
-                                onTouchMove={handleTouchMove}
-                                onTouchEnd={handleTouchEnd}
-                            >
-                                <div className={`grid grid-cols-1 ${cardsToShow === 2 ? 'xl:grid-cols-2' : ''} gap-6 transition-opacity duration-300 ${isTransitioning ? 'opacity-70' : 'opacity-100'}`}>
-                                    {getVisibleFeatures().map((feature, index) => (
+                        {/* Right Column - Cards Container (60%) */}
+                        <div className="lg:col-span-3 flex items-center">
+                            <div className="w-full">
+                                <h2 className="text-3xl lg:text-4xl xl:text-5xl text-white font-bold mb-3">
+                                    {section.title || "Why INDPOWER?"}
+                                </h2>
+                                {section.subtitle && (
+                                    <>
+                                        <div className="w-16 h-1 bg-yellow-400 mb-4"></div>
+                                        <p className="text-white/90 text-base lg:text-lg max-w-sm">
+                                            {section.subtitle}
+                                        </p>
+                                    </>
+                                )}
+                                {/* Cards Grid - Horizontal on desktop, stack on mobile */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+                                    {features.map((feature, index) => (
                                         <div
-                                            key={`${currentIndex}-${index}`}
-                                            className="bg-blue-700/50 backdrop-blur-sm rounded-2xl p-8 text-white group hover:bg-blue-700/70 transition-all duration-300 transform hover:-translate-y-1"
+                                            key={index}
+                                            className="bg-blue-700/60 backdrop-blur-sm rounded-lg p-4 text-white group hover:bg-blue-700/80 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
                                         >
+                                            {/* Compact Icon */}
                                             {hasCustomIcon(feature.title) ? (
                                                 <img
                                                     src={getCustomIcon(feature.title)}
                                                     alt={feature.title}
-                                                    className="w-20 h-20 object-contain mb-6 group-hover:scale-110 transition-transform duration-300"
+                                                    className="w-10 h-10 object-contain mb-3 group-hover:scale-110 transition-transform duration-300"
                                                 />
                                             ) : (
-                                                <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                                <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
                                                     <FontAwesomeIcon
                                                         icon={getIcon(feature.icon)}
-                                                        className="text-blue-900 text-2xl"
+                                                        className="text-blue-900 text-sm"
                                                     />
                                                 </div>
                                             )}
-                                            <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                                            <p className="text-white/90 leading-relaxed mb-6">
+
+                                            {/* Compact Title */}
+                                            <h3 className="text-base font-bold mb-2 line-clamp-1">
+                                                {feature.title}
+                                            </h3>
+
+                                            {/* Compact Description */}
+                                            <p className="text-white/85 text-xs leading-relaxed mb-3 line-clamp-3">
                                                 {feature.description}
                                             </p>
-                                            <button className="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 hover:text-blue-900 transition-colors duration-300">
-                                                EXPLORE NOW
+
+                                            {/* Compact CTA Button */}
+                                            <button className="bg-white text-blue-600 px-3 py-1 rounded-full text-xs font-semibold hover:bg-yellow-400 hover:text-blue-900 transition-colors duration-300 inline-flex items-center group">
+                                                <span>EXPLORE</span>
+                                                <svg className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                </svg>
                                             </button>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-
-                            {/* Slide Indicators */}
-                            <div className="flex justify-center mt-8 gap-2">
-                                {Array.from({ length: maxSlides }).map((_, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => {
-                                            if (!isTransitioning) {
-                                                setIsTransitioning(true);
-                                                setCurrentIndex(index * cardsToShow);
-                                                setTimeout(() => setIsTransitioning(false), 300);
-                                            }
-                                        }}
-                                        className={`h-2 transition-all duration-300 rounded-full ${
-                                            index === currentSlide
-                                                ? 'w-8 bg-yellow-400'
-                                                : 'w-2 bg-white/30 hover:bg-white/50'
-                                        }`}
-                                        aria-label={`Go to slide ${index + 1}`}
-                                    />
-                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Optional: Decorative Elements - You can remove these if not needed */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
+            {/* Subtle Decorative Elements - Adjusted positions */}
+            <div className="absolute top-20 right-10 w-32 h-32 bg-yellow-400/5 rounded-full blur-2xl"></div>
+            <div className="absolute bottom-20 right-1/3 w-40 h-40 bg-blue-400/5 rounded-full blur-2xl"></div>
         </section>
     );
 };
