@@ -18,6 +18,8 @@ import Contact from './pages/public/Contact';
 import About from './pages/public/About';
 import FAQs from './pages/public/FAQs';
 import DealerLocator from './pages/public/DealerLocator';
+import Privacy from './pages/public/Privacy';
+import Terms from './pages/public/Terms';
 import NotFound from './pages/public/NotFound';
 
 // Auth Pages
@@ -68,6 +70,8 @@ function App() {
                             <Route path="about" element={<About />} />
                             <Route path="faqs" element={<FAQs />} />
                             <Route path="dealer-locator" element={<DealerLocator />} />
+                            <Route path="privacy" element={<Privacy />} />
+                            <Route path="terms" element={<Terms />} />
                             <Route path="*" element={<NotFound />} />
                         </Route>
 
