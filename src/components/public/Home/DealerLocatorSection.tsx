@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPinIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { dummyDealers, getDealerStats } from '@/data/dummyDealers';
+import { getDealerStats } from '@/data/dummyDealers';
 
 interface Stat {
     icon: string;
@@ -45,9 +45,6 @@ const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) 
             navigate(`/dealer-locator?pincode=${searchValue}`);
         }
     };
-
-    // Sample dealers for map display
-    const sampleDealers = dummyDealers.slice(0, 8);
 
     return (
         <section className="relative bg-gradient-to-br from-gray-50 to-blue-50/30 py-20 overflow-hidden">
@@ -104,9 +101,9 @@ const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) 
 
                 {/* Map and Stats Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    {/* Interactive Map */}
+                    {/* Static Map Image */}
                     <div className="relative">
-                        <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-[450px]">
+                        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                             {/* Map Header */}
                             <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4">
                                 <h3 className="text-lg font-semibold flex items-center gap-2">
@@ -115,59 +112,15 @@ const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) 
                                 </h3>
                             </div>
 
-                            {/* Map Content */}
-                            <div className="relative h-[390px] bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
-                                <div className="absolute inset-6 bg-white/50 rounded-lg border-2 border-dashed border-blue-200">
-                                    {/* India Map Representation */}
-                                    <div className="relative h-full">
-                                        {/* Sample dealer pins */}
-                                        {sampleDealers.map((dealer, index) => {
-                                            const positions = [
-                                                { top: '20%', left: '50%' }, // Delhi
-                                                { top: '60%', left: '30%' }, // Mumbai
-                                                { top: '70%', left: '60%' }, // Bangalore
-                                                { top: '75%', left: '70%' }, // Chennai
-                                                { top: '40%', left: '80%' }, // Kolkata
-                                                { top: '50%', left: '60%' }, // Hyderabad
-                                                { top: '45%', left: '35%' }, // Pune
-                                                { top: '35%', left: '25%' }, // Ahmedabad
-                                            ];
-                                            const pos = positions[index % positions.length];
+                            {/* Static Map Image */}
+                            <div className="relative">
+                                <img
+                                    src="/map1.jpg"
+                                    alt="IndPower Dealer Network Map"
+                                    className="w-full h-[450px] "
+                                />
 
-                                            return (
-                                                <div
-                                                    key={dealer.id}
-                                                    className="absolute group cursor-pointer"
-                                                    style={pos}
-                                                >
-                                                    <div className="relative">
-                                                        <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-20"></div>
-                                                        <div className="relative bg-red-500 text-white rounded-full w-3 h-3 shadow-lg hover:scale-150 transition-transform duration-200"></div>
-
-                                                        {/* Tooltip */}
-                                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
-                                                            <div className="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap">
-                                                                <div className="font-semibold">{dealer.city}</div>
-                                                                <div className="text-gray-300">{dealer.name}</div>
-                                                            </div>
-                                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                                                                <div className="border-4 border-transparent border-t-gray-900"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-
-                                        {/* Center label */}
-                                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                                            <div className="text-3xl font-bold text-blue-600 mb-2">INDIA</div>
-                                            <div className="text-sm text-gray-600">Complete Coverage</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Map Legend */}
+                                {/* Optional: Map Legend Overlay */}
                                 <div className="absolute bottom-4 left-6 bg-white/90 backdrop-blur rounded-lg px-3 py-2 text-xs">
                                     <div className="flex items-center gap-2">
                                         <div className="w-2 h-2 bg-red-500 rounded-full"></div>

@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
                     {/* Company Info */}
                     <div>
                         <div className="flex items-center mb-4">
-                            <img src="./ind_footer.png" alt="Logo" className="h-20 mr-3"/>
+                            <img src="./ind_footer.png" alt="Logo" className="h-34 mr-3"/>
 
                         </div>
                         <p className="text-white/80 mb-6 text-sm leading-relaxed">
