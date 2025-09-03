@@ -202,38 +202,28 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                 )}
             </section>
 
-            {/* Swiper-style Line Indicators - Below the image */}
+            {/* Dot Indicators - Below the image */}
             {banners.length > 1 && (
-                <div className=" py-4 md:py-5">
-                    <div className="flex items-center justify-center gap-1.5 md:gap-2 px-4">
+                <div className="py-4  md:py-5 bg-color[#f9fafb]" >
+                    <div className="flex items-center justify-center gap-2 md:gap-2.5 px-4">
                         {banners.map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => handleGoToSlide(index)}
-                                className="group relative p-1 focus:outline-none"
+                                className={cn(
+                                    "p-0 border-0 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50",
+                                    index === currentIndex
+                                        ? "w-2.5 h-2.5 md:w-3 md:h-3 bg-white"
+                                        : "w-2 h-2 md:w-2.5 md:h-2.5 bg-white/30 hover:bg-white/50"
+                                )}
+                                style={{
+                                    padding: 0,
+                                    border: 'none',
+                                    fontSize: 'inherit',
+                                    fontWeight: 'inherit'
+                                }}
                                 aria-label={`Go to slide ${index + 1}`}
-                            >
-                                <div
-                                    className={cn(
-                                        "relative h-1 rounded-full transition-all duration-500 overflow-hidden",
-                                        index === currentIndex
-                                            ? "w-12 md:w-16 bg-white"
-                                            : "w-6 md:w-8 bg-white/30 group-hover:bg-white/50"
-                                    )}
-                                >
-                                    {/* Progress animation for active slide */}
-                                    {index === currentIndex && (
-                                        <div
-                                            className="absolute inset-0 bg-white rounded-full"
-                                            style={{
-                                                animation: 'slideProgress 6s linear forwards',
-                                                transformOrigin: 'left center',
-                                                transform: 'scaleX(0)'
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            </button>
+                            />
                         ))}
                     </div>
                 </div>
