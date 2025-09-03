@@ -21,7 +21,7 @@ import DealerLocator from './pages/public/DealerLocator';
 import Privacy from './pages/public/Privacy';
 import Terms from './pages/public/Terms';
 import NotFound from './pages/public/NotFound';
-
+import DealerList from './pages/admin/dealers/DealerList';
 // Auth Pages
 import Login from './pages/auth/Login';
 import ForgotPassword from './pages/auth/ForgotPassword';
@@ -113,7 +113,7 @@ function App() {
                             {/* Contacts */}
                             <Route path="contacts" element={<ContactList />} />
                             <Route path="contacts/:id" element={<ContactDetail />} />
-
+                            <Route path="dealers" element={<DealerList />} />
                             {/* FAQs */}
                             <Route path="faqs" element={<FAQList />} />
 

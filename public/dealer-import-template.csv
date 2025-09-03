@@ -1,0 +1,2 @@
+name,type,email,phone,alternatePhone,contactPerson,address,city,state,pincode,website,territory,services,brands,description
+Sample Dealer,dealer,dealer@example.com,9876543210,9876543211,John Doe,"123 Main Street, Area Name",Mumbai,Maharashtra,400001,https://example.com,South Mumbai,"Sales,Installation,Service","IndPower,PowerMax","Leading dealer with 10 years of experience"

@@ -17,7 +17,7 @@ import {
     UserGroupIcon,
     XMarkIcon,
     ArrowRightOnRectangleIcon,
-    UserCircleIcon,
+    UserCircleIcon, MapPinIcon,
 } from '@heroicons/react/24/outline';
 import { cn } from '@/utils';
 
@@ -36,6 +36,12 @@ const navigation: NavItem[] = [
     { name: 'Products', href: '/admin/products', icon: CubeIcon },
     { name: 'Categories', href: '/admin/categories', icon: TagIcon },
     { name: 'Banners', href: '/admin/banners', icon: PhotoIcon },
+    {
+        name: 'Dealers',
+        href: '/admin/dealers',
+        icon: MapPinIcon,
+        permission: ['super_admin', 'admin']
+    },
     { name: 'Sections', href: '/admin/sections', icon: Squares2X2Icon },
     { name: 'Menus', href: '/admin/menus', icon: Bars3Icon },
     { name: 'Contacts', href: '/admin/contacts', icon: EnvelopeIcon },

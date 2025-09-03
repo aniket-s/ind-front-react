@@ -73,31 +73,8 @@ export const publicService = {
 
     // Updated to use dummy data instead of API call
     async getDealersByPincode(pincode: string): Promise<Dealer[]> {
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-
-        // Use the dummy data function
-        const results = searchDealersByPincode(pincode);
-
-        // Map DealerData to Dealer type if needed
-        return results.map(dealer => ({
-            id: dealer.id,
-            name: dealer.name,
-            email: dealer.email,
-            phone: dealer.phone,
-            address: dealer.address,
-            city: dealer.city,
-            state: dealer.state,
-            pincode: dealer.pincode,
-            latitude: dealer.latitude,
-            longitude: dealer.longitude,
-            type: dealer.type,
-            isActive: true,
-            rating: dealer.rating,
-            establishedDate: dealer.establishedYear ? new Date(dealer.establishedYear, 0, 1) : undefined,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        }));
+        const { data } = await apiClient.axios.get(`/dealers/public/search/${pincode}`);
+        return data.dealers;
     },
 
     async getFAQs(category?: string): Promise<{

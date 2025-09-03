@@ -181,24 +181,74 @@ export interface Settings {
     updatedAt: Date;
 }
 
-// Dealer Types
 export interface Dealer {
     id: string;
     name: string;
     email: string;
     phone: string;
+    alternatePhone?: string;
+    contactPerson?: string;
     address: string;
     city: string;
     state: string;
     pincode: string;
     latitude?: number;
     longitude?: number;
-    type: 'dealer' | 'distributor' | 'service_center';
+    type: 'distributor' | 'service_center' | 'dealer';
+    services?: string[];
+    brands?: string[];
+    workingHours?: WorkingHours;
+    website?: string;
+    images?: string[];
+    certifications?: string[];
+    territory?: string;
     isActive: boolean;
+    isFeatured: boolean;
     rating: number;
+    totalReviews: number;
     establishedDate?: Date;
+    description?: string;
+    metaData?: Record<string, any>;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface WorkingHours {
+    monday: DaySchedule;
+    tuesday: DaySchedule;
+    wednesday: DaySchedule;
+    thursday: DaySchedule;
+    friday: DaySchedule;
+    saturday: DaySchedule;
+    sunday: DaySchedule;
+}
+
+export interface DaySchedule {
+    open: string;
+    close: string;
+    isOpen: boolean;
+}
+
+export interface DealersResponse extends PaginatedResponse<Dealer> {
+    dealers: Dealer[];
+    totalDealers: number;
+}
+
+export interface DealerStats {
+    total: number;
+    active: number;
+    inactive: number;
+    featured: number;
+    byType: Array<{ type: string; count: number }>;
+    byState: Array<{ state: string; count: number }>;
+}
+
+export interface DealerImportResult {
+    message: string;
+    success: number;
+    failed: number;
+    errors: Array<{ row: number; message: string; data: any }>;
+    total: number;
 }
 
 // Activity Log Types
