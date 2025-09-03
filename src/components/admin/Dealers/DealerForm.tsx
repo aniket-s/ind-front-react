@@ -34,7 +34,7 @@ const schema = yup.object({
     longitude: yup.number().min(-180).max(180).optional().nullable(),
 });
 
-type FormData = yup.InferType<typeof schema>;
+type DealerFormData = yup.InferType<typeof schema>;
 
 const indianStates = [
     'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -62,8 +62,7 @@ const DealerForm: React.FC<DealerFormProps> = ({
         handleSubmit,
         formState: { errors },
         reset,
-        setValue,
-    } = useForm<FormData>({
+    } = useForm<DealerFormData>({
         resolver: yupResolver(schema),
         defaultValues: {
             type: 'dealer',
@@ -78,31 +77,32 @@ const DealerForm: React.FC<DealerFormProps> = ({
                 name: dealer.name,
                 email: dealer.email,
                 phone: dealer.phone,
-                alternatePhone: dealer.alternatePhone,
+                alternatePhone: dealer.alternatePhone || null,
                 contactPerson: dealer.contactPerson,
                 address: dealer.address,
                 city: dealer.city,
                 state: dealer.state,
                 pincode: dealer.pincode,
                 type: dealer.type,
-                website: dealer.website,
+                website: dealer.website || null,
                 territory: dealer.territory,
                 description: dealer.description,
                 isActive: dealer.isActive,
                 isFeatured: dealer.isFeatured,
-                latitude: dealer.latitude,
-                longitude: dealer.longitude,
+                latitude: dealer.latitude || null,
+                longitude: dealer.longitude || null,
             });
             setServices(dealer.services || []);
             setBrands(dealer.brands || []);
         }
     }, [dealer, reset]);
 
-    const handleFormSubmit: SubmitHandler<FormData> = async (data) => {
+    const handleFormSubmit: SubmitHandler<DealerFormData> = async (data) => {
         const formData = new FormData();
 
         // Add all form fields
-        Object.entries(data).forEach(([key, value]) => {
+        const entries = Object.entries(data) as [keyof DealerFormData, DealerFormData[keyof DealerFormData]][];
+        entries.forEach(([key, value]) => {
             if (value !== null && value !== undefined) {
                 formData.append(key, String(value));
             }
@@ -123,6 +123,13 @@ const DealerForm: React.FC<DealerFormProps> = ({
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setImages(Array.from(e.target.files));
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, action: () => void) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            action();
         }
     };
 
@@ -335,7 +342,7 @@ const DealerForm: React.FC<DealerFormProps> = ({
                             type="text"
                             value={newService}
                             onChange={(e) => setNewService(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addService())}
+                            onKeyPress={(e) => handleKeyPress(e, addService)}
                             placeholder="Add a service"
                             className="input flex-1"
                         />
@@ -371,7 +378,7 @@ const DealerForm: React.FC<DealerFormProps> = ({
                             type="text"
                             value={newBrand}
                             onChange={(e) => setNewBrand(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addBrand())}
+                            onKeyPress={(e) => handleKeyPress(e, addBrand)}
                             placeholder="Add a brand"
                             className="input flex-1"
                         />
@@ -417,6 +424,9 @@ const DealerForm: React.FC<DealerFormProps> = ({
                         {...register('latitude')}
                         className={cn('input', errors.latitude && 'border-red-300')}
                     />
+                    {errors.latitude && (
+                        <p className="mt-1 text-sm text-red-600">{errors.latitude.message}</p>
+                    )}
                 </div>
 
                 <div>
@@ -427,6 +437,9 @@ const DealerForm: React.FC<DealerFormProps> = ({
                         {...register('longitude')}
                         className={cn('input', errors.longitude && 'border-red-300')}
                     />
+                    {errors.longitude && (
+                        <p className="mt-1 text-sm text-red-600">{errors.longitude.message}</p>
+                    )}
                 </div>
 
                 {/* Status */}

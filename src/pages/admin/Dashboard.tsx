@@ -14,8 +14,14 @@ import {
     ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
-// Define the changeType type if not already defined in StatsCard
-type ChangeType = 'neutral' | 'positive' | 'negative';
+// Stat card types
+interface StatCardData {
+    name: string;
+    value: number;
+    icon: React.ComponentType<{ className?: string }>;
+    change: string;
+    changeType: 'neutral' | 'positive' | 'negative';
+}
 
 const Dashboard: React.FC = () => {
     const { data, isLoading } = useQuery({
@@ -31,34 +37,34 @@ const Dashboard: React.FC = () => {
     const pendingContactsCount = data?.stats.pendingContacts ?? 0;
     const newContactsCount = data?.stats.newContacts ?? 0;
 
-    const stats = [
+    const stats: StatCardData[] = [
         {
             name: 'Total Products',
             value: data?.stats.totalProducts || 0,
             icon: CubeIcon,
             change: `${data?.stats.activeProducts || 0} active`,
-            changeType: 'neutral' as ChangeType,
+            changeType: 'neutral',
         },
         {
             name: 'Categories',
             value: data?.stats.totalCategories || 0,
             icon: TagIcon,
             change: 'All active',
-            changeType: 'positive' as ChangeType,
+            changeType: 'positive',
         },
         {
             name: 'Total Contacts',
             value: data?.stats.totalContacts || 0,
             icon: EnvelopeIcon,
             change: `${newContactsCount} new today`,
-            changeType: (newContactsCount > 0 ? 'positive' : 'neutral') as ChangeType,
+            changeType: newContactsCount > 0 ? 'positive' : 'neutral',
         },
         {
             name: 'Pending Contacts',
             value: pendingContactsCount,
             icon: ExclamationTriangleIcon,
             change: 'Needs attention',
-            changeType: (pendingContactsCount > 0 ? 'negative' : 'positive') as ChangeType,
+            changeType: pendingContactsCount > 0 ? 'negative' : 'positive',
         },
     ];
 

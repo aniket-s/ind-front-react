@@ -81,6 +81,13 @@ const DealerTable: React.FC<DealerTableProps> = ({
         return type.replace('_', ' ').charAt(0).toUpperCase() + type.slice(1).replace('_', ' ');
     };
 
+    // Safe rating formatter
+    const formatRating = (rating: number | string | undefined | null): number => {
+        if (rating === undefined || rating === null) return 0;
+        const numericRating = typeof rating === 'string' ? parseFloat(rating) : rating;
+        return isNaN(numericRating) ? 0 : numericRating;
+    };
+
     return (
         <div className="overflow-x-auto">
             <table className="table">
@@ -121,6 +128,7 @@ const DealerTable: React.FC<DealerTableProps> = ({
                 {dealers.map((dealer) => {
                     const TypeIcon = getTypeIcon(dealer.type);
                     const isExpanded = expandedRows.includes(dealer.id);
+                    const dealerRating = formatRating(dealer.rating);
 
                     return (
                         <React.Fragment key={dealer.id}>
@@ -181,14 +189,14 @@ const DealerTable: React.FC<DealerTableProps> = ({
                                 <td className="px-6 py-4">
                                     <div className="flex items-center">
                                         {[...Array(5)].map((_, i) => (
-                                            i < Math.floor(dealer.rating) ? (
+                                            i < Math.floor(dealerRating) ? (
                                                 <StarIconSolid key={i} className="h-4 w-4 text-yellow-400" />
                                             ) : (
                                                 <StarIcon key={i} className="h-4 w-4 text-gray-300" />
                                             )
                                         ))}
                                         <span className="ml-1 text-sm text-gray-600">
-                                                {dealer.rating.toFixed(1)}
+                                                {dealerRating.toFixed(1)}
                                             </span>
                                         {dealer.totalReviews > 0 && (
                                             <span className="ml-1 text-xs text-gray-500">

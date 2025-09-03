@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Admin, LoginCredentials } from '@/types';
 import { authService } from '@/services/auth.service';
+import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 
 interface AuthContextType {
@@ -11,6 +12,11 @@ interface AuthContextType {
     logout: () => void;
     updateProfile: (profile: Partial<Admin>) => Promise<void>;
     changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
+}
+
+interface ApiErrorResponse {
+    message?: string;
+    error?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -53,8 +59,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             const response = await authService.login(credentials);
             setUser(response.admin);
             toast.success('Login successful!');
-        } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Login failed');
+        } catch (error) {
+            const axiosError = error as AxiosError<ApiErrorResponse>;
+            const message = axiosError.response?.data?.message || 'Login failed';
+            toast.error(message);
             throw error;
         }
     };
@@ -70,8 +78,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             const response = await authService.updateProfile(profile);
             setUser(response.admin);
             toast.success('Profile updated successfully');
-        } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Update failed');
+        } catch (error) {
+            const axiosError = error as AxiosError<ApiErrorResponse>;
+            const message = axiosError.response?.data?.message || 'Update failed';
+            toast.error(message);
             throw error;
         }
     };
@@ -80,8 +90,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
             await authService.changePassword(currentPassword, newPassword);
             toast.success('Password changed successfully');
-        } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Password change failed');
+        } catch (error) {
+            const axiosError = error as AxiosError<ApiErrorResponse>;
+            const message = axiosError.response?.data?.message || 'Password change failed';
+            toast.error(message);
             throw error;
         }
     };

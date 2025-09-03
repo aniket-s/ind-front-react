@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 import { dealersService } from '@/services/dealers.service';
+import { Dealer } from '@/types';
+import { AxiosError } from 'axios';
 import DealerTable from '@/components/admin/Dealers/DealerTable';
 import Pagination from '@/components/shared/Pagination';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
@@ -18,8 +19,12 @@ import {
 } from '@heroicons/react/24/outline';
 import { cn } from '@/utils';
 
+interface ApiErrorResponse {
+    message?: string;
+    error?: string;
+}
+
 const DealerList: React.FC = () => {
-    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState('');
@@ -37,7 +42,7 @@ const DealerList: React.FC = () => {
     const [editingDealer, setEditingDealer] = useState<string | null>(null);
     const [showFormModal, setShowFormModal] = useState(false);
 
-    const { data, isLoading, refetch } = useQuery({
+    const { data, isLoading } = useQuery({
         queryKey: ['dealers', page, search, filters],
         queryFn: () =>
             dealersService.getDealers({
@@ -65,6 +70,7 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
         a.remove();
         window.URL.revokeObjectURL(url);
     };
+
     const deleteMutation = useMutation({
         mutationFn: (id: string) => dealersService.deleteDealer(id),
         onSuccess: () => {
@@ -72,8 +78,9 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
             queryClient.invalidateQueries({ queryKey: ['dealers'] });
             setDealerToDelete(null);
         },
-        onError: () => {
-            toast.error('Failed to delete dealer');
+        onError: (error: AxiosError<ApiErrorResponse>) => {
+            const message = error.response?.data?.message || 'Failed to delete dealer';
+            toast.error(message);
         },
     });
 
@@ -82,6 +89,10 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
         onSuccess: () => {
             toast.success('Status updated successfully');
             queryClient.invalidateQueries({ queryKey: ['dealers'] });
+        },
+        onError: (error: AxiosError<ApiErrorResponse>) => {
+            const message = error.response?.data?.message || 'Failed to update status';
+            toast.error(message);
         },
     });
 
@@ -92,6 +103,10 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
             toast.success('Status updated for selected dealers');
             queryClient.invalidateQueries({ queryKey: ['dealers'] });
             setSelectedIds([]);
+        },
+        onError: (error: AxiosError<ApiErrorResponse>) => {
+            const message = error.response?.data?.message || 'Failed to update status';
+            toast.error(message);
         },
     });
 
@@ -106,8 +121,9 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
             setShowImportModal(false);
             setImportFile(null);
         },
-        onError: () => {
-            toast.error('Failed to import dealers');
+        onError: (error: AxiosError<ApiErrorResponse>) => {
+            const message = error.response?.data?.message || 'Failed to import dealers';
+            toast.error(message);
         },
     });
 
@@ -124,8 +140,10 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
             setShowFormModal(false);
             setEditingDealer(null);
         },
-        onError: () => {
-            toast.error(`Failed to ${editingDealer ? 'update' : 'create'} dealer`);
+        onError: (error: AxiosError<ApiErrorResponse>) => {
+            const message = error.response?.data?.message ||
+                `Failed to ${editingDealer ? 'update' : 'create'} dealer`;
+            toast.error(message);
         },
     });
 
@@ -164,6 +182,12 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
         } else {
             setSelectedIds(data?.dealers.map((d) => d.id) || []);
         }
+    };
+
+    const handleViewDealer = (dealer: Dealer) => {
+        // Implement view modal or navigate to detail page
+        console.log('View dealer:', dealer);
+        // You can add a view modal state here if needed
     };
 
     const indianStates = [
@@ -343,10 +367,7 @@ Sample Service Center,service_center,service@example.com,9876543230,,Service Man
                                 }}
                                 onDelete={(id) => setDealerToDelete(id)}
                                 onToggleStatus={(id) => toggleStatusMutation.mutate(id)}
-                                onView={(dealer) => {
-                                    // Implement view modal or navigate to detail page
-                                    console.log('View dealer:', dealer);
-                                }}
+                                onView={handleViewDealer}
                                 selectedIds={selectedIds}
                                 onSelectOne={handleSelectOne}
                                 onSelectAll={handleSelectAll}
