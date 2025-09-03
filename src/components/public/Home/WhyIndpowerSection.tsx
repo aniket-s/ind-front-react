@@ -56,6 +56,13 @@ const iconMap: { [key: string]: IconDefinition } = {
     'fas fa-chart-line': faChartLine,
 };
 
+// Custom icon mapping based on title
+const customIconMap: { [key: string]: string } = {
+    'Pan India Service': '/pan-india.png',
+    'Powerful Performance': '/powerful-performance.png',
+    'Trusted Quality': '/trusted-quality.png'
+};
+
 const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
     const defaultFeatures: Feature[] = [
         {
@@ -182,6 +189,16 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
         return icon;
     };
 
+    // Check if a feature should use a custom icon based on its title
+    const hasCustomIcon = (title: string): boolean => {
+        return title in customIconMap;
+    };
+
+    // Get custom icon path
+    const getCustomIcon = (title: string): string => {
+        return customIconMap[title];
+    };
+
     const getVisibleFeatures = () => {
         const visible = [];
         for (let i = 0; i < cardsToShow; i++) {
@@ -263,12 +280,20 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                             key={`${currentIndex}-${index}`}
                                             className="bg-blue-700/50 backdrop-blur-sm rounded-2xl p-8 text-white group hover:bg-blue-700/70 transition-all duration-300 transform hover:-translate-y-1"
                                         >
-                                            <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                                                <FontAwesomeIcon
-                                                    icon={getIcon(feature.icon)}
-                                                    className="text-blue-900 text-2xl"
+                                            {hasCustomIcon(feature.title) ? (
+                                                <img
+                                                    src={getCustomIcon(feature.title)}
+                                                    alt={feature.title}
+                                                    className="w-20 h-20 object-contain mb-6 group-hover:scale-110 transition-transform duration-300"
                                                 />
-                                            </div>
+                                            ) : (
+                                                <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                                                    <FontAwesomeIcon
+                                                        icon={getIcon(feature.icon)}
+                                                        className="text-blue-900 text-2xl"
+                                                    />
+                                                </div>
+                                            )}
                                             <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
                                             <p className="text-white/90 leading-relaxed mb-6">
                                                 {feature.description}

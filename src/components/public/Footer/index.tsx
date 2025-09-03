@@ -49,14 +49,7 @@ const Footer: React.FC = () => {
         { icon: faYoutube, href: info?.social?.youtube || "#", name: "YouTube" },
     ];
 
-    const paymentMethods = [
-        { icon: faCcVisa, color: "text-blue-800" },
-        { icon: faCcMastercard, color: "text-red-600" },
-        { icon: faCcPaypal, color: "text-blue-700" },
-        { icon: faGooglePay, color: "text-gray-700" },
-        { icon: faUniversity, color: "text-gray-700" },
-        { icon: faCreditCard, color: "text-gray-700" },
-    ];
+
 
     return (
         <footer className="bg-blue-600 text-white pt-16 pb-8">
@@ -188,19 +181,6 @@ const Footer: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Payment Methods */}
-                <div className="border-t border-blue-500 pt-8 mb-8">
-                    <div className="flex justify-center gap-4 flex-wrap">
-                        {paymentMethods.map((method, index) => (
-                            <div key={index} className="w-16 h-10 bg-white rounded flex items-center justify-center">
-                                <FontAwesomeIcon
-                                    icon={method.icon}
-                                    className={`${method.color} text-2xl`}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
 
                 {/* Copyright */}
                 <div className="border-t border-blue-500 pt-6 text-center">
