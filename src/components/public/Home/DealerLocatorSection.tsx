@@ -1,5 +1,8 @@
 // src/components/public/Home/DealerLocatorSection.tsx
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MapPinIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { dummyDealers, getDealerStats } from '@/data/dummyDealers';
 
 interface Stat {
     icon: string;
@@ -24,71 +27,194 @@ interface DealerLocatorSectionProps {
 }
 
 const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) => {
+    const navigate = useNavigate();
+    const [searchValue, setSearchValue] = useState('');
+    const dealerStats = getDealerStats();
+
     const content = section.content || {};
     const stats = content.stats || [
-        { icon: "fas fa-handshake", value: "3000+", label: "Dealers & Distributors" },
-        { icon: "fas fa-map-marker-alt", value: "200+", label: "Cities Covered" },
-        { icon: "fas fa-tools", value: "100+", label: "Service Centers" },
+        { icon: "fas fa-handshake", value: `${dealerStats.total}+`, label: "Authorized Dealers" },
+        { icon: "fas fa-map-marker-alt", value: `${dealerStats.cities}+`, label: "Cities Covered" },
+        { icon: "fas fa-tools", value: `${dealerStats.serviceCenters}+`, label: "Service Centers" },
         { icon: "fas fa-headset", value: "24/7", label: "Customer Support" },
     ];
 
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchValue.trim()) {
+            navigate(`/dealer-locator?pincode=${searchValue}`);
+        }
+    };
+
+    // Sample dealers for map display
+    const sampleDealers = dummyDealers.slice(0, 8);
+
     return (
-        <section className="bg-gray-50 py-16">
-            <div className="container mx-auto px-4">
-                {/* Title if provided */}
-                {section.title && (
-                    <div className="text-center mb-8">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                            {section.title}
-                        </h2>
-                        {section.subtitle && (
-                            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                                {section.subtitle}
-                            </p>
-                        )}
-                    </div>
-                )}
+        <section className="relative bg-gradient-to-br from-gray-50 to-blue-50/30 py-20 overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-10 left-10 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-200/20 rounded-full blur-3xl"></div>
+            </div>
 
-                {/* Search Bar */}
-                <div className="max-w-3xl mx-auto mb-12">
-                    <div className="flex items-center bg-gray-200 rounded-full overflow-hidden">
-                        <input
-                            type="text"
-                            placeholder={content.placeholder || "Enter Pin Code To Locate Nearby Dealer"}
-                            className="flex-1 px-6 py-4 bg-transparent text-gray-600 placeholder-gray-500 focus:outline-none"
-                        />
-
-                        <button className="bg-blue-600 text-white px-8 py-4 font-semibold hover:bg-blue-700 transition flex items-center">
-                            {content.buttonText || "FIND DEALER"}
-                            <div className="ml-2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[10px] border-l-white"></div>
-                        </button>
-                    </div>
+            <div className="container mx-auto px-4 relative z-10">
+                {/* Title Section */}
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                        {section.title || "Find Your Nearest Dealer"}
+                    </h2>
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                        {section.subtitle || "With our extensive network across India, we're always close to serve you better"}
+                    </p>
                 </div>
 
+                {/* Search Bar */}
+                <form onSubmit={handleSearch} className="max-w-3xl mx-auto mb-16">
+                    <div className="relative">
+                        <div className="flex items-center bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 hover:shadow-2xl transition-all duration-300">
+                            <div className="pl-6 pr-3">
+                                <MapPinIcon className="h-6 w-6 text-gray-400" />
+                            </div>
+                            <input
+                                type="text"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                                placeholder={content.placeholder || "Enter your 6-digit PIN code"}
+                                className="flex-1 px-3 py-5 text-gray-700 placeholder-gray-400 focus:outline-none text-lg"
+                                maxLength={6}
+                            />
+                            <button
+                                type="submit"
+                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-5 font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center gap-3 group"
+                            >
+                                <MagnifyingGlassIcon className="h-5 w-5" />
+                                <span>{content.buttonText || "FIND DEALERS"}</span>
+                                <svg
+                                    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
                 {/* Map and Stats Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Map Placeholder */}
-                    <div className="bg-gray-300 rounded-lg h-[400px] relative overflow-hidden">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="text-center">
-                                <i className="fas fa-map-marked-alt text-gray-400 text-6xl mb-4"></i>
-                                <p className="text-gray-500">Map View</p>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    {/* Interactive Map */}
+                    <div className="relative">
+                        <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-[450px]">
+                            {/* Map Header */}
+                            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4">
+                                <h3 className="text-lg font-semibold flex items-center gap-2">
+                                    <MapPinIcon className="h-5 w-5" />
+                                    Our Pan-India Network
+                                </h3>
+                            </div>
+
+                            {/* Map Content */}
+                            <div className="relative h-[390px] bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+                                <div className="absolute inset-6 bg-white/50 rounded-lg border-2 border-dashed border-blue-200">
+                                    {/* India Map Representation */}
+                                    <div className="relative h-full">
+                                        {/* Sample dealer pins */}
+                                        {sampleDealers.map((dealer, index) => {
+                                            const positions = [
+                                                { top: '20%', left: '50%' }, // Delhi
+                                                { top: '60%', left: '30%' }, // Mumbai
+                                                { top: '70%', left: '60%' }, // Bangalore
+                                                { top: '75%', left: '70%' }, // Chennai
+                                                { top: '40%', left: '80%' }, // Kolkata
+                                                { top: '50%', left: '60%' }, // Hyderabad
+                                                { top: '45%', left: '35%' }, // Pune
+                                                { top: '35%', left: '25%' }, // Ahmedabad
+                                            ];
+                                            const pos = positions[index % positions.length];
+
+                                            return (
+                                                <div
+                                                    key={dealer.id}
+                                                    className="absolute group cursor-pointer"
+                                                    style={pos}
+                                                >
+                                                    <div className="relative">
+                                                        <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-20"></div>
+                                                        <div className="relative bg-red-500 text-white rounded-full w-3 h-3 shadow-lg hover:scale-150 transition-transform duration-200"></div>
+
+                                                        {/* Tooltip */}
+                                                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                                                            <div className="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap">
+                                                                <div className="font-semibold">{dealer.city}</div>
+                                                                <div className="text-gray-300">{dealer.name}</div>
+                                                            </div>
+                                                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
+                                                                <div className="border-4 border-transparent border-t-gray-900"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+
+                                        {/* Center label */}
+                                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                                            <div className="text-3xl font-bold text-blue-600 mb-2">INDIA</div>
+                                            <div className="text-sm text-gray-600">Complete Coverage</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Map Legend */}
+                                <div className="absolute bottom-4 left-6 bg-white/90 backdrop-blur rounded-lg px-3 py-2 text-xs">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                                        <span className="text-gray-600">Dealer Location</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Statistics Cards */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-6">
                         {stats.map((stat, index) => (
-                            <div key={index} className="bg-white rounded-2xl p-6 border-2 border-yellow-400 text-center">
-                                <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                                    <i className={`${stat.icon} text-blue-600 text-3xl`}></i>
+                            <div
+                                key={index}
+                                className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
+                            >
+                                <div className="flex flex-col items-center text-center">
+                                    <div className="w-20 h-20 mb-4 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl group-hover:scale-110 transition-transform duration-300">
+                                        <i className={`${stat.icon} text-blue-600 text-3xl`}></i>
+                                    </div>
+                                    <h3 className="text-3xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                                        {stat.value}
+                                    </h3>
+                                    <p className="text-gray-600 font-medium">{stat.label}</p>
                                 </div>
-                                <h3 className="text-3xl font-bold text-gray-800 mb-2">{stat.value}</h3>
-                                <p className="text-gray-600">{stat.label}</p>
                             </div>
                         ))}
                     </div>
+                </div>
+
+                {/* CTA Button */}
+                <div className="text-center mt-12">
+                    <button
+                        onClick={() => navigate('/dealer-locator')}
+                        className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 group"
+                    >
+                        <span>View All Dealers</span>
+                        <svg
+                            className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </section>

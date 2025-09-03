@@ -1,7 +1,27 @@
-
 // src/services/public.service.ts
 import { apiClient } from './api';
-import { Product, Category, Menu, FAQ, Contact, Dealer, HomepageData, PublicInfo } from '@/types';
+import { Product, Category, Menu, FAQ, Contact, HomepageData, PublicInfo } from '@/types';
+import { searchDealersByPincode } from '@/data/dummyDealers';
+
+// Export Dealer type
+export interface Dealer {
+    id: string | number;
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    state: string;
+    pincode: string;
+    latitude?: number;
+    longitude?: number;
+    type: 'dealer' | 'distributor' | 'service_center';
+    isActive?: boolean;
+    rating?: number;
+    establishedDate?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
+}
 
 export const publicService = {
     async getHomepage(): Promise<HomepageData> {
@@ -51,9 +71,33 @@ export const publicService = {
         return data;
     },
 
+    // Updated to use dummy data instead of API call
     async getDealersByPincode(pincode: string): Promise<Dealer[]> {
-        const { data } = await apiClient.axios.get<Dealer[]>(`/public/dealers/${pincode}`);
-        return data;
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Use the dummy data function
+        const results = searchDealersByPincode(pincode);
+
+        // Map DealerData to Dealer type if needed
+        return results.map(dealer => ({
+            id: dealer.id,
+            name: dealer.name,
+            email: dealer.email,
+            phone: dealer.phone,
+            address: dealer.address,
+            city: dealer.city,
+            state: dealer.state,
+            pincode: dealer.pincode,
+            latitude: dealer.latitude,
+            longitude: dealer.longitude,
+            type: dealer.type,
+            isActive: true,
+            rating: dealer.rating,
+            establishedDate: dealer.establishedYear ? new Date(dealer.establishedYear, 0, 1) : undefined,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }));
     },
 
     async getFAQs(category?: string): Promise<{
