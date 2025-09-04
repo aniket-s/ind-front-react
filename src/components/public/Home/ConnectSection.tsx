@@ -74,6 +74,7 @@ const iconMap: { [key: string]: IconDefinition } = {
 
 const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
     const [activeTab, setActiveTab] = useState("all");
+    const [expandedPosts, setExpandedPosts] = useState<Set<number>>(new Set());
     const content = section.content || {};
 
     const defaultTabs: Tab[] = [
@@ -141,6 +142,23 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
         return icon;
     };
 
+    const togglePostExpansion = (index: number) => {
+        setExpandedPosts(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(index)) {
+                newSet.delete(index);
+            } else {
+                newSet.add(index);
+            }
+            return newSet;
+        });
+    };
+
+    const isPostExpanded = (index: number) => expandedPosts.has(index);
+
+    // Check if content needs "Read more" button (more than ~150 characters for approximately 3 lines)
+    const needsReadMore = (content: string) => content.length > 150;
+
     return (
         <section className="bg-gray-50 py-16">
             <div className="container mx-auto px-4">
@@ -163,7 +181,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
                             onClick={() => setActiveTab(tab.id)}
                             className={`px-6 py-2 rounded-full font-medium flex items-center gap-2 transition ${
                                 activeTab === tab.id
-                                    ? "bg-blue-600 text-black"
+                                    ? "bg-blue-600 text-white"
                                     : "text-gray-600 hover:bg-gray-200"
                             }`}
                         >
@@ -175,61 +193,78 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
 
                 {/* Social Media Posts Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                    {filteredPosts.map((post, index) => (
-                        <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                            <div className="p-4">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                                        <FontAwesomeIcon
-                                            icon={getIcon(post.icon)}
-                                            className={`${post.iconColor} text-xl`}
-                                        />
+                    {filteredPosts.map((post, index) => {
+                        const expanded = isPostExpanded(index);
+                        const showReadMore = needsReadMore(post.content);
+
+                        return (
+                            <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col">
+                                <div className="p-4 flex-grow">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                                            <FontAwesomeIcon
+                                                icon={getIcon(post.icon)}
+                                                className={`${post.iconColor} text-xl`}
+                                            />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold">{post.author}</h4>
+                                            <p className="text-sm text-gray-500">{post.date}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-semibold">{post.author}</h4>
-                                        <p className="text-sm text-gray-500">{post.date}</p>
-                                    </div>
-                                </div>
-                                <p className="text-gray-700 mb-4">{post.content}</p>
-                            </div>
-                            <div className="bg-gray-200 h-48 flex items-center justify-center">
-                                <FontAwesomeIcon
-                                    icon={faImage}
-                                    className="text-gray-400 text-4xl"
-                                />
-                            </div>
-                            <div className="p-4 border-t">
-                                <div className="flex justify-between text-sm text-gray-600">
-                                    <div className="flex items-center gap-2">
-                                        <FontAwesomeIcon
-                                            icon={post.platform === "linkedin" ? faThumbsUp : faHeart}
-                                        />
-                                        <span>{post.engagement.likes}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <FontAwesomeIcon icon={faComment} />
-                                        <span>{post.engagement.comments}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <FontAwesomeIcon
-                                            icon={post.platform === "instagram" ? faBookmark : faShare}
-                                        />
-                                        <span>{
-                                            post.platform === "instagram"
-                                                ? post.engagement.saves
-                                                : post.engagement.shares
-                                        }</span>
+                                    <div className="relative">
+                                        <p className={`text-gray-700 ${!expanded && showReadMore ? 'line-clamp-3' : ''}`}>
+                                            {post.content}
+                                        </p>
+                                        {showReadMore && (
+                                            <span
+                                                onClick={() => togglePostExpansion(index)}
+                                                className="inline-block text-blue-600 hover:text-blue-700 text-sm underline cursor-pointer mt-1 transition-colors"
+                                            >
+                                                {expanded ? 'Read less' : 'Read more'}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
+                                <div className="bg-gray-200 h-48 flex items-center justify-center">
+                                    <FontAwesomeIcon
+                                        icon={faImage}
+                                        className="text-gray-400 text-4xl"
+                                    />
+                                </div>
+                                <div className="p-4 border-t">
+                                    <div className="flex justify-between text-sm text-gray-600">
+                                        <div className="flex items-center gap-2">
+                                            <FontAwesomeIcon
+                                                icon={post.platform === "linkedin" ? faThumbsUp : faHeart}
+                                            />
+                                            <span>{post.engagement.likes}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <FontAwesomeIcon icon={faComment} />
+                                            <span>{post.engagement.comments}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <FontAwesomeIcon
+                                                icon={post.platform === "instagram" ? faBookmark : faShare}
+                                            />
+                                            <span>{
+                                                post.platform === "instagram"
+                                                    ? post.engagement.saves
+                                                    : post.engagement.shares
+                                            }</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* View More Button */}
                 <div className="text-center">
                     <button className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition">
-                        {content.viewMoreText || "View More Post"}
+                        {content.viewMoreText || "View More Posts"}
                     </button>
                 </div>
             </div>

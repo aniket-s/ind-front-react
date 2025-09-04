@@ -77,22 +77,7 @@ const Contact: React.FC = () => {
             link: `mailto:${info?.contact?.email || "info@indpower.com"}`,
             color: "bg-green-50 text-green-600"
         },
-        {
-            icon: ChatBubbleBottomCenterTextIcon,
-            title: "Live Chat",
-            subtitle: "Available 24/7",
-            value: "Start Chat",
-            link: "#",
-            color: "bg-purple-50 text-purple-600"
-        },
-        {
-            icon: GlobeAltIcon,
-            title: "Support Center",
-            subtitle: "Knowledge Base",
-            value: "Visit Help Center",
-            link: "/support",
-            color: "bg-orange-50 text-orange-600"
-        }
+
     ];
 
     return (
@@ -122,7 +107,7 @@ const Contact: React.FC = () => {
 
             {/* Contact Channels */}
             <div className="container mx-auto px-4 py-12 -mt-20 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                     {contactChannels.map((channel, index) => (
                         <a
                             key={index}
