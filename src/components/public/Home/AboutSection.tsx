@@ -25,8 +25,8 @@ interface AboutSectionProps {
 
 // Custom icon mapping based on title
 const customIconMap: { [key: string]: string } = {
-    'Easy Installation': '/easy-installation.png',
-    'Quality Material': '/quality-material.png'
+    'Legacy of trust & expertise': '/legacy-of-trust.png',
+    'Made in India, Designed for India': '/made-in-india.png'
 };
 
 const AboutSection: React.FC<AboutSectionProps> = ({ section }) => {

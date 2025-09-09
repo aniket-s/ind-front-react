@@ -36,7 +36,7 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
         ? content.buttons
         : [
             { link: "/products", text: "OUR PRODUCT RANGE", style: "primary" },
-            { icon: "fas fa-download", link: "/download/brochure", text: "DOWNLOAD BROCHURE", style: "primary" }
+            { icon: "fas fa-download", link: "/Indpower-Sales-Docket.pdf", text: "DOWNLOAD BROCHURE", style: "primary" }
         ];
 
     const floatingIcons = content.floatingIcons || [

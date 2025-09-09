@@ -152,7 +152,7 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                     {features.map((feature, index) => (
                                         <div
                                             key={index}
-                                            className="bg-blue-700/60 backdrop-blur-sm rounded-lg p-4 text-white group hover:bg-blue-700/80 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+                                            className="bg-yellow-400/90 backdrop-blur-sm rounded-lg p-4 text-black group hover:bg-yellow-500 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
                                         >
                                             {/* Compact Icon */}
                                             {hasCustomIcon(feature.title) ? (
@@ -162,10 +162,10 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                                     className="w-10 h-10 object-contain mb-3 group-hover:scale-110 transition-transform duration-300"
                                                 />
                                             ) : (
-                                                <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
                                                     <FontAwesomeIcon
                                                         icon={getIcon(feature.icon)}
-                                                        className="text-blue-900 text-sm"
+                                                        className="text-white text-sm"
                                                     />
                                                 </div>
                                             )}
@@ -176,12 +176,12 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                             </h3>
 
                                             {/* Compact Description */}
-                                            <p className="text-white/85 text-xs leading-relaxed mb-3 line-clamp-3">
+                                            <p className="text-black/80 text-xs leading-relaxed mb-3 line-clamp-3">
                                                 {feature.description}
                                             </p>
 
                                             {/* Compact CTA Button */}
-                                            <button className="bg-white text-blue-600 px-3 py-1 rounded-full text-xs font-semibold hover:bg-yellow-400 hover:text-blue-900 transition-colors duration-300 inline-flex items-center group">
+                                            <button className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold hover:bg-blue-700 transition-colors duration-300 inline-flex items-center group">
                                                 <span>EXPLORE</span>
                                                 <svg className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

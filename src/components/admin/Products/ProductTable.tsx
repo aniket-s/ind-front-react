@@ -92,13 +92,19 @@ const ProductTable: React.FC<ProductTableProps> = ({
                             {product.Category?.name}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                                {product.price ? formatCurrency(product.price) : '-'}
-                            </div>
-                            {product.discountPrice && (
-                                <div className="text-sm text-green-600">
-                                    {formatCurrency(product.discountPrice)}
-                                </div>
+                            {product.price ? (
+                                <>
+                                    <div className="text-sm text-gray-900">
+                                        {formatCurrency(product.price)}
+                                    </div>
+                                    {product.discountPrice && (
+                                        <div className="text-sm text-green-600">
+                                            {formatCurrency(product.discountPrice)}
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <span className="text-sm text-gray-500">-</span>
                             )}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">

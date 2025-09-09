@@ -77,7 +77,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                             ))}
                         </div>
 
-                        {/* Price Display */}
+                        {/* Price Display - Only show if price exists */}
                         {product.price && (
                             <div className="mb-6">
                                 <div className="flex items-baseline gap-3 justify-center lg:justify-start">

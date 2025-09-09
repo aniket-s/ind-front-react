@@ -49,10 +49,21 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
                             </p>
                         )}
                         <div className="flex items-center justify-between">
-                            {product.price && (
+                            {product.price ? (
                                 <p className="text-lg font-bold text-gray-900">
-                                    {formatCurrency(product.price)}
+                                    {product.discountPrice ? (
+                                        <>
+                                            <span>{formatCurrency(product.discountPrice)}</span>
+                                            <span className="text-sm text-gray-500 line-through ml-2">
+                                                {formatCurrency(product.price)}
+                                            </span>
+                                        </>
+                                    ) : (
+                                        formatCurrency(product.price)
+                                    )}
                                 </p>
+                            ) : (
+                                <span></span>
                             )}
                             {product.warranty && (
                                 <p className="text-sm text-gray-500">

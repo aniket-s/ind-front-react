@@ -20,7 +20,7 @@ type SpecificationObject = { [key: string]: SpecificationValue };
 type SpecificationArray = SpecificationValue[];
 type Specifications = Record<string, SpecificationValue>;
 
-// Define the schema
+// Define the schema - price fields are now optional
 const schema = yup.object({
     name: yup.string().required('Name is required'),
     categoryId: yup.string().required('Category is required'),
@@ -28,8 +28,12 @@ const schema = yup.object({
     slug: yup.string().default(''),
     description: yup.string().default(''),
     shortDescription: yup.string().default(''),
-    price: yup.number().nullable().default(null),
-    discountPrice: yup.number().nullable().default(null),
+    price: yup.number().nullable().transform((value, originalValue) =>
+        originalValue === '' ? null : value
+    ).default(null),
+    discountPrice: yup.number().nullable().transform((value, originalValue) =>
+        originalValue === '' ? null : value
+    ).default(null),
     warranty: yup.string().default(''),
     isActive: yup.boolean().default(true),
     isFeatured: yup.boolean().default(false),
@@ -91,10 +95,54 @@ const ProductForm: React.FC = () => {
                 metaDescription: product.metaDescription || '',
                 metaKeywords: product.metaKeywords || '',
             });
-            setExistingImages(product.images || []);
-            setSpecifications(product.specifications || {});
-            setFeatures(product.features || []);
-            setTechnicalSpecs(product.technicalSpecs || {});
+
+            // Handle images - ensure it's always an array
+            if (Array.isArray(product.images)) {
+                setExistingImages(product.images);
+            } else if (typeof product.images === 'string') {
+                try {
+                    const parsed = JSON.parse(product.images);
+                    setExistingImages(Array.isArray(parsed) ? parsed : []);
+                } catch {
+                    setExistingImages([]);
+                }
+            } else {
+                setExistingImages([]);
+            }
+
+            // Handle specifications - parse if string
+            if (typeof product.specifications === 'string') {
+                try {
+                    setSpecifications(JSON.parse(product.specifications) || {});
+                } catch {
+                    setSpecifications({});
+                }
+            } else {
+                setSpecifications(product.specifications || {});
+            }
+
+            // Handle features - parse if string
+            if (typeof product.features === 'string') {
+                try {
+                    const parsed = JSON.parse(product.features);
+                    setFeatures(Array.isArray(parsed) ? parsed : []);
+                } catch {
+                    setFeatures([]);
+                }
+            } else {
+                setFeatures(Array.isArray(product.features) ? product.features : []);
+            }
+
+            // Handle technicalSpecs - parse if string
+            if (typeof product.technicalSpecs === 'string') {
+                try {
+                    setTechnicalSpecs(JSON.parse(product.technicalSpecs) || {});
+                } catch {
+                    setTechnicalSpecs({});
+                }
+            } else {
+                setTechnicalSpecs(product.technicalSpecs || {});
+            }
         }
     }, [product, reset]);
 
@@ -102,9 +150,16 @@ const ProductForm: React.FC = () => {
         mutationFn: async (data: FormData) => {
             const formData = new FormData();
 
-            // Add form fields
+            // Add form fields - handle empty price fields
             Object.entries(data).forEach(([key, value]) => {
-                if (value !== null && value !== undefined) {
+                if (key === 'price' || key === 'discountPrice') {
+                    // Convert empty strings to null for price fields
+                    if (value === '' || value === undefined) {
+                        // Don't append anything for null prices
+                    } else if (value !== null) {
+                        formData.append(key, value.toString());
+                    }
+                } else if (value !== null && value !== undefined) {
                     formData.append(key, value.toString());
                 }
             });
@@ -272,22 +327,24 @@ const ProductForm: React.FC = () => {
                     <div className="card-body">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label className="label">Price</label>
+                                <label className="label">Price (Optional)</label>
                                 <input
                                     type="number"
                                     step="0.01"
                                     {...register('price')}
                                     className="input"
+                                    placeholder="Leave empty if not showing price"
                                 />
                             </div>
 
                             <div>
-                                <label className="label">Discount Price</label>
+                                <label className="label">Discount Price (Optional)</label>
                                 <input
                                     type="number"
                                     step="0.01"
                                     {...register('discountPrice')}
                                     className="input"
+                                    placeholder="Leave empty if no discount"
                                 />
                             </div>
 
