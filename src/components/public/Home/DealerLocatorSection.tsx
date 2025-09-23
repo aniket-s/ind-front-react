@@ -117,7 +117,7 @@ const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) 
                                 <img
                                     src="/map1.jpg"
                                     alt="IndPower Dealer Network Map"
-                                    className="w-full h-[450px] "
+                                    className="w-full"
                                 />
 
                                 {/* Optional: Map Legend Overlay */}

@@ -11,19 +11,11 @@ import {
 } from '@heroicons/react/24/outline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faCcVisa,
-    faCcMastercard,
-    faCcPaypal,
-    faGooglePay,
     faFacebook,
     faLinkedin,
     faInstagram,
     faYoutube
 } from '@fortawesome/free-brands-svg-icons';
-import {
-    faUniversity,
-    faCreditCard
-} from '@fortawesome/free-solid-svg-icons';
 
 const Footer: React.FC = () => {
     const { data: info } = useQuery({
@@ -32,14 +24,19 @@ const Footer: React.FC = () => {
     });
 
     const quickLinks = [
-        "Home", "About Us", "Products", "Services",
-        "Dealer Locator", "Blog", "Contact Us", "Career"
+        "Home", "About", "Products",
+        "Dealer Locator",  "Contact Us"
     ];
 
     const products = [
-        "Home Inverters", "Tubular Batteries", "Solar Solutions",
-        "Commercial Inverters", "Industrial UPS", "Accessories",
-        "Product Comparison", "Warranty Information"
+        { name: "All Products", href: "https://ind.mozget.com/products" },
+        { name: "Inverter", href: "https://ind.mozget.com/products?category=inverters" },
+        { name: "Inverter Batteries", href: "https://ind.mozget.com/products?category=inverter-battery" },
+        { name: "2 W Batteries", href: "https://ind.mozget.com/products?category=2-w-batteries" },
+        { name: "3 W Batteries", href: "https://ind.mozget.com/products?category=3-w-batteries" },
+        { name: "4 W Batteries", href: "https://ind.mozget.com/products?category=4-w-batteries" },
+        { name: "e-Rikshaw Batteries", href: "https://ind.mozget.com/products?category=e-rickshaw-batteries" },
+        { name: "Solar", href: "https://ind.mozget.com/products?category=solar" }
     ];
 
     const socialLinks = [
@@ -111,11 +108,13 @@ const Footer: React.FC = () => {
                         <ul className="space-y-2 mt-6">
                             {products.map((product, index) => (
                                 <li key={index}>
-                                    <Link to="/products"
-                                          className="text-white/80 hover:text-white transition flex items-center">
+                                    <a href={product.href}
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       className="text-white/80 hover:text-white transition flex items-center">
                                         <ArrowRightIcon className="h-3 w-3 mr-2"/>
-                                        {product}
-                                    </Link>
+                                        {product.name}
+                                    </a>
                                 </li>
                             ))}
                         </ul>

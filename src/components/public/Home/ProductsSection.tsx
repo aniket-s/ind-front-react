@@ -21,6 +21,7 @@ interface Category {
     isText?: boolean;
     isImage?: boolean;
     imageUrl?: string;
+    link?: string; // Added link property
 }
 
 interface Product {
@@ -55,6 +56,18 @@ const iconMap: { [key: string]: IconDefinition } = {
     'fas fa-solar-panel': faSolarPanel,
     'fas fa-check': faCheck,
     'fas fa-shield-alt': faShieldAlt,
+};
+
+// Category link mapping
+const categoryLinkMap: { [key: string]: string } = {
+    "Inverter": "/products?category=inverters",
+    "Inverter Batteries": "/products?category=inverter-battery",
+    "2 W Batteries": "/products?category=2-w-batteries",
+    "3 W Batteries": "/products?category=3-w-batteries",
+    "4 W Batteries": "/products?category=4-w-batteries",
+    "e-Rickshaw Batteries": "/products?category=e-rickshaw-batteries",
+    "Solar": "/products?category=solar",
+    "Tractor and CV": "/products?category=tractor-and-cv"
 };
 
 const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
@@ -99,9 +112,10 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
         name: content.product?.name || "Premium Power Inverter Series",
         description: content.product?.description || "Our premium inverters are engineered to provide reliable backup power for homes and businesses with advanced technology and sturdy construction for uninterrupted power supply.",
         warranty: content.product?.warranty || "36 Months Standard Warranty",
-        image: content.product?.image || "/main_product.jpg",
+        image: content.product?.image || "/main_product.png",
     };
 
+    // Process categories with links
     const categories = content.categories && content.categories.length > 0
         ? content.categories.map((category: Category) => ({
             ...category,
@@ -109,9 +123,13 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
                 ? category.icon
                 : typeof category.icon === 'string'
                     ? iconMap[category.icon] || faBolt
-                    : category.icon
+                    : category.icon,
+            link: category.link || categoryLinkMap[category.name] || "/products"
         }))
-        : defaultCategories;
+        : defaultCategories.map((category) => ({
+            ...category,
+            link: categoryLinkMap[category.name] || "/products"
+        }));
 
     const getIcon = (icon: IconDefinition | string): IconDefinition => {
         if (typeof icon === 'string') {
@@ -157,7 +175,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
                     {categories.map((category: Category, index: number) => (
                         <Link
                             key={index}
-                            to="/products"
+                            to={category.link || "/products"}
                             className={`flex items-center p-2 rounded transition ${
                                 category.active
                                     ? "text-blue-600 font-medium hover:bg-blue-50"

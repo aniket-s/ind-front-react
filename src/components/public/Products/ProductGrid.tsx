@@ -48,7 +48,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
                                 {truncateText(product.shortDescription, 100)}
                             </p>
                         )}
-                        <div className="flex items-center justify-between">
+                        <div className="space-y-2">
                             {product.price ? (
                                 <p className="text-lg font-bold text-gray-900">
                                     {product.discountPrice ? (
@@ -62,13 +62,27 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
                                         formatCurrency(product.price)
                                     )}
                                 </p>
-                            ) : (
-                                <span></span>
-                            )}
+                            ) : null}
                             {product.warranty && (
                                 <p className="text-sm text-gray-500">
-                                    {product.warranty} Warranty
+                                    <span className="font-medium">Warranty:</span> {product.warranty}
                                 </p>
+                            )}
+                            {product.specifications && Object.keys(product.specifications).length > 0 && (
+                                <div className="border-t pt-2 mt-2">
+                                    <div className="space-y-1">
+                                        {Object.entries(product.specifications).slice(0, 3).map(([key, value]) => (
+                                            <p key={key} className="text-xs text-gray-600">
+                                                <span className="font-medium">{key}:</span> {value}
+                                            </p>
+                                        ))}
+                                        {Object.keys(product.specifications).length > 3 && (
+                                            <p className="text-xs text-primary-600 font-medium">
+                                                +{Object.keys(product.specifications).length - 3} more
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>

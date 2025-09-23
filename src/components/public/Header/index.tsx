@@ -13,7 +13,7 @@ import {
 
 // Logo component (you can replace this with an actual logo image)
 const Logo: React.FC<{ className?: string }> = ({ className }) => (
-    <img src="./logo.png" alt="Logo" className={className} />
+    <img src="./ind_footer.png" alt="Logo" className={className} />
 );
 
 // Social Media Icon Components
@@ -125,7 +125,7 @@ const Header: React.FC = () => {
                 <nav className="flex items-center justify-between py-4">
                     {/* Logo */}
                     <Link to="/" className="flex items-center">
-                        <Logo className="h-20 mr-3" />
+                        <Logo className="h-28 mr-3" />
                     </Link>
 
                     {/* Desktop Navigation Menu */}

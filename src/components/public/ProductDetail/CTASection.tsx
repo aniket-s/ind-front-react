@@ -63,7 +63,7 @@ export const CTASection: React.FC<CTASectionProps> = ({ product }) => {
                 <div className="mt-8">
                     <p className="text-gray-700 mb-4">Want to know more about technical specifications?</p>
                     <a
-                        href={`/download/brochure/${product.slug}`}
+                        href='/Indpower-Sales-Docket.pdf' target="_blank"
                         className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700"
                     >
                         <FontAwesomeIcon icon={faDownload} className="mr-2" />

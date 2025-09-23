@@ -46,6 +46,50 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
         { icon: "fas fa-solar-panel", position: "bottom-right" as Position }
     ];
 
+    // Helper function to check if a link is external or a file
+    const isExternalOrFile = (link: string) => {
+        return link.startsWith('http') ||
+            link.startsWith('https') ||
+            link.endsWith('.pdf') ||
+            link.endsWith('.doc') ||
+            link.endsWith('.docx') ||
+            link.includes('.pdf');
+    };
+
+    // Render button based on link type
+    const renderButton = (button: Button, index: number) => {
+        const buttonClasses = "bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition inline-flex items-center shadow-lg";
+
+        if (isExternalOrFile(button.link)) {
+            // For external links or files, use anchor tag
+            return (
+<a
+                key={index}
+            href={button.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonClasses}
+            download={button.link.includes('.pdf') ? true : undefined}
+                >
+                {button.icon && <i className={`${button.icon} mr-3`}></i>}
+            <span>{button.text}</span>
+        </a>
+        );
+        } else {
+            // For internal links, use React Router Link
+            return (
+                <Link
+                    key={index}
+                    to={button.link}
+                    className={buttonClasses}
+                >
+                    {button.icon && <i className={`${button.icon} mr-3`}></i>}
+                    <span>{button.text}</span>
+                </Link>
+            );
+        }
+    };
+
     return (
         <section className="bg-yellow-300 py-16 relative overflow-hidden">
             <div className="container mx-auto px-4">
@@ -85,13 +129,7 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
                     <div className="space-y-6">
                         {buttons.map((button, index) => (
                             <div key={index}>
-                                <Link
-                                    to={button.link}
-                                    className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition inline-flex items-center shadow-lg"
-                                >
-                                    {button.icon && <i className={`${button.icon} mr-3`}></i>}
-                                    <span>{button.text}</span>
-                                </Link>
+                                {renderButton(button, index)}
                             </div>
                         ))}
                     </div>

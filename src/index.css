@@ -103,7 +103,7 @@ button:focus-visible {
 /* Tailwind blue override */
 .bg-blue-600 {
   --tw-bg-opacity: 1;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+  background-color: #0051BA;
 }
 
 /* Progress bar animation for slider indicators */

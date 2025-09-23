@@ -42,18 +42,6 @@ export const InverterModelsSection: React.FC<InverterModelsSectionProps> = ({
                     Compare models to find the perfect fit for your needs.
                 </p>
 
-                {/* View Controls - Only visible on desktop */}
-                <div className="hidden lg:flex justify-center gap-4 mb-8">
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium">
-                        Desktop: 3 Cards
-                    </button>
-                    <button className="px-4 py-2 bg-gray-200 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-300 transition">
-                        Tablet: 2 Cards
-                    </button>
-                    <button className="px-4 py-2 bg-gray-200 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-300 transition">
-                        Mobile: 1 Card
-                    </button>
-                </div>
 
                 {/* Product Cards Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto mb-8">

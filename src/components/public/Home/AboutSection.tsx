@@ -1,14 +1,7 @@
 // src/components/public/Home/AboutSection.tsx
 import React from 'react';
 
-interface Feature {
-    icon: string;
-    title: string;
-    description: string;
-}
-
 interface AboutContent {
-    features?: Feature[];
     image?: string;
     buttonText?: string;
     description?: string;
@@ -23,30 +16,22 @@ interface AboutSectionProps {
     section: AboutSectionData;
 }
 
-// Custom icon mapping based on title
-const customIconMap: { [key: string]: string } = {
-    'Legacy of trust & expertise': '/legacy-of-trust.png',
-    'Made in India, Designed for India': '/made-in-india.png'
-};
-
 const AboutSection: React.FC<AboutSectionProps> = ({ section }) => {
     const content = section.content || {};
-    const features = content.features && content.features.length > 0
-        ? content.features
-        : [
-            { icon: "tools", title: "Easy Installation", description: "Take a look at our up of the round shows" },
-            { icon: "shield", title: "Quality Material", description: "Take a look at our up of the round shows" }
-        ];
 
-    // Check if a feature should use a custom icon based on its title
-    const hasCustomIcon = (title: string): boolean => {
-        return title in customIconMap;
-    };
-
-    // Get custom icon path
-    const getCustomIcon = (title: string): string => {
-        return customIconMap[title];
-    };
+    // Always use these static features - ignore any backend features
+    const staticFeatures = [
+        {
+            title: "Legacy of trust & expertise",
+            description: "Three decades of experience delivering gold standard quality power solutions",
+            image: "/legacy-of-trust.png"
+        },
+        {
+            title: "Made in India, Designed for India",
+            description: "Proudly Indian products tailored for our nation's unique power needs",
+            image: "/made-in-india.png"
+        }
+    ];
 
     return (
         <section className="bg-white py-16">
@@ -79,21 +64,14 @@ const AboutSection: React.FC<AboutSectionProps> = ({ section }) => {
                             {content.description || "We, at INDPOWER, take pride in providing power solution products that are truly made in India and made for India. Coming from house of experts, with more than three decades of experience in the industry, our products are trusted to be of \"gold standard\" quality and deliver powerful performance. Top of it with our strong pan-India service support, we are here to be 'Desh ki Shakti, Desh ka Bharosa'"}
                         </p>
 
-                        <div className="grid grid-cols-2 gap-6">
-                            {features.map((feature, index) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {staticFeatures.map((feature, index) => (
                                 <div key={index} className="flex items-start gap-4">
-                                    {hasCustomIcon(feature.title) ? (
-                                        <img
-                                            src={getCustomIcon(feature.title)}
-                                            alt={feature.title}
-                                            className="w-12 h-12 object-contain flex-shrink-0"
-                                        />
-                                    ) : (
-                                        <div className="w-12 h-12 bg-amber-400 rounded-full flex-shrink-0 flex items-center justify-center shadow-md">
-                                            {/* Fallback icon - you can replace with a default image or icon */}
-                                            <div className="w-6 h-6 bg-blue-600 rounded-full"></div>
-                                        </div>
-                                    )}
+                                    <img
+                                        src={feature.image}
+                                        alt={feature.title}
+                                        className="w-24 h-24 object-contain flex-shrink-0"
+                                    />
                                     <div>
                                         <h4 className="font-semibold text-gray-800 mb-1">{feature.title}</h4>
                                         <p className="text-sm text-gray-600">{feature.description}</p>
