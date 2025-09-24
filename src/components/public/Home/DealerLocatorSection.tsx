@@ -29,16 +29,8 @@ interface DealerLocatorSectionProps {
 const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) => {
     const navigate = useNavigate();
     const [searchValue, setSearchValue] = useState('');
-    const dealerStats = getDealerStats();
-
+    getDealerStats();
     const content = section.content || {};
-    const stats = content.stats || [
-        { icon: "fas fa-handshake", value: `${dealerStats.total}+`, label: "Authorized Dealers" },
-        { icon: "fas fa-map-marker-alt", value: `${dealerStats.cities}+`, label: "Cities Covered" },
-        { icon: "fas fa-tools", value: `${dealerStats.serviceCenters}+`, label: "Service Centers" },
-        { icon: "fas fa-headset", value: "24/7", label: "Customer Support" },
-    ];
-
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (searchValue.trim()) {
@@ -99,76 +91,7 @@ const DealerLocatorSection: React.FC<DealerLocatorSectionProps> = ({ section }) 
                     </div>
                 </form>
 
-                {/* Map and Stats Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    {/* Static Map Image */}
-                    <div className="relative">
-                        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-                            {/* Map Header */}
-                            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4">
-                                <h3 className="text-lg font-semibold flex items-center gap-2">
-                                    <MapPinIcon className="h-5 w-5" />
-                                    Our Pan-India Network
-                                </h3>
-                            </div>
 
-                            {/* Static Map Image */}
-                            <div className="relative">
-                                <img
-                                    src="/map1.jpg"
-                                    alt="IndPower Dealer Network Map"
-                                    className="w-full"
-                                />
-
-                                {/* Optional: Map Legend Overlay */}
-                                <div className="absolute bottom-4 left-6 bg-white/90 backdrop-blur rounded-lg px-3 py-2 text-xs">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                                        <span className="text-gray-600">Dealer Location</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Statistics Cards */}
-                    <div className="grid grid-cols-2 gap-6">
-                        {stats.map((stat, index) => (
-                            <div
-                                key={index}
-                                className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
-                            >
-                                <div className="flex flex-col items-center text-center">
-                                    <div className="w-20 h-20 mb-4 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl group-hover:scale-110 transition-transform duration-300">
-                                        <i className={`${stat.icon} text-blue-600 text-3xl`}></i>
-                                    </div>
-                                    <h3 className="text-3xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                                        {stat.value}
-                                    </h3>
-                                    <p className="text-gray-600 font-medium">{stat.label}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* CTA Button */}
-                <div className="text-center mt-12">
-                    <button
-                        onClick={() => navigate('/dealer-locator')}
-                        className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 group"
-                    >
-                        <span>View All Dealers</span>
-                        <svg
-                            className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-200"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
-                    </button>
-                </div>
             </div>
         </section>
     );

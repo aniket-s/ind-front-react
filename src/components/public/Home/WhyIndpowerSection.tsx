@@ -180,13 +180,7 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                                 {feature.description}
                                             </p>
 
-                                            {/* Compact CTA Button */}
-                                            <button     onClick={() => navigate('/about')} className="bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold hover:bg-blue-700 transition-colors duration-300 inline-flex items-center group">
-                                                <span>EXPLORE</span>
-                                                <svg className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </button>
+
                                         </div>
                                     ))}
                                 </div>

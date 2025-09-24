@@ -190,8 +190,6 @@ const Footer: React.FC = () => {
                         <Link to="/terms" className="text-white/80 hover:text-white transition">Terms &
                             Conditions</Link>
                         <Link to="/privacy" className="text-white/80 hover:text-white transition">Privacy Policy</Link>
-                        <Link to="/sitemap" className="text-white/80 hover:text-white transition">Sitemap</Link>
-                        <Link to="/disclaimer" className="text-white/80 hover:text-white transition">Disclaimer</Link>
                         <a href="/admin/login" className="text-white/80 hover:text-white transition">Dealer Login</a>
                     </div>
                 </div>
