@@ -11,8 +11,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faMagnifyingGlass,
     faFilter,
-    faTh,
-    faList
 } from '@fortawesome/free-solid-svg-icons';
 import { cn } from '@/utils';
 
@@ -20,10 +18,8 @@ const Products: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [search, setSearch] = useState(searchParams.get('search') || '');
     const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
-    const [sortBy, setSortBy] = useState(searchParams.get('sortBy') || 'sortOrder');
-    const [sortOrder, setSortOrder] = useState(searchParams.get('sortOrder') || 'ASC');
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-    const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+    const [viewMode] = useState<'grid' | 'list'>('grid');
     const page = parseInt(searchParams.get('page') || '1');
 
     const { data: categories } = useQuery({
@@ -32,14 +28,12 @@ const Products: React.FC = () => {
     });
 
     const { data, isLoading } = useQuery({
-        queryKey: ['products', { category: selectedCategory, search, page, sortBy, sortOrder }],
+        queryKey: ['products', { category: selectedCategory, search, page }],
         queryFn: () => publicService.getProducts({
             category: selectedCategory,
             search,
             page,
             limit: 12,
-            sortBy,
-            sortOrder,
         }),
     });
 
@@ -48,10 +42,8 @@ const Products: React.FC = () => {
         if (search) params.search = search;
         if (selectedCategory) params.category = selectedCategory;
         if (page > 1) params.page = page.toString();
-        if (sortBy !== 'sortOrder') params.sortBy = sortBy;
-        if (sortOrder !== 'ASC') params.sortOrder = sortOrder;
         setSearchParams(params);
-    }, [search, selectedCategory, page, sortBy, sortOrder, setSearchParams]);
+    }, [search, selectedCategory, page, setSearchParams]);
 
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,7 +58,6 @@ const Products: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Hero Header Section */}
-
             <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 text-white relative overflow-hidden">
                 {/* Background Pattern */}
                 <div className="absolute inset-0 opacity-10">
@@ -109,8 +100,6 @@ const Products: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
-
             </div>
 
             {/* Main Content */}
@@ -134,32 +123,6 @@ const Products: React.FC = () => {
                             </button>
                         </div>
 
-                        {/* View Mode Toggle */}
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-600 mr-2">View:</span>
-                            <button
-                                onClick={() => setViewMode('grid')}
-                                className={cn(
-                                    "p-2 rounded transition-colors",
-                                    viewMode === 'grid'
-                                        ? "bg-blue-600 text-white"
-                                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                )}
-                            >
-                                <FontAwesomeIcon icon={faTh} />
-                            </button>
-                            <button
-                                onClick={() => setViewMode('list')}
-                                className={cn(
-                                    "p-2 rounded transition-colors",
-                                    viewMode === 'list'
-                                        ? "bg-blue-600 text-white"
-                                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                )}
-                            >
-                                <FontAwesomeIcon icon={faList} />
-                            </button>
-                        </div>
                     </div>
                 </div>
 
@@ -181,12 +144,6 @@ const Products: React.FC = () => {
                                     onCategoryChange={(category) => {
                                         setSelectedCategory(category);
                                         setMobileFiltersOpen(false);
-                                    }}
-                                    sortBy={sortBy}
-                                    sortOrder={sortOrder}
-                                    onSortChange={(newSortBy, newSortOrder) => {
-                                        setSortBy(newSortBy);
-                                        setSortOrder(newSortOrder);
                                     }}
                                 />
                             </div>
@@ -227,7 +184,7 @@ const Products: React.FC = () => {
                                     </div>
                                 )}
 
-                                <ProductGrid products={data?.products || []} />
+                                <ProductGrid products={data?.products || []} viewMode={viewMode} />
 
                                 {/* Pagination */}
                                 {data && data.totalPages > 1 && (

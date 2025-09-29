@@ -10,8 +10,6 @@ import {
     EnvelopeIcon,
     MapPinIcon,
     ClockIcon,
-    ChatBubbleBottomCenterTextIcon,
-    GlobeAltIcon,
     BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';

@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
 
     const quickLinks = [
         "Home", "About", "Products",
-        "Dealer Locator",  "Contact Us"
+        "Dealer Locator",  "Contact"
     ];
 
     const products = [
@@ -145,7 +145,6 @@ const Footer: React.FC = () => {
                             <div className="flex items-center">
                                 <PhoneIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0"/>
                                 <div>
-                                    <p className="text-white/80 text-sm">Toll-Free: 1800-XXX-XXXX</p>
                                     <p className="text-white/80 text-sm">Support: {info?.contact?.phone || '+91-XXX-XXX-XXXX'}</p>
                                 </div>
                             </div>
@@ -153,7 +152,6 @@ const Footer: React.FC = () => {
                                 <EnvelopeIcon className="h-5 w-5 mr-3 text-yellow-400 flex-shrink-0"/>
                                 <div>
                                     <p className="text-white/80 text-sm">{info?.contact?.email || 'info@indpower.com'}</p>
-                                    <p className="text-white/80 text-sm">support@indpower.com</p>
                                 </div>
                             </div>
                         </div>

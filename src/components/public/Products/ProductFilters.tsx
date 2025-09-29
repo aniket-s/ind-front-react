@@ -16,24 +16,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                                            categories,
                                                            selectedCategory,
                                                            onCategoryChange,
-                                                           sortBy,
-                                                           sortOrder,
-                                                           onSortChange,
                                                        }) => {
-    const sortOptions = [
-        { value: 'sortOrder:ASC', label: 'Default' },
-        { value: 'name:ASC', label: 'Name (A-Z)' },
-        { value: 'name:DESC', label: 'Name (Z-A)' },
-        { value: 'price:ASC', label: 'Price (Low to High)' },
-        { value: 'price:DESC', label: 'Price (High to Low)' },
-        { value: 'createdAt:DESC', label: 'Newest First' },
-        { value: 'createdAt:ASC', label: 'Oldest First' },
-    ];
 
-    const handleSortChange = (value: string) => {
-        const [field, order] = value.split(':');
-        onSortChange(field, order);
-    };
 
     const renderCategory = (category: Category, level: number = 0) => (
         <React.Fragment key={category.id}>
@@ -56,22 +40,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     return (
         <div className="space-y-6">
             {/* Sort */}
-            <div className="bg-white rounded-lg shadow-sm p-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Sort By
-                </label>
-                <select
-                    value={`${sortBy}:${sortOrder}`}
-                    onChange={(e) => handleSortChange(e.target.value)}
-                    className="input"
-                >
-                    {sortOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-            </div>
 
             {/* Categories */}
             <div className="bg-white rounded-lg shadow-sm">

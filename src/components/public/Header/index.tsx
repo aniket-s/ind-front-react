@@ -128,22 +128,22 @@ const Header: React.FC = () => {
                         <Logo className="h-28 mr-3" />
                     </Link>
 
-                    {/* Desktop Navigation Menu */}
+                    {/* Desktop Navigation Menu - Increased font size */}
                     <div className="hidden lg:flex items-center space-x-8">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className="text-white hover:text-yellow-300 transition font-medium"
+                                className="text-white hover:text-yellow-300 transition font-semibold text-lg"
                             >
                                 {link.name}
                             </Link>
                         ))}
 
-                        {/* Let's Talk Button */}
+                        {/* Let's Talk Button - Also increased font size */}
                         <Link
                             to="/contact"
-                            className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-yellow-300 transition"
+                            className="bg-yellow-400 text-gray-800 px-6 py-2.5 rounded-full font-bold text-lg hover:bg-yellow-300 transition"
                         >
                             Let's Talk
                         </Link>
@@ -163,7 +163,7 @@ const Header: React.FC = () => {
                     </button>
                 </nav>
 
-                {/* Mobile Navigation Menu */}
+                {/* Mobile Navigation Menu - Increased font size */}
                 {mobileMenuOpen && (
                     <div className="lg:hidden py-4 border-t border-blue-500">
                         <div className="flex flex-col space-y-4">
@@ -171,7 +171,7 @@ const Header: React.FC = () => {
                                 <Link
                                     key={link.name}
                                     to={link.href}
-                                    className="text-white hover:text-yellow-300 transition font-medium"
+                                    className="text-white hover:text-yellow-300 transition font-semibold text-lg"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {link.name}
@@ -179,7 +179,7 @@ const Header: React.FC = () => {
                             ))}
                             <Link
                                 to="/contact"
-                                className="bg-yellow-400 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-yellow-300 transition text-center"
+                                className="bg-yellow-400 text-gray-800 px-6 py-2.5 rounded-full font-bold text-lg hover:bg-yellow-300 transition text-center"
                                 onClick={() => setMobileMenuOpen(false)}
                             >
                                 Let's Talk

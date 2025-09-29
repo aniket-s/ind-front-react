@@ -120,9 +120,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                     <div className="lg:w-1/2 flex justify-center lg:justify-end mt-8 lg:mt-0">
                         <div className="relative w-full max-w-md">
                             {/* Yellow Background Circle */}
-                            <div className="absolute inset-0 bg-yellow-400 rounded-3xl transform rotate-3 scale-110"></div>
+                            <div
+                                className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-amber-500 to-yellow-600 rounded-3xl transform rotate-3 scale-110"></div>
                             {/* Product Image */}
-                            <div className="relative bg-gray-200 w-full h-48 sm:h-56 md:h-64 rounded-2xl flex items-center justify-center overflow-hidden">
+                            <div
+                                className="relative  w-full h-72 sm:h-56 md:h-64 rounded-2xl flex items-center justify-center overflow-hidden">
                                 <img
                                     src={getImageUrl(product.images[0])}
                                     alt={product.name}
@@ -135,7 +137,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
             </div>
 
             {/* Background Pattern */}
-            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-blue-700 to-transparent opacity-20"></div>
+            <div
+                className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-blue-700 to-transparent opacity-20"></div>
         </section>
     );
 };
