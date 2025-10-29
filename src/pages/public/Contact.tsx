@@ -16,15 +16,24 @@ import toast from 'react-hot-toast';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import {cn} from "@/utils";
 
-const schema = yup.object({
+interface FormData {
+    name: string;
+    email: string;
+    phone?: string;
+    subject?: string;
+    message: string;
+}
+
+const schema: yup.ObjectSchema<FormData> = yup.object({
     name: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email').required('Email is required'),
-    phone: yup.string().matches(/^[0-9]{10}$/, 'Phone must be 10 digits').default(''),
-    subject: yup.string().default(''),
+    phone: yup.string().optional().test('valid-phone', 'Phone must be a valid 10-digit Indian number starting with 6, 7, 8, or 9', (value) => {
+        if (!value || value === '') return true; // Allow empty
+        return /^[6-9][0-9]{9}$/.test(value);
+    }),
+    subject: yup.string().optional(),
     message: yup.string().required('Message is required').min(10, 'Message too short'),
 });
-
-type FormData = yup.InferType<typeof schema>;
 
 const Contact: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -266,6 +275,7 @@ const Contact: React.FC = () => {
                                                     errors.phone ? 'border-red-300' : 'border-gray-200 focus:border-blue-500'
                                                 )}
                                                 placeholder="9876543210"
+                                                maxLength={10}
                                             />
                                             {errors.phone && (
                                                 <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>

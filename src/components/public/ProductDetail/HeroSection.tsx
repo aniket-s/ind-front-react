@@ -26,7 +26,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
 
     return (
         <section className="bg-blue-600 py-8 md:py-16 relative overflow-hidden">
-            <div className="container mx-auto px-4">
+            {/* Background Pattern - with pointer-events-none and negative z-index */}
+            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-blue-700 to-transparent opacity-20 pointer-events-none -z-10"></div>
+
+            <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                     {/* Left Content */}
                     <div className="lg:w-1/2 text-white text-center lg:text-left">
@@ -94,17 +97,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                             </div>
                         )}
 
-                        {/* CTA Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
+                        {/* CTA Buttons - with explicit z-index */}
+                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start relative z-20">
                             <Link
                                 to="/dealer-locator"
-                                className="bg-yellow-400 text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition transform hover:scale-105 w-full sm:w-auto text-center"
+                                className="bg-yellow-400 text-gray-800 px-6 py-3 rounded-full font-semibold hover:bg-yellow-300 transition transform hover:scale-105 w-full sm:w-auto text-center cursor-pointer"
                             >
                                 Find Dealer
                             </Link>
                             <Link
                                 to="/contact"
-                                className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition transform hover:scale-105 w-full sm:w-auto text-center"
+                                className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition transform hover:scale-105 w-full sm:w-auto text-center cursor-pointer"
                             >
                                 Get Quote
                             </Link>
@@ -114,9 +117,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                     {/* Right Image */}
                     <div className="lg:w-1/2 flex justify-center lg:justify-end mt-8 lg:mt-0">
                         <div className="relative w-full max-w-md">
-
-                            <div
-                                className="relative  w-full h-80 sm:h-56 md:h-80 rounded-2xl flex items-center justify-center overflow-hidden">
+                            <div className="relative w-full h-80 sm:h-56 md:h-80 rounded-2xl flex items-center justify-center overflow-hidden">
                                 <img
                                     src={getImageUrl(product.images[0])}
                                     alt={product.name}
@@ -127,10 +128,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                     </div>
                 </div>
             </div>
-
-            {/* Background Pattern */}
-            <div
-                className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-blue-700 to-transparent opacity-20"></div>
         </section>
     );
 };
