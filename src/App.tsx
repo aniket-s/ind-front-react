@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
+import { CookieConsentProvider } from './contexts/CookieConsentContext';
 
 // Layouts
 import PublicLayout from './layouts/PublicLayout';
@@ -20,6 +21,7 @@ import FAQs from './pages/public/FAQs';
 import DealerLocator from './pages/public/DealerLocator';
 import Privacy from './pages/public/Privacy';
 import Terms from './pages/public/Terms';
+import CookiePolicy from './pages/public/CookiePolicy';
 import NotFound from './pages/public/NotFound';
 import DealerList from './pages/admin/dealers/DealerList';
 // Auth Pages
@@ -59,101 +61,104 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                <Router>
-                    <Routes>
-                        {/* Public Routes */}
-                        <Route path="/" element={<PublicLayout />}>
-                            <Route index element={<Home />} />
-                            <Route path="products" element={<Products />} />
-                            <Route path="products/:slug" element={<ProductDetail />} />
-                            <Route path="contact" element={<Contact />} />
-                            <Route path="about" element={<About />} />
-                            <Route path="faqs" element={<FAQs />} />
-                            <Route path="dealer-locator" element={<DealerLocator />} />
-                            <Route path="privacy" element={<Privacy />} />
-                            <Route path="terms" element={<Terms />} />
-                            <Route path="*" element={<NotFound />} />
-                        </Route>
+                <CookieConsentProvider>
+                    <Router>
+                        <Routes>
+                            {/* Public Routes */}
+                            <Route path="/" element={<PublicLayout />}>
+                                <Route index element={<Home />} />
+                                <Route path="products" element={<Products />} />
+                                <Route path="products/:slug" element={<ProductDetail />} />
+                                <Route path="contact" element={<Contact />} />
+                                <Route path="about" element={<About />} />
+                                <Route path="faqs" element={<FAQs />} />
+                                <Route path="dealer-locator" element={<DealerLocator />} />
+                                <Route path="privacy" element={<Privacy />} />
+                                <Route path="terms" element={<Terms />} />
+                                <Route path="cookie-policy" element={<CookiePolicy />} />
+                                <Route path="*" element={<NotFound />} />
+                            </Route>
 
-                        {/* Auth Routes */}
-                        <Route path="/admin" element={<AuthLayout />}>
-                            <Route path="login" element={<Login />} />
-                            <Route path="forgot-password" element={<ForgotPassword />} />
-                        </Route>
+                            {/* Auth Routes */}
+                            <Route path="/admin" element={<AuthLayout />}>
+                                <Route path="login" element={<Login />} />
+                                <Route path="forgot-password" element={<ForgotPassword />} />
+                            </Route>
 
-                        {/* Admin Routes */}
-                        <Route
-                            path="/admin"
-                            element={
-                                <ProtectedRoute>
-                                    <AdminLayout />
-                                </ProtectedRoute>
-                            }
-                        >
-                            <Route index element={<Navigate to="/admin/dashboard" replace />} />
-                            <Route path="dashboard" element={<Dashboard />} />
+                            {/* Admin Routes */}
+                            <Route
+                                path="/admin"
+                                element={
+                                    <ProtectedRoute>
+                                        <AdminLayout />
+                                    </ProtectedRoute>
+                                }
+                            >
+                                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                                <Route path="dashboard" element={<Dashboard />} />
 
-                            {/* Products */}
-                            <Route path="products" element={<ProductList />} />
-                            <Route path="products/new" element={<ProductForm />} />
-                            <Route path="products/:id/edit" element={<ProductForm />} />
+                                {/* Products */}
+                                <Route path="products" element={<ProductList />} />
+                                <Route path="products/new" element={<ProductForm />} />
+                                <Route path="products/:id/edit" element={<ProductForm />} />
 
-                            {/* Categories */}
-                            <Route path="categories" element={<CategoryList />} />
+                                {/* Categories */}
+                                <Route path="categories" element={<CategoryList />} />
 
-                            {/* Banners */}
-                            <Route path="banners" element={<BannerList />} />
+                                {/* Banners */}
+                                <Route path="banners" element={<BannerList />} />
 
-                            {/* Sections */}
-                            <Route path="sections" element={<SectionList />} />
+                                {/* Sections */}
+                                <Route path="sections" element={<SectionList />} />
 
-                            {/* Menus */}
-                            <Route path="menus" element={<MenuList />} />
+                                {/* Menus */}
+                                <Route path="menus" element={<MenuList />} />
 
-                            {/* Contacts */}
-                            <Route path="contacts" element={<ContactList />} />
-                            <Route path="contacts/:id" element={<ContactDetail />} />
-                            <Route path="dealers" element={<DealerList />} />
-                            {/* FAQs */}
-                            <Route path="faqs" element={<FAQList />} />
+                                {/* Contacts */}
+                                <Route path="contacts" element={<ContactList />} />
+                                <Route path="contacts/:id" element={<ContactDetail />} />
+                                <Route path="dealers" element={<DealerList />} />
+                                {/* FAQs */}
+                                <Route path="faqs" element={<FAQList />} />
 
-                            {/* Media */}
-                            <Route path="media" element={<MediaLibrary />} />
+                                {/* Media */}
+                                <Route path="media" element={<MediaLibrary />} />
 
-                            {/* Settings */}
-                            <Route path="settings" element={<Settings />} />
+                                {/* Settings */}
+                                <Route path="settings" element={<Settings />} />
 
-                            {/* Admins */}
-                            <Route path="admins" element={<AdminList />} />
+                                {/* Admins */}
+                                <Route path="admins" element={<AdminList />} />
 
-                            {/* Profile */}
-                            <Route path="profile" element={<Profile />} />
-                        </Route>
-                    </Routes>
+                                {/* Profile */}
+                                <Route path="profile" element={<Profile />} />
+                            </Route>
+                        </Routes>
 
-                    <Toaster
-                        position="top-right"
-                        toastOptions={{
-                            duration: 4000,
-                            style: {
-                                background: '#363636',
-                                color: '#fff',
-                            },
-                            success: {
-                                iconTheme: {
-                                    primary: '#4ade80',
-                                    secondary: '#fff',
+                        <Toaster
+                            position="top-right"
+                            toastOptions={{
+                                duration: 4000,
+                                style: {
+                                    background: '#363636',
+                                    color: '#fff',
                                 },
-                            },
-                            error: {
-                                iconTheme: {
-                                    primary: '#ef4444',
-                                    secondary: '#fff',
+                                success: {
+                                    iconTheme: {
+                                        primary: '#4ade80',
+                                        secondary: '#fff',
+                                    },
                                 },
-                            },
-                        }}
-                    />
-                </Router>
+                                error: {
+                                    iconTheme: {
+                                        primary: '#ef4444',
+                                        secondary: '#fff',
+                                    },
+                                },
+                            }}
+                        />
+                    </Router>
+                </CookieConsentProvider>
             </AuthProvider>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

@@ -1,6 +1,6 @@
 // src/components/public/Header/index.tsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
 import {
@@ -8,12 +8,13 @@ import {
     PhoneIcon,
     ClockIcon,
     Bars3Icon,
-    XMarkIcon
+    XMarkIcon,
+    MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 
-// Logo component (you can replace this with an actual logo image)
+// Logo component
 const Logo: React.FC<{ className?: string }> = ({ className }) => (
-    <img src="./ind_footer.png" alt="Logo" className={className} />
+    <img src="/ind_footer.png" alt="Logo" className={className} />
 );
 
 // Social Media Icon Components
@@ -43,6 +44,9 @@ const LinkedInIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 const Header: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const navigate = useNavigate();
 
     const { data: info } = useQuery({
         queryKey: ['public-info'],
@@ -54,7 +58,6 @@ const Header: React.FC = () => {
         queryFn: () => publicService.getMenus('header'),
     });
 
-    // Social media configuration with proper icons
     const socialIcons = [
         { name: 'Facebook', href: info?.social?.facebook, icon: FacebookIcon },
         { name: 'Instagram', href: info?.social?.instagram, icon: InstagramIcon },
@@ -75,6 +78,15 @@ const Header: React.FC = () => {
         { name: 'Blog', href: '/blog' },
         { name: 'Contact', href: '/contact' },
     ];
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+            setSearchQuery('');
+            setMobileSearchOpen(false);
+        }
+    };
 
     return (
         <header className="bg-blue-600">
@@ -122,48 +134,106 @@ const Header: React.FC = () => {
 
             {/* Main Navigation */}
             <div className="container mx-auto px-4">
-                <nav className="flex items-center justify-between py-4">
+                <nav className="flex items-center justify-between py-4 gap-6">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center">
-                        <Logo className="h-28 mr-3" />
+                    <Link to="/" className="flex items-center flex-shrink-0">
+                        <Logo className="h-28" />
                     </Link>
 
-                    {/* Desktop Navigation Menu - Increased font size */}
-                    <div className="hidden lg:flex items-center space-x-8">
+                    {/* Desktop Navigation Menu - Center */}
+                    <div className="hidden lg:flex items-center justify-center flex-1 space-x-8">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className="text-white hover:text-yellow-300 transition font-semibold text-lg"
+                                className="text-white hover:text-yellow-300 transition font-semibold text-lg whitespace-nowrap"
                             >
                                 {link.name}
                             </Link>
                         ))}
+                    </div>
 
-                        {/* Let's Talk Button - Also increased font size */}
+                    {/* Desktop Search Bar & Let's Talk Button - Right */}
+                    <div className="hidden lg:flex items-center gap-4 flex-shrink-0">
+                        <form onSubmit={handleSearch} className="relative">
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search for a product"
+                                className="w-64 xl:w-72 pl-10 pr-4 py-2.5 rounded-lg bg-blue-500/30 backdrop-blur-sm text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:bg-blue-500/40 transition-all"
+                            />
+                            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
+                            <button
+                                type="submit"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 hover:bg-white/10 rounded-md transition-colors"
+                                aria-label="Search"
+                            >
+                                <MagnifyingGlassIcon className="h-5 w-5 text-white" />
+                            </button>
+                        </form>
+
+                        {/* Let's Talk Button */}
                         <Link
                             to="/contact"
-                            className="bg-yellow-400 text-gray-800 px-6 py-2.5 rounded-full font-bold text-lg hover:bg-yellow-300 transition"
+                            className="bg-yellow-400 text-gray-800 px-6 py-2.5 rounded-full font-bold text-lg hover:bg-yellow-300 transition whitespace-nowrap"
                         >
                             Let's Talk
                         </Link>
                     </div>
 
-                    {/* Mobile menu button */}
-                    <button
-                        type="button"
-                        className="lg:hidden text-white"
-                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    >
-                        {mobileMenuOpen ? (
-                            <XMarkIcon className="h-6 w-6" />
-                        ) : (
-                            <Bars3Icon className="h-6 w-6" />
-                        )}
-                    </button>
+                    {/* Mobile controls */}
+                    <div className="lg:hidden flex items-center space-x-3">
+                        {/* Mobile search toggle */}
+                        <button
+                            type="button"
+                            className="text-white p-2"
+                            onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                            aria-label="Toggle search"
+                        >
+                            <MagnifyingGlassIcon className="h-6 w-6" />
+                        </button>
+
+                        {/* Mobile menu button */}
+                        <button
+                            type="button"
+                            className="text-white p-2"
+                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                            aria-label="Toggle menu"
+                        >
+                            {mobileMenuOpen ? (
+                                <XMarkIcon className="h-6 w-6" />
+                            ) : (
+                                <Bars3Icon className="h-6 w-6" />
+                            )}
+                        </button>
+                    </div>
                 </nav>
 
-                {/* Mobile Navigation Menu - Increased font size */}
+                {/* Mobile Search Bar */}
+                {mobileSearchOpen && (
+                    <div className="lg:hidden pb-4">
+                        <form onSubmit={handleSearch} className="relative">
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search for a product"
+                                className="w-full pl-10 pr-12 py-3 rounded-lg bg-white text-gray-800 placeholder-gray-500 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                                autoFocus
+                            />
+                            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            <button
+                                type="submit"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 bg-yellow-400 text-gray-800 px-4 py-1.5 rounded-md font-semibold hover:bg-yellow-300 transition-colors text-sm"
+                            >
+                                Search
+                            </button>
+                        </form>
+                    </div>
+                )}
+
+                {/* Mobile Navigation Menu */}
                 {mobileMenuOpen && (
                     <div className="lg:hidden py-4 border-t border-blue-500">
                         <div className="flex flex-col space-y-4">
@@ -177,13 +247,6 @@ const Header: React.FC = () => {
                                     {link.name}
                                 </Link>
                             ))}
-                            <Link
-                                to="/contact"
-                                className="bg-yellow-400 text-gray-800 px-6 py-2.5 rounded-full font-bold text-lg hover:bg-yellow-300 transition text-center"
-                                onClick={() => setMobileMenuOpen(false)}
-                            >
-                                Let's Talk
-                            </Link>
                         </div>
                     </div>
                 )}

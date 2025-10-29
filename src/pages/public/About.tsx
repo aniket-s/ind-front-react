@@ -49,7 +49,7 @@ const About: React.FC = () => {
     ];
 
     const stats = [
-        { number: '15+', label: 'Years of Excellence', icon: TrophyIcon },
+        { number: '4+', label: 'Years of Excellence', icon: TrophyIcon },
         { number: '3000+', label: 'Dealer Network', icon: UsersIcon },
         { number: '1M+', label: 'Happy Customers', icon: HeartIcon },
         { number: '99.9%', label: 'Uptime Guarantee', icon: BoltIcon },
@@ -57,33 +57,21 @@ const About: React.FC = () => {
 
     const milestones = [
         {
-            year: '2010',
-            title: 'The Beginning',
+            year: '2021',
+            title: 'Brand Launched',
             description: 'IndPower established with a vision to revolutionize power solutions in India',
             icon: SparklesIcon
         },
         {
-            year: '2015',
+            year: '2023',
             title: 'Rapid Expansion',
-            description: 'Expanded operations to 10+ states with over 100+ authorized dealers',
+            description: 'Expanded operations across India with 3000+ authorized dealers nationwide',
             icon: ChartBarIcon
         },
         {
-            year: '2018',
-            title: 'Going Green',
-            description: 'Launched eco-friendly product line with solar integration capabilities',
-            icon: LightBulbIcon
-        },
-        {
-            year: '2020',
-            title: 'Quality Certified',
-            description: 'Achieved ISO 9001:2015 certification for quality management',
-            icon: ShieldCheckIcon
-        },
-        {
-            year: '2023',
-            title: 'Market Leader',
-            description: 'Reached 500+ dealer network milestone and became a trusted household name',
+            year: '2025',
+            title: 'Brand Ambassador Launch',
+            description: 'Strengthened market presence with celebrity brand ambassador partnership',
             icon: TrophyIcon
         },
     ];
@@ -125,7 +113,7 @@ const About: React.FC = () => {
                             Powering India's Future
                         </h1>
                         <p className="text-xl md:text-2xl text-blue-100 leading-relaxed mb-8">
-                            With over 15 years of excellence, IndPower has been the trusted partner
+                            With 4+ years of excellence, IndPower has been the trusted partner
                             for millions of Indians, delivering reliable power solutions that never let you down.
                         </p>
                         <div className="flex flex-wrap justify-center gap-4">
@@ -217,11 +205,11 @@ const About: React.FC = () => {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto items-stretch">
                         {values.map((value, index) => (
-                            <div key={index} className="group perspective">
+                            <div key={index} className="group flex">
                                 <div
-                                    className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                                    className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 h-full flex flex-col">
                                     <div
                                         className={`w-16 h-16 bg-gradient-to-br ${value.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                                         <value.icon className="h-8 w-8 text-white"/>

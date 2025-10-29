@@ -23,6 +23,7 @@ const Footer: React.FC = () => {
         queryFn: () => publicService.getInfo(),
     });
 
+
     const quickLinks = [
         "Home", "About", "Products",
         "Dealer Locator",  "Contact"
@@ -46,8 +47,6 @@ const Footer: React.FC = () => {
         { icon: faYoutube, href: info?.social?.youtube || "#", name: "YouTube" },
     ];
 
-
-
     return (
         <footer className="bg-blue-600 text-white pt-16 pb-8">
             <div className="container mx-auto px-4">
@@ -57,7 +56,6 @@ const Footer: React.FC = () => {
                     <div>
                         <div className="flex items-center mb-4">
                             <img src="./ind_footer.png" alt="Logo" className="h-34 mr-3"/>
-
                         </div>
                         <p className="text-white/80 mb-6 text-sm leading-relaxed">
                             IndPower provides reliable power backup solutions for homes and businesses across India
@@ -178,17 +176,22 @@ const Footer: React.FC = () => {
                     </div>
                 </div>
 
-
                 {/* Copyright */}
                 <div className="border-t border-blue-500 pt-6 text-center">
                     <p className="text-white/80 text-sm mb-4">
                         © {new Date().getFullYear()} IndPower - All Rights Reserved. Desh Ki Shakti, Desh Ka Bharosa
                     </p>
-                    <div className="flex justify-center gap-6 text-sm">
-                        <Link to="/terms" className="text-white/80 hover:text-white transition">Terms &
-                            Conditions</Link>
-                        <Link to="/privacy" className="text-white/80 hover:text-white transition">Privacy Policy</Link>
-                        <a href="/admin/login" className="text-white/80 hover:text-white transition">Dealer Login</a>
+                    <div className="flex flex-wrap justify-center gap-4 text-sm">
+                        <Link to="/terms" className="text-white/80 hover:text-white transition">
+                            Terms & Conditions
+                        </Link>
+                        <Link to="/privacy" className="text-white/80 hover:text-white transition">
+                            Privacy Policy
+                        </Link>
+                        <Link to="/cookie-policy" className="text-white/80 hover:text-white transition">
+                            Cookie Policy
+                        </Link>
+
                     </div>
                 </div>
             </div>

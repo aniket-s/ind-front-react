@@ -1,25 +1,16 @@
 // src/pages/public/Products.tsx
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
 import ProductGrid from '@/components/public/Products/ProductGrid';
-import ProductFilters from '@/components/public/Products/ProductFilters';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import Pagination from '@/components/shared/Pagination';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faMagnifyingGlass,
-    faFilter,
-} from '@fortawesome/free-solid-svg-icons';
-import { cn } from '@/utils';
 
 const Products: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [search, setSearch] = useState(searchParams.get('search') || '');
-    const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
-    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-    const [viewMode] = useState<'grid' | 'list'>('grid');
+    const search = searchParams.get('search') || '';
+    const selectedCategory = searchParams.get('category') || '';
     const page = parseInt(searchParams.get('page') || '1');
 
     const { data: categories } = useQuery({
@@ -37,21 +28,12 @@ const Products: React.FC = () => {
         }),
     });
 
-    useEffect(() => {
+    const handlePageChange = (newPage: number) => {
         const params: any = {};
         if (search) params.search = search;
         if (selectedCategory) params.category = selectedCategory;
-        if (page > 1) params.page = page.toString();
+        params.page = newPage.toString();
         setSearchParams(params);
-    }, [search, selectedCategory, page, setSearchParams]);
-
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        setSearchParams({ ...Object.fromEntries(searchParams), search, page: '1' });
-    };
-
-    const handlePageChange = (newPage: number) => {
-        setSearchParams({ ...Object.fromEntries(searchParams), page: newPage.toString() });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -71,32 +53,8 @@ const Products: React.FC = () => {
                         <div className="text-center">
                             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
                             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-                                Discover our complete range of power solutions designed to meet all your backup power
-                                needs
+                                Discover our complete range of power solutions designed to meet all your backup power needs
                             </p>
-                        </div>
-
-                        {/* Search Bar */}
-                        <div className="mt-8 max-w-2xl mx-auto">
-                            <form onSubmit={handleSearch} className="relative">
-                                <input
-                                    type="text"
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    placeholder="Search for inverters, batteries, solar solutions..."
-                                    className="w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/30 focus:bg-white/20 transition-all"
-                                />
-                                <FontAwesomeIcon
-                                    icon={faMagnifyingGlass}
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 text-xl"
-                                />
-                                <button
-                                    type="submit"
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-yellow-400 text-gray-800 px-6 py-2 rounded-full font-semibold hover:bg-yellow-300 transition-colors"
-                                >
-                                    Search
-                                </button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -107,99 +65,55 @@ const Products: React.FC = () => {
                 {/* Results Bar */}
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div className="flex items-center gap-4">
+                        <div>
+                            {search && (
+                                <p className="text-gray-600 mb-2">
+                                    Search results for: <span className="font-semibold text-gray-900">"{search}"</span>
+                                </p>
+                            )}
                             <p className="text-gray-600">
                                 Showing <span className="font-semibold text-gray-900">{data?.products.length || 0}</span> of{' '}
                                 <span className="font-semibold text-gray-900">{data?.totalProducts || 0}</span> products
                             </p>
-
-                            {/* Mobile Filter Toggle */}
-                            <button
-                                onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-                                className="lg:hidden cl-white flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                            >
-                                <FontAwesomeIcon icon={faFilter} />
-                                Filters
-                            </button>
                         </div>
-
                     </div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Filters Sidebar */}
-                    <aside className={cn(
-                        "lg:w-80 lg:block",
-                        mobileFiltersOpen ? "block" : "hidden"
-                    )}>
-                        <div className="sticky top-4">
-                            <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-                                <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                                    <FontAwesomeIcon icon={faFilter} className="mr-2" />
-                                    Filters
-                                </h2>
-                                <ProductFilters
-                                    categories={categories || []}
-                                    selectedCategory={selectedCategory}
-                                    onCategoryChange={(category) => {
-                                        setSelectedCategory(category);
-                                        setMobileFiltersOpen(false);
-                                    }}
-                                />
-                            </div>
-
-                            {/* Quick Links */}
-                            <div className="bg-blue-50 rounded-lg p-6 border border-blue-100">
-                                <h3 className="font-semibold text-gray-900 mb-3">Need Help?</h3>
-                                <p className="text-sm text-gray-600 mb-4">
-                                    Our experts are here to help you choose the right product
-                                </p>
-                                <a
-                                    href="/contact"
-                                    className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                                >
-                                    Contact Us
-                                </a>
-                            </div>
+                {/* Products Grid */}
+                <main>
+                    {isLoading ? (
+                        <div className="flex justify-center items-center min-h-[400px]">
+                            <LoadingSpinner size="lg" />
                         </div>
-                    </aside>
+                    ) : (
+                        <>
+                            {/* Category Header */}
+                            {selectedCategory && (
+                                <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                                        {categories?.find(c => c.slug === selectedCategory)?.name || selectedCategory}
+                                    </h2>
+                                    <p className="text-gray-600">
+                                        Explore our range of {categories?.find(c => c.slug === selectedCategory)?.name || 'products'} designed for reliable power backup
+                                    </p>
+                                </div>
+                            )}
 
-                    {/* Products Grid */}
-                    <main className="flex-1">
-                        {isLoading ? (
-                            <div className="flex justify-center items-center min-h-[400px]">
-                                <LoadingSpinner size="lg" />
-                            </div>
-                        ) : (
-                            <>
-                                {/* Category Header */}
-                                {selectedCategory && (
-                                    <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                                            {categories?.find(c => c.slug === selectedCategory)?.name || selectedCategory}
-                                        </h2>
-                                        <p className="text-gray-600">
-                                            Explore our range of {categories?.find(c => c.slug === selectedCategory)?.name || 'products'} designed for reliable power backup
-                                        </p>
-                                    </div>
-                                )}
+                            <ProductGrid products={data?.products || []} />
 
-                                <ProductGrid products={data?.products || []} viewMode={viewMode} />
-
-                                {/* Pagination */}
-                                {data && data.totalPages > 1 && (
-                                    <div className="mt-12 bg-white rounded-lg shadow-sm p-4">
-                                        <Pagination
-                                            currentPage={data.currentPage}
-                                            totalPages={data.totalPages}
-                                            onPageChange={handlePageChange}
-                                        />
-                                    </div>
-                                )}
-                            </>
-                        )}
-                    </main>
-                </div>
+                            {/* Pagination */}
+                            {data && data.totalPages > 1 && (
+                                <div className="mt-12 bg-white rounded-lg shadow-sm p-4">
+                                    <Pagination
+                                        currentPage={data.currentPage}
+                                        totalPages={data.totalPages}
+                                        onPageChange={handlePageChange}
+                                    />
+                                </div>
+                            )}
+                        </>
+                    )}
+                </main>
             </div>
 
             {/* Bottom CTA Section */}

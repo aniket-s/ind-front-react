@@ -16,13 +16,13 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
             <EmptyState
                 icon={CubeIcon}
                 title="No products found"
-                message="Try adjusting your filters or search terms"
+                message="Try adjusting your search terms or browse our categories"
             />
         );
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {products.map((product) => (
                 <Link
                     key={product.id}

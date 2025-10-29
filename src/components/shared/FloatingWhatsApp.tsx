@@ -50,13 +50,13 @@ const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
                 __html: `
                     @keyframes pulse {
                         0% {
-                            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+                            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
                         }
                         70% {
-                            box-shadow: 0 0 0 15px rgba(245, 158, 11, 0);
+                            box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
                         }
                         100% {
-                            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+                            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
                         }
                     }
                     
@@ -92,12 +92,20 @@ const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
                         animation: bounce 2s ease-in-out infinite;
                     }
                     
-                    .golden-gradient {
-                        background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #f59e0b 100%);
+                    .whatsapp-green {
+                        background: #25D366;
                     }
                     
-                    .golden-gradient-hover {
-                        background: linear-gradient(135deg, #d97706 0%, #b45309 50%, #d97706 100%);
+                    .whatsapp-green-dark {
+                        background: #128C7E;
+                    }
+                    
+                    .whatsapp-shadow {
+                        box-shadow: 0 4px 20px 0 rgba(37, 211, 102, 0.15), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+                    }
+                    
+                    .whatsapp-shadow-hover {
+                        box-shadow: 0 8px 30px 0 rgba(37, 211, 102, 0.3), 0 4px 8px 0 rgba(0, 0, 0, 0.15);
                     }
                 `
             }} />
@@ -109,32 +117,38 @@ const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
                     'bottom-5 md:bottom-8'
                 )}
             >
-                {/* Welcome Message Bubble */}
+                {/* Welcome Message Bubble - WhatsApp style */}
                 {showWelcome && !isHovered && (
                     <div
                         className={cn(
-                            'bg-white rounded-lg shadow-lg px-4 py-3 max-w-xs',
+                            'bg-white rounded-lg shadow-lg px-4 py-3 max-w-xs border border-gray-100',
                             'transform transition-all duration-300 ease-in-out',
                             position === 'right' ? 'order-first' : 'order-last',
                             showWelcome ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
                         )}
                     >
                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                            <div className="w-2 h-2 bg-[#25D366] rounded-full animate-pulse"></div>
                             <p className="text-sm font-medium text-gray-800">We're online</p>
                         </div>
-                        <p className="text-xs text-gray-600 mt-1">Need help? Chat with us!</p>
-                        <div className="absolute top-1/2 -translate-y-1/2 -right-2">
-                            <div className="w-0 h-0 border-t-8 border-t-transparent border-l-8 border-l-white border-b-8 border-b-transparent"></div>
+                        <p className="text-xs text-gray-600 mt-1">Need help? Chat with us on WhatsApp!</p>
+                        <div className={cn(
+                            "absolute top-1/2 -translate-y-1/2",
+                            position === 'right' ? '-right-2' : '-left-2'
+                        )}>
+                            <div className={cn(
+                                "w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent",
+                                position === 'right' ? 'border-l-8 border-l-white' : 'border-r-8 border-r-white'
+                            )}></div>
                         </div>
                     </div>
                 )}
 
-                {/* Tooltip */}
+                {/* Tooltip - WhatsApp themed */}
                 {showTooltip && isHovered && !showWelcome && (
                     <div
                         className={cn(
-                            'bg-gray-800 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap',
+                            'bg-[#075E54] text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap',
                             'transform transition-all duration-200 ease-in-out',
                             position === 'right' ? 'order-first' : 'order-last',
                             isHovered ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
@@ -144,43 +158,45 @@ const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
                     </div>
                 )}
 
-                {/* WhatsApp Button with Golden Background */}
+                {/* WhatsApp Button with Official Green - Perfect Circle */}
                 <button
                     onClick={handleClick}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     className={cn(
-                        'group relative text-white rounded-full',
+                        'group relative text-white',
                         'w-14 h-14 md:w-16 md:h-16 flex items-center justify-center',
-                        'shadow-lg hover:shadow-2xl transition-all duration-300',
+                        'transition-all duration-300',
                         'hover:scale-110 active:scale-95',
-                        'whatsapp-entrance golden-gradient',
-                        'hover:golden-gradient-hover',
+                        'whatsapp-entrance whatsapp-green',
                         pulseAnimation && 'whatsapp-pulse',
                         !pulseAnimation && isHovered && 'whatsapp-bounce'
                     )}
                     style={{
-                        background: isHovered
-                            ? 'linear-gradient(135deg, #d97706 0%, #b45309 50%, #d97706 100%)'
-                            : 'linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #f59e0b 100%)'
+                        borderRadius: '50%',
+                        background: isHovered ? '#128C7E' : '#25D366',
+                        boxShadow: isHovered
+                            ? '0 8px 30px 0 rgba(37, 211, 102, 0.3), 0 4px 8px 0 rgba(0, 0, 0, 0.15)'
+                            : '0 4px 20px 0 rgba(37, 211, 102, 0.15), 0 2px 4px 0 rgba(0, 0, 0, 0.1)',
+                        aspectRatio: '1/1'
                     }}
                     aria-label="Chat on WhatsApp"
                 >
-                    {/* WhatsApp Icon SVG */}
+                    {/* WhatsApp Icon SVG - Official */}
                     <svg
                         className="w-7 h-7 md:w-8 md:h-8"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <path d="M12.031 1.172c-5.963 0-10.813 4.85-10.813 10.813 0 1.894.494 3.744 1.431 5.375L1.172 22.828l5.619-1.444a10.763 10.763 0 0 0 5.238 1.356c5.962 0 10.812-4.85 10.812-10.813S17.994 1.172 12.031 1.172zm0 19.688c-1.688 0-3.344-.481-4.769-1.388l-.344-.212-3.544.931.95-3.469-.225-.356a8.814 8.814 0 0 1-1.35-4.681c0-4.887 3.975-8.863 8.863-8.863s8.862 3.975 8.862 8.863-3.975 8.875-8.862 8.875zm4.863-6.631c-.269-.131-1.575-.775-1.819-.863-.244-.087-.419-.131-.594.131s-.688.863-.844 1.038-.306.2-.575.069c-1.494-.744-2.475-1.331-3.456-3.019-.263-.45.263-.419.75-1.394.081-.162.038-.3-.025-.419s-.594-1.431-.813-1.956c-.212-.512-.431-.444-.594-.45-.15-.006-.325-.006-.5-.006s-.456.063-.694.3c-.238.238-.906.888-.906 2.163s.931 2.506 1.063 2.681c.131.175 1.831 2.794 4.431 3.919 1.65.713 2.294.775 3.119.656.5-.075 1.575-.644 1.794-1.269s.219-.925.156-1.012c-.062-.094-.231-.156-.487-.281z" />
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.149-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                     </svg>
 
-                    {/* Online Status Indicator */}
+                    {/* Online Status Indicator - WhatsApp green */}
                     <div className="absolute top-1 right-1 md:top-2 md:right-2">
                         <span className="relative flex h-3 w-3">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-300 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-400 border-2 border-white"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-[#25D366] border-2 border-white"></span>
                         </span>
                     </div>
                 </button>

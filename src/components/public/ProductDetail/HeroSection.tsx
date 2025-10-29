@@ -30,11 +30,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                     {/* Left Content */}
                     <div className="lg:w-1/2 text-white text-center lg:text-left">
-                        {/* Tagline */}
-                        <p className="text-yellow-400 font-semibold mb-4 text-sm md:text-base">
-                            Desh Ki Shakti Desh Ka Bharosa
-                        </p>
-
                         {/* Category Badge */}
                         {product.Category && (
                             <span className="inline-block bg-yellow-400 text-gray-800 px-4 py-1 rounded-full text-sm font-semibold mb-4">
@@ -119,12 +114,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                     {/* Right Image */}
                     <div className="lg:w-1/2 flex justify-center lg:justify-end mt-8 lg:mt-0">
                         <div className="relative w-full max-w-md">
-                            {/* Yellow Background Circle */}
+
                             <div
-                                className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-amber-500 to-yellow-600 rounded-3xl transform rotate-3 scale-110"></div>
-                            {/* Product Image */}
-                            <div
-                                className="relative  w-full h-72 sm:h-56 md:h-64 rounded-2xl flex items-center justify-center overflow-hidden">
+                                className="relative  w-full h-80 sm:h-56 md:h-80 rounded-2xl flex items-center justify-center overflow-hidden">
                                 <img
                                     src={getImageUrl(product.images[0])}
                                     alt={product.name}

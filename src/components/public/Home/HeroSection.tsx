@@ -1,7 +1,7 @@
 // src/components/public/Home/HeroSection.tsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from '@heroicons/react/24/outline';
 import { cn, getImageUrl } from '@/utils';
 import { Banner } from '@/types';
 
@@ -12,6 +12,7 @@ interface HeroSectionProps {
 const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
     const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
     const [loadedMobileImages, setLoadedMobileImages] = useState<Set<number>>(new Set());
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -52,9 +53,21 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         setTimeout(() => setIsTransitioning(false), 600);
     }, [banners.length, isTransitioning]);
 
-    // Auto-play functionality - 6 seconds interval (always active)
+    // Toggle pause/play
+    const togglePause = useCallback(() => {
+        setIsPaused(prev => !prev);
+    }, []);
+
+    // Auto-play functionality - 6 seconds interval (respects pause state)
     useEffect(() => {
-        if (banners.length <= 1) return;
+        if (banners.length <= 1 || isPaused) {
+            // Clear interval if paused or only one banner
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
+            return;
+        }
 
         intervalRef.current = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % banners.length);
@@ -65,15 +78,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                 clearInterval(intervalRef.current);
             }
         };
-    }, [banners.length]);
+    }, [banners.length, isPaused]);
 
     const handleGoToSlide = useCallback((index: number) => {
         if (isTransitioning || index === currentIndex) return;
         setIsTransitioning(true);
         setCurrentIndex(index);
 
-        // Reset the auto-play timer when manually navigating
-        if (intervalRef.current) {
+        // Reset the auto-play timer when manually navigating (only if not paused)
+        if (intervalRef.current && !isPaused) {
             clearInterval(intervalRef.current);
             intervalRef.current = setInterval(() => {
                 setCurrentIndex((prev) => (prev + 1) % banners.length);
@@ -81,7 +94,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
         }
 
         setTimeout(() => setIsTransitioning(false), 600);
-    }, [currentIndex, isTransitioning, banners.length]);
+    }, [currentIndex, isTransitioning, banners.length, isPaused]);
 
     // Touch handlers for mobile swipe
     const handleTouchStart = (e: React.TouchEvent) => {
@@ -138,7 +151,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                 <img
                     src={getImageUrl(banner.image)}
                     alt={banner.title}
-                    className="w-full h-full object-cover"
+                    className="w-full  object-cover"
                 />
             </picture>
         );
@@ -186,45 +199,61 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                         {/* Side Navigation Buttons */}
                         <button
                             onClick={handlePrev}
-                            className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white text-gray-800 hover:bg-gray-50 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-300"
                             aria-label="Previous slide"
                         >
-                            <ChevronLeftIcon className="h-5 w-5" />
+                            <ChevronLeftIcon className="h-5 w-5"/>
                         </button>
                         <button
                             onClick={handleNext}
-                            className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+                            className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white text-gray-800 hover:bg-gray-50 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-300"
                             aria-label="Next slide"
                         >
-                            <ChevronRightIcon className="h-5 w-5" />
+                            <ChevronRightIcon className="h-5 w-5"/>
                         </button>
                     </>
                 )}
             </section>
 
-            {/* Dot Indicators - Below the image */}
+            {/* Dot Indicators and Pause Button - Below the image */}
             {banners.length > 1 && (
-                <div className="py-4  md:py-5 bg-color[#f9fafb]" >
-                    <div className="flex items-center justify-center gap-2 md:gap-2.5 px-4">
-                        {banners.map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => handleGoToSlide(index)}
-                                className={cn(
-                                    "p-0 border-0 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/50",
-                                    index === currentIndex
-                                        ? "w-2.5 h-2.5 md:w-3 md:h-3 bg-white"
-                                        : "w-2 h-2 md:w-2.5 md:h-2.5 bg-white/30 hover:bg-white/50"
-                                )}
-                                style={{
-                                    padding: 0,
-                                    border: 'none',
-                                    fontSize: 'inherit',
-                                    fontWeight: 'inherit'
-                                }}
-                                aria-label={`Go to slide ${index + 1}`}
-                            />
-                        ))}
+                <div className="py-4 md:py-5 bg-color[#f9fafb]">
+                    <div className="flex items-center justify-center gap-3 md:gap-4 px-4">
+                        {/* Pause/Play Button */}
+                        <button
+                            onClick={togglePause}
+                            className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                            aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
+                        >
+                        {isPaused ? (
+                                <PlayIcon className="h-4 w-4 md:h-5 md:w-5 text-white" />
+                            ) : (
+                                <PauseIcon className="h-4 w-4 md:h-5 md:w-5 text-white" />
+                            )}
+                        </button>
+
+                        {/* Dot Indicators */}
+                        <div className="flex items-center gap-2 md:gap-2.5">
+                            {banners.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => handleGoToSlide(index)}
+                                    className={cn(
+                                        "p-0 border-0 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-400",
+                                        index === currentIndex
+                                            ? "w-2.5 h-2.5 md:w-3 md:h-3 bg-gray-800"
+                                            : "w-2 h-2 md:w-2.5 md:h-2.5 bg-gray-400 hover:bg-gray-600"
+                                    )}
+                                    style={{
+                                        padding: 0,
+                                        border: 'none',
+                                        fontSize: 'inherit',
+                                        fontWeight: 'inherit'
+                                    }}
+                                    aria-label={`Go to slide ${index + 1}`}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}

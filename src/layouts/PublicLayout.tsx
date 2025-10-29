@@ -4,6 +4,8 @@ import { Outlet } from 'react-router-dom';
 import PublicHeader from '@/components/public/Header';
 import PublicFooter from '@/components/public/Footer';
 import FloatingWhatsApp from '@/components/shared/FloatingWhatsApp';
+import CookieBanner from '@/components/shared/CookieBanner';
+import CookieSettingsModal from '@/components/shared/CookieSettingsModal';
 
 const PublicLayout: React.FC = () => {
     return (
@@ -22,6 +24,12 @@ const PublicLayout: React.FC = () => {
                 showTooltip={true}
                 pulseAnimation={true}
             />
+
+            {/* Cookie Banner */}
+            <CookieBanner />
+
+            {/* Cookie Settings Modal */}
+            <CookieSettingsModal />
         </div>
     );
 };

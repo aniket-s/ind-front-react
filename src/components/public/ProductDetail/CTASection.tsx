@@ -5,7 +5,6 @@ import { Product } from '@/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faShieldAlt,
-    faTruck,
     faHeadset,
     faDownload
 } from '@fortawesome/free-solid-svg-icons';
@@ -34,10 +33,7 @@ export const CTASection: React.FC<CTASectionProps> = ({ product }) => {
                             <span className="font-semibold">{product.warranty} Warranty</span>
                         </div>
                     )}
-                    <div className="bg-white/80 px-4 py-2 rounded-full">
-                        <FontAwesomeIcon icon={faTruck} className="text-blue-600 mr-2" />
-                        <span className="font-semibold">Pan India Delivery</span>
-                    </div>
+
                     <div className="bg-white/80 px-4 py-2 rounded-full">
                         <FontAwesomeIcon icon={faHeadset} className="text-blue-600 mr-2" />
                         <span className="font-semibold">24/7 Support</span>
@@ -51,12 +47,13 @@ export const CTASection: React.FC<CTASectionProps> = ({ product }) => {
                     >
                         Find Nearest Dealer
                     </Link>
-                    <a
-                        href="tel:1800XXXXXXX"
+                    <Link
+                        to="/contact"
                         className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:bg-blue-700 transition transform hover:scale-105"
                     >
-                        Call Now: 1800-XXX-XXXX
-                    </a>
+                        Contact Us
+                    </Link>
+
                 </div>
 
                 {/* Download Brochure */}
