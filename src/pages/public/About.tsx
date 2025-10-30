@@ -10,7 +10,6 @@ import {
     TrophyIcon,
     UsersIcon,
     BoltIcon,
-    ShieldCheckIcon,
     ChartBarIcon,
     SparklesIcon
 } from '@heroicons/react/24/outline';
@@ -50,9 +49,7 @@ const About: React.FC = () => {
 
     const stats = [
         { number: '4+', label: 'Years of Excellence', icon: TrophyIcon },
-        { number: '3000+', label: 'Dealer Network', icon: UsersIcon },
-        { number: '1M+', label: 'Happy Customers', icon: HeartIcon },
-        { number: '99.9%', label: 'Uptime Guarantee', icon: BoltIcon },
+        { number: '17000+', label: 'Available Locations', icon: UsersIcon },
     ];
 
     const milestones = [
@@ -65,7 +62,7 @@ const About: React.FC = () => {
         {
             year: '2023',
             title: 'Rapid Expansion',
-            description: 'Expanded operations across India with 3000+ authorized dealers nationwide',
+            description: 'Expanded operations across India with 17000+ authorized dealers nationwide',
             icon: ChartBarIcon
         },
         {
@@ -141,10 +138,10 @@ const About: React.FC = () => {
 
             {/* Stats Section */}
             <div className="container mx-auto px-4 -mt-20 relative z-10">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="flex justify-center gap-6 max-w-3xl mx-auto">
                     {stats.map((stat, index) => (
                         <div key={index}
-                             className="bg-white rounded-2xl shadow-xl p-6 text-center group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                             className="bg-white rounded-2xl shadow-xl p-6 text-center group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 flex-1 max-w-xs">
                             <stat.icon
                                 className="h-12 w-12 mx-auto mb-4 text-blue-600 group-hover:scale-110 transition-transform"/>
                             <h3 className="text-4xl font-bold text-gray-900 mb-2">{stat.number}</h3>

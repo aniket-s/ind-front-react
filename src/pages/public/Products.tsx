@@ -1,16 +1,21 @@
 // src/pages/public/Products.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
 import ProductGrid from '@/components/public/Products/ProductGrid';
+import ProductFilters from '@/components/public/Products/ProductFilters';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import Pagination from '@/components/shared/Pagination';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { cn } from '@/utils';
 
 const Products: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const search = searchParams.get('search') || '';
-    const selectedCategory = searchParams.get('category') || '';
+    const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
+    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+    const [viewMode] = useState<'grid' | 'list'>('grid');
     const page = parseInt(searchParams.get('page') || '1');
 
     const { data: categories } = useQuery({
@@ -19,21 +24,23 @@ const Products: React.FC = () => {
     });
 
     const { data, isLoading } = useQuery({
-        queryKey: ['products', { category: selectedCategory, search, page }],
+        queryKey: ['products', { category: selectedCategory, page }],
         queryFn: () => publicService.getProducts({
             category: selectedCategory,
-            search,
             page,
             limit: 12,
         }),
     });
 
-    const handlePageChange = (newPage: number) => {
+    useEffect(() => {
         const params: any = {};
-        if (search) params.search = search;
         if (selectedCategory) params.category = selectedCategory;
-        params.page = newPage.toString();
+        if (page > 1) params.page = page.toString();
         setSearchParams(params);
+    }, [selectedCategory, page, setSearchParams]);
+
+    const handlePageChange = (newPage: number) => {
+        setSearchParams({ ...Object.fromEntries(searchParams), page: newPage.toString() });
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -53,7 +60,8 @@ const Products: React.FC = () => {
                         <div className="text-center">
                             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
                             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-                                Discover our complete range of power solutions designed to meet all your backup power needs
+                                Discover our complete range of power solutions designed to meet all your backup power
+                                needs
                             </p>
                         </div>
                     </div>
@@ -65,55 +73,80 @@ const Products: React.FC = () => {
                 {/* Results Bar */}
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div>
-                            {search && (
-                                <p className="text-gray-600 mb-2">
-                                    Search results for: <span className="font-semibold text-gray-900">"{search}"</span>
-                                </p>
-                            )}
+                        <div className="flex items-center gap-4">
                             <p className="text-gray-600">
                                 Showing <span className="font-semibold text-gray-900">{data?.products.length || 0}</span> of{' '}
                                 <span className="font-semibold text-gray-900">{data?.totalProducts || 0}</span> products
                             </p>
+
+                            {/* Mobile Filter Toggle */}
+                            <button
+                                onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+                                className="lg:hidden cl-white flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                <FontAwesomeIcon icon={faFilter} />
+                                Categories
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Products Grid */}
-                <main>
-                    {isLoading ? (
-                        <div className="flex justify-center items-center min-h-[400px]">
-                            <LoadingSpinner size="lg" />
+                <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Filters Sidebar */}
+                    <aside className={cn(
+                        "lg:w-80 lg:block",
+                        mobileFiltersOpen ? "block" : "hidden"
+                    )}>
+                        <div className="sticky top-4">
+                            <div className="bg-white rounded-lg shadow-sm p-4">
+                                <ProductFilters
+                                    categories={categories || []}
+                                    selectedCategory={selectedCategory}
+                                    onCategoryChange={(category) => {
+                                        setSelectedCategory(category);
+                                        setMobileFiltersOpen(false);
+                                    }}
+                                />
+                            </div>
                         </div>
-                    ) : (
-                        <>
-                            {/* Category Header */}
-                            {selectedCategory && (
-                                <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                                        {categories?.find(c => c.slug === selectedCategory)?.name || selectedCategory}
-                                    </h2>
-                                    <p className="text-gray-600">
-                                        Explore our range of {categories?.find(c => c.slug === selectedCategory)?.name || 'products'} designed for reliable power backup
-                                    </p>
-                                </div>
-                            )}
+                    </aside>
 
-                            <ProductGrid products={data?.products || []} />
+                    {/* Products Grid */}
+                    <main className="flex-1">
+                        {isLoading ? (
+                            <div className="flex justify-center items-center min-h-[400px]">
+                                <LoadingSpinner size="lg" />
+                            </div>
+                        ) : (
+                            <>
+                                {/* Category Header */}
+                                {selectedCategory && (
+                                    <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                                            {categories?.find(c => c.slug === selectedCategory)?.name || selectedCategory}
+                                        </h2>
+                                        <p className="text-gray-600">
+                                            Explore our range of {categories?.find(c => c.slug === selectedCategory)?.name || 'products'} designed for reliable power backup
+                                        </p>
+                                    </div>
+                                )}
 
-                            {/* Pagination */}
-                            {data && data.totalPages > 1 && (
-                                <div className="mt-12 bg-white rounded-lg shadow-sm p-4">
-                                    <Pagination
-                                        currentPage={data.currentPage}
-                                        totalPages={data.totalPages}
-                                        onPageChange={handlePageChange}
-                                    />
-                                </div>
-                            )}
-                        </>
-                    )}
-                </main>
+                                <ProductGrid products={data?.products || []} viewMode={viewMode} />
+
+                                {/* Pagination */}
+                                {data && data.totalPages > 1 && (
+                                    <div className="mt-12 bg-white rounded-lg shadow-sm p-4">
+                                        <Pagination
+                                            currentPage={data.currentPage}
+                                            totalPages={data.totalPages}
+                                            onPageChange={handlePageChange}
+                                        />
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </main>
+                </div>
             </div>
 
             {/* Bottom CTA Section */}

@@ -8,7 +8,7 @@ import LoadingSpinner from '@/components/shared/LoadingSpinner';
 // Import section components
 import { HeroSection } from '@/components/public/ProductDetail/HeroSection';
 import { TechnicalSpecsSection } from '@/components/public/ProductDetail/TechnicalSpecsSection';
-import { AdvancedFeaturesSection } from '@/components/public/ProductDetail/AdvancedFeaturesSection';
+//import { AdvancedFeaturesSection } from '@/components/public/ProductDetail/AdvancedFeaturesSection';
 import { InverterModelsSection } from '@/components/public/ProductDetail/InverterModelsSection';
 import { WhyChooseSection } from '@/components/public/ProductDetail/WhyChooseSection';
 import { CTASection } from '@/components/public/ProductDetail/CTASection';
@@ -36,7 +36,7 @@ const ProductDetail: React.FC = () => {
             <main>
                 <HeroSection product={product} />
                 <TechnicalSpecsSection product={product} />
-                <AdvancedFeaturesSection product={product} />
+              {/*  <AdvancedFeaturesSection product={product} />*/}
                 <InverterModelsSection
                     currentProduct={product}
                     relatedProducts={relatedProducts}

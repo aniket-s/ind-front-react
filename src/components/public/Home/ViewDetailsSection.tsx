@@ -58,23 +58,23 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
 
     // Render button based on link type
     const renderButton = (button: Button, index: number) => {
-        const buttonClasses = "bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition inline-flex items-center shadow-lg";
+        const buttonClasses = "bg-gradient-to-r from-[#E6B944] via-[#C5A043] to-[#8B6F2F] text-gray-800 px-8 py-3 rounded-full font-semibold hover:from-[#C5A043] hover:to-[#8B6F2F] transition-all duration-300 inline-flex items-center shadow-lg";
 
         if (isExternalOrFile(button.link)) {
             // For external links or files, use anchor tag
             return (
-<a
-                key={index}
-            href={button.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={buttonClasses}
-            download={button.link.includes('.pdf') ? true : undefined}
+                <a
+                    key={index}
+                    href={button.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonClasses}
+                    download={button.link.includes('.pdf') ? true : undefined}
                 >
-                {button.icon && <i className={`${button.icon} mr-3`}></i>}
-            <span>{button.text}</span>
-        </a>
-        );
+                    {button.icon && <i className={`${button.icon} mr-3`}></i>}
+                    <span>{button.text}</span>
+                </a>
+            );
         } else {
             // For internal links, use React Router Link
             return (
@@ -91,7 +91,7 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
     };
 
     return (
-        <section className="bg-yellow-300 py-16 relative overflow-hidden">
+        <section className="bg-gradient-to-br from-[#F4C430]/20 to-[#C5A043]/20 py-16 relative overflow-hidden">
             <div className="container mx-auto px-4">
                 {/* Floating Icons */}
                 {floatingIcons.map((item, index) => {
@@ -124,7 +124,7 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
                     <h2 className="text-3xl font-bold text-gray-800 mb-4">
                         {section.title || "VIEW COMPLETE DETAILS"}
                     </h2>
-                    <div className="w-24 h-1 bg-blue-600 mx-auto mb-8"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043] mx-auto mb-8"></div>
 
                     <div className="space-y-6">
                         {buttons.map((button, index) => (

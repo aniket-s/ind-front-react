@@ -264,9 +264,10 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
                     <div className="flex-1 bg-white rounded-lg shadow-sm p-4 md:p-8">
                         {/* Best Seller Badge */}
                         <div className="mb-4 md:mb-6">
-                            <span className="bg-blue-600 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-full text-sm font-semibold">
-                                Best Seller
-                            </span>
+    <span
+        className="bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-sm font-semibold shadow-md">
+        Best Seller
+    </span>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -294,7 +295,8 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
                                 </div>
 
                                 {/* Warranty Badge */}
-                                <div className="bg-blue-600 text-white rounded-lg p-3 md:p-4 inline-flex items-center">
+                                <div
+                                    className="bg-gradient-to-r from-[#E6B944] via-[#C5A043] to-[#8B6F2F] text-gray-800 rounded-lg p-3 md:p-4 inline-flex items-center shadow-lg">
                                     <FontAwesomeIcon
                                         icon={faShieldAlt}
                                         className="mr-2 md:mr-3 text-xl md:text-2xl"
@@ -305,12 +307,15 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
 
                             {/* Product Image */}
                             <div className="relative order-1 md:order-2 mb-6 md:mb-0">
-                                <div className="bg-yellow-200 rounded-full absolute inset-0 transform scale-75 hidden md:block"></div>
+                                <div
+                                    className="bg-yellow-200 rounded-full absolute inset-0 transform scale-75 hidden md:block"></div>
                                 <div className="relative z-10 flex items-center justify-center h-64 md:h-full">
+                                    <div
+                                        className="absolute inset-0 bg-gradient-to-br from-[#F4C430]/10 to-[#C5A043]/10 rounded-full transform scale-75"></div>
                                     <img
                                         src={product.image}
                                         alt={product.name}
-                                        className="w-full h-full object-contain"
+                                        className="relative z-10 w-full h-full object-contain"
                                     />
                                 </div>
                             </div>

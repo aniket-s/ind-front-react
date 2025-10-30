@@ -13,6 +13,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Golden Color System */
+  --gold-light: #E6B944;
+  --gold-mid: #C5A043;
+  --gold-dark: #8B6F2F;
+  --gold-bronze: #9B7F35;
 }
 
 #root {
@@ -82,6 +88,46 @@ button:focus-visible {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+  /* Golden Gradient Utilities */
+  .bg-gold-gradient {
+    background: linear-gradient(to bottom, #E6B944, #C5A043, #8B6F2F);
+  }
+
+  .bg-gold-gradient-horizontal {
+    background: linear-gradient(to right, #E6B944, #C5A043);
+  }
+
+  .bg-gold-gradient-subtle {
+    background: linear-gradient(to bottom right, #C5A043, #9B7F35);
+  }
+
+  .gold-metallic {
+    background: linear-gradient(to bottom, #E6B944, #C5A043, #8B6F2F);
+    box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .text-gold {
+    color: #C5A043;
+  }
+
+  .text-gold-light {
+    color: #E6B944;
+  }
+
+  .text-gold-dark {
+    color: #8B6F2F;
+  }
+
+  .border-gold {
+    border-color: #C5A043;
+  }
+
+  .hover-gold-darken:hover {
+    background: linear-gradient(to bottom, #C5A043, #8B6F2F);
+  }
 }
 
 /* Slide animation */
@@ -122,42 +168,31 @@ button:focus-visible {
 
 /* Hero navigation button styles */
 .hero-nav-button {
-  /* Positioning */
   position: absolute;
-  left: 1.5rem; /* left-6 */
-  top: 50%; /* top-1/2 */
-  transform: translateY(-50%); /* -translate-y-1/2 */
-
-  /* Spacing */
-  padding: 0.75rem; /* p-3 */
-
-  /* Visual */
-  border-radius: 9999px; /* rounded-full */
-  background-color: rgba(255, 255, 255, 0.1); /* bg-white/10 */
-  color: white; /* text-white */
-  backdrop-filter: blur(4px); /* backdrop-blur-sm */
-  -webkit-backdrop-filter: blur(4px); /* Safari support */
-
-  /* Transitions */
-  transition-property: all; /* transition-all */
-  transition-duration: 300ms; /* duration-300 */
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* Tailwind default */
-
-  /* Reset button styles */
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.75rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition-property: all;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   cursor: pointer;
 }
 
-/* Hover state */
 .hero-nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* hover:bg-white/20 */
-  transform: translateY(-50%) scale(1.1); /* Combining -translate-y-1/2 and hover:scale-110 */
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
 }
 
-/* Focus state */
 .hero-nav-button:focus {
-  outline: none; /* focus:outline-none */
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5); /* focus:ring-2 focus:ring-white/50 */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 /* Custom color class */
@@ -167,11 +202,9 @@ button:focus-visible {
 }
 
 .why-indpower-slider {
-  /* Smooth transitions for slider */
   transition: transform 0.3s ease-in-out;
 }
 
-/* Card hover effects */
 .why-indpower-card {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -185,7 +218,6 @@ button:focus-visible {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-/* Navigation button styles */
 .why-indpower-nav-btn {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -202,17 +234,15 @@ button:focus-visible {
   cursor: not-allowed;
 }
 
-/* Indicator animation */
 .why-indpower-indicator {
   transition: all 0.3s ease;
 }
 
 .why-indpower-indicator.active {
-  background: #facc15; /* yellow-400 */
+  background: linear-gradient(to right, #E6B944, #C5A043);
   width: 32px;
 }
 
-/* Mobile touch interaction */
 @media (max-width: 768px) {
   .why-indpower-slider-container {
     cursor: grab;
@@ -223,7 +253,6 @@ button:focus-visible {
   }
 }
 
-/* Background overlay gradient */
 .why-indpower-overlay {
   background: linear-gradient(
           135deg,
@@ -234,7 +263,6 @@ button:focus-visible {
   );
 }
 
-/* Explore button animation */
 .explore-btn {
   position: relative;
   overflow: hidden;
@@ -259,7 +287,6 @@ button:focus-visible {
   height: 300px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1280px) {
   .why-indpower-section .container {
     max-width: 100%;

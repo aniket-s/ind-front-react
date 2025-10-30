@@ -77,9 +77,6 @@ export const TechnicalSpecsSection: React.FC<TechnicalSpecsSectionProps> = ({ pr
                                 <thead>
                                 <tr className="bg-blue-600 text-white">
                                     <th className="px-4 md:px-6 py-3 md:py-4 text-left font-semibold text-sm md:text-base">
-                                        Specification
-                                    </th>
-                                    <th className="px-4 md:px-6 py-3 md:py-4 text-left font-semibold text-sm md:text-base">
                                         Details
                                     </th>
                                 </tr>
@@ -87,11 +84,8 @@ export const TechnicalSpecsSection: React.FC<TechnicalSpecsSectionProps> = ({ pr
                                 <tbody className="divide-y divide-gray-200">
                                 {specifications.map((spec, index) => (
                                     <tr key={index} className="hover:bg-gray-50 transition">
-                                        <td className="px-4 md:px-6 py-3 md:py-4 font-medium text-gray-900 text-sm md:text-base">
-                                            {spec.label}
-                                        </td>
                                         <td className="px-4 md:px-6 py-3 md:py-4 text-gray-700 text-sm md:text-base">
-                                            {spec.value}
+                                            <span className="font-medium text-gray-900">{spec.label}:</span> {spec.value}
                                         </td>
                                     </tr>
                                 ))}

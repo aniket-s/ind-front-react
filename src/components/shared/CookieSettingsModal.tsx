@@ -180,7 +180,7 @@ const CookieSettingsModal: React.FC = () => {
                             </button>
                             <button
                                 onClick={handleSave}
-                                className="px-6 py-2.5 text-sm font-bold text-gray-900 bg-yellow-400 rounded-lg hover:bg-yellow-300 transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                                className="px-6 py-2.5 text-sm font-bold text-gray-900 bg-gradient-to-r from-[#E6B944] to-[#C5A043] rounded-lg hover:from-[#C5A043] hover:to-[#8B6F2F] transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
                             >
                                 Save Preferences
                             </button>

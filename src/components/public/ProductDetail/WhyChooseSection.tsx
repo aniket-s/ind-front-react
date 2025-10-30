@@ -23,7 +23,7 @@ export const WhyChooseSection: React.FC = () => {
         {
             icon: faStar,
             title: "Industry Leader",
-            description: "Over 15 years of experience in power solutions with countless satisfied customers and proven track record."
+            description: "Over 4+ years of experience in power solutions with countless satisfied customers and proven track record."
         },
         {
             icon: faLeaf,
@@ -37,7 +37,7 @@ export const WhyChooseSection: React.FC = () => {
             <div className="container mx-auto px-4">
                 {/* Section Heading */}
                 <h2 className="text-2xl md:text-4xl font-bold text-yellow-400 text-center mb-3 md:mb-4">
-                    Why Choose INDPOWER Inverters?
+                    Why Choose INDPOWER Batteries?
                 </h2>
                 <p className="text-white text-center mb-8 md:mb-12 text-sm md:text-base">
                     Trusted by millions across India for reliable power backup solutions
@@ -67,21 +67,18 @@ export const WhyChooseSection: React.FC = () => {
                 <div className="mt-12 md:mt-16">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
                         <div className="text-center">
-                            <h4 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">15+</h4>
+
+                        </div>
+
+                        <div className="text-center">
+                            <h4 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">4+</h4>
                             <p className="text-white/80 text-sm">Years of Excellence</p>
                         </div>
                         <div className="text-center">
-                            <h4 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">3000+</h4>
-                            <p className="text-white/80 text-sm">Dealer Network</p>
+                            <h4 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">17000+</h4>
+                            <p className="text-white/80 text-sm">Available Locations</p>
                         </div>
-                        <div className="text-center">
-                            <h4 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">1M+</h4>
-                            <p className="text-white/80 text-sm">Happy Customers</p>
-                        </div>
-                        <div className="text-center">
-                            <h4 className="text-3xl md:text-4xl font-bold text-yellow-400 mb-2">24/7</h4>
-                            <p className="text-white/80 text-sm">Customer Support</p>
-                        </div>
+
                     </div>
                 </div>
             </div>

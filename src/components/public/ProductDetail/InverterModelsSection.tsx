@@ -49,7 +49,7 @@ export const InverterModelsSection: React.FC<InverterModelsSectionProps> = ({
                         <div key={model.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
                             {/* Highlight current product */}
                             {model.id === currentProduct.id && (
-                                <div className="bg-yellow-400 text-gray-800 text-center py-2 font-semibold text-sm">
+                                <div className="bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 text-center py-2 font-semibold text-sm">
                                     Currently Viewing
                                 </div>
                             )}
@@ -118,7 +118,7 @@ export const InverterModelsSection: React.FC<InverterModelsSectionProps> = ({
                                 ) : (
                                     <Link
                                         to={`/products/${model.slug}`}
-                                        className="block w-full bg-yellow-400 text-gray-800 py-3 rounded-full font-semibold hover:bg-yellow-300 transition text-center"
+                                        className="block w-full bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 py-3 rounded-full font-semibold hover:bg-yellow-300 transition text-center"
                                     >
                                         View Details
                                     </Link>
@@ -160,15 +160,6 @@ export const InverterModelsSection: React.FC<InverterModelsSectionProps> = ({
                     </div>
                 )}
 
-                {/* View All Products CTA */}
-                <div className="text-center mt-8">
-                    <Link
-                        to="/products"
-                        className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition"
-                    >
-                        View All Products
-                    </Link>
-                </div>
             </div>
         </section>
     );

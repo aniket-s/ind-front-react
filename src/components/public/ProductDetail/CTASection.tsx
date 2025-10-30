@@ -15,7 +15,7 @@ interface CTASectionProps {
 
 export const CTASection: React.FC<CTASectionProps> = ({ product }) => {
     return (
-        <section className="bg-yellow-400 py-8 md:py-16">
+        <section className="bg-gradient-to-r from-[#E6B944] to-[#C5A043] py-8 md:py-16">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-2xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
                     Ready to Power Your Space with {product.name}?
@@ -61,7 +61,7 @@ export const CTASection: React.FC<CTASectionProps> = ({ product }) => {
                     <p className="text-gray-700 mb-4">Want to know more about technical specifications?</p>
                     <a
                         href='/Indpower-Sales-Docket.pdf' target="_blank"
-                        className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700"
+                        className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:bg-blue-700 transition transform hover:scale-105"
                     >
                         <FontAwesomeIcon icon={faDownload} className="mr-2" />
                         Download Product Brochure

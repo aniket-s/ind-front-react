@@ -141,7 +141,7 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                 </h2>
                                 {section.subtitle && (
                                     <>
-                                        <div className="w-16 h-1 bg-yellow-400 mb-4"></div>
+                                        <div className="w-16 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043] mb-4"></div>
                                         <p className="text-white/90 text-base lg:text-lg max-w-sm">
                                             {section.subtitle}
                                         </p>

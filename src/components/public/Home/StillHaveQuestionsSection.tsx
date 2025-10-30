@@ -40,7 +40,6 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
 
     // Default contact options with Font Awesome icon objects
     const defaultContactOptions: ContactOption[] = [
-        { icon: faComments, text: "Live Chat", style: "primary" },
         { icon: faEnvelope, text: "Email Support", style: "outline" },
         { icon: faPhone, text: "Call Us: 1800-XXX-XXXX", style: "accent" }
     ];
@@ -78,7 +77,7 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
                                 const styleClasses = {
                                     primary: "bg-white text-blue-600 hover:bg-gray-100",
                                     outline: "border-2 border-white text-white hover:bg-white hover:text-blue-600",
-                                    accent: "bg-yellow-400 text-gray-800 hover:bg-yellow-300"
+                                    accent: "bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 hover:bg-yellow-300"
                                 };
 
                                 return (

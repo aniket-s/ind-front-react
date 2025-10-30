@@ -151,7 +151,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                 <img
                     src={getImageUrl(banner.image)}
                     alt={banner.title}
-                    className="w-full  object-cover"
+                    className="w-full h-full object-cover"
                 />
             </picture>
         );
@@ -199,14 +199,30 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
                         {/* Side Navigation Buttons */}
                         <button
                             onClick={handlePrev}
-                            className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white text-gray-800 hover:bg-gray-50 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                            className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 text-gray-800 hover:bg-gray-50 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                            style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                color: '#1f2937',
+                                border: 'none',
+                                padding: '0.5rem',
+                                fontSize: 'inherit',
+                                fontWeight: 'inherit'
+                            }}
                             aria-label="Previous slide"
                         >
                             <ChevronLeftIcon className="h-5 w-5"/>
                         </button>
                         <button
                             onClick={handleNext}
-                            className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white text-gray-800 hover:bg-gray-50 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                            className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/80 text-gray-800 hover:bg-gray-50 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                            style={{
+                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                color: '#1f2937',
+                                border: 'none',
+                                padding: '0.5rem',
+                                fontSize: 'inherit',
+                                fontWeight: 'inherit'
+                            }}
                             aria-label="Next slide"
                         >
                             <ChevronRightIcon className="h-5 w-5"/>
@@ -217,15 +233,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({ banners }) => {
 
             {/* Dot Indicators and Pause Button - Below the image */}
             {banners.length > 1 && (
-                <div className="py-4 md:py-5 bg-color[#f9fafb]">
+                <div className="py-4 md:py-5 bg-[#f9fafb]">
                     <div className="flex items-center justify-center gap-3 md:gap-4 px-4">
                         {/* Pause/Play Button */}
                         <button
                             onClick={togglePause}
                             className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                            style={{
+                                backgroundColor: '#374151',
+                                color: '#ffffff',
+                                border: 'none',
+                                padding: '0.5rem',
+                                fontSize: 'inherit',
+                                fontWeight: 'inherit'
+                            }}
                             aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
                         >
-                        {isPaused ? (
+                            {isPaused ? (
                                 <PlayIcon className="h-4 w-4 md:h-5 md:w-5 text-white" />
                             ) : (
                                 <PauseIcon className="h-4 w-4 md:h-5 md:w-5 text-white" />

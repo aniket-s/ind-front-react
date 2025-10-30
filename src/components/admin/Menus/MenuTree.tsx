@@ -49,10 +49,22 @@ const MenuTree: React.FC<MenuTreeProps> = ({
         });
     }, []);
 
+    // Flatten the menu tree to get all menus with their parent relationships
+    const flattenMenus = (menuList: Menu[], parentId: string | null = null): Array<{ menu: Menu; parentId: string | null }> => {
+        let result: Array<{ menu: Menu; parentId: string | null }> = [];
+        menuList.forEach(menu => {
+            result.push({ menu, parentId });
+            if (menu.children && menu.children.length > 0) {
+                result = result.concat(flattenMenus(menu.children, menu.id));
+            }
+        });
+        return result;
+    };
+
     const handleDragStart = (e: React.DragEvent, menu: Menu, parentId?: string | null) => {
         setDraggedItem({
             id: menu.id,
-            parentId,
+            parentId: parentId || null,
             sortOrder: menu.sortOrder,
         });
         e.dataTransfer.effectAllowed = 'move';
@@ -73,35 +85,57 @@ const MenuTree: React.FC<MenuTreeProps> = ({
 
     const handleDrop = (e: React.DragEvent, targetMenu: Menu, targetParentId?: string | null) => {
         e.preventDefault();
+        e.stopPropagation();
         setDragOverItem(null);
 
         if (!draggedItem || !onReorder || draggedItem.id === targetMenu.id) {
+            setDraggedItem(null);
             return;
         }
 
-        // Build the new order
-        const updates: Array<{ id: string; sortOrder: number; parentId?: string | null }> = [];
+        // Get all menus flattened with their parent relationships
+        const flatMenus = flattenMenus(menus);
 
-        // This is a simplified reorder logic - you might need to adjust based on your needs
-        const sourceIndex = menus.findIndex((m) => m.id === draggedItem.id);
-        const targetIndex = menus.findIndex((m) => m.id === targetMenu.id);
+        // Find dragged and target items
+        const draggedMenuData = flatMenus.find(m => m.menu.id === draggedItem.id);
+        const targetMenuData = flatMenus.find(m => m.menu.id === targetMenu.id);
 
-        if (sourceIndex !== -1 && targetIndex !== -1) {
-            const reorderedMenus = [...menus];
-            const [removed] = reorderedMenus.splice(sourceIndex, 1);
-            reorderedMenus.splice(targetIndex, 0, removed);
-
-            reorderedMenus.forEach((menu, index) => {
-                updates.push({
-                    id: menu.id,
-                    sortOrder: index,
-                    parentId: targetParentId,
-                });
-            });
-
-            onReorder(updates);
+        if (!draggedMenuData || !targetMenuData) {
+            setDraggedItem(null);
+            return;
         }
 
+        // Only allow reordering within the same parent level
+        const normalizedTargetParentId = targetParentId === undefined ? null : targetParentId;
+
+        // Get all siblings (menus with same parent)
+        const siblings = flatMenus
+            .filter(m => (m.parentId || null) === normalizedTargetParentId)
+            .map(m => m.menu)
+            .sort((a, b) => a.sortOrder - b.sortOrder);
+
+        // Remove dragged item from its current position
+        const draggedIndex = siblings.findIndex(m => m.id === draggedItem.id);
+        const targetIndex = siblings.findIndex(m => m.id === targetMenu.id);
+
+        if (draggedIndex === -1 || targetIndex === -1) {
+            setDraggedItem(null);
+            return;
+        }
+
+        // Reorder siblings
+        const reorderedSiblings = [...siblings];
+        const [removed] = reorderedSiblings.splice(draggedIndex, 1);
+        reorderedSiblings.splice(targetIndex, 0, removed);
+
+        // Build updates with new sort orders
+        const updates = reorderedSiblings.map((menu, index) => ({
+            id: menu.id,
+            sortOrder: index,
+            parentId: normalizedTargetParentId,
+        }));
+
+        onReorder(updates);
         setDraggedItem(null);
     };
 
@@ -125,7 +159,7 @@ const MenuTree: React.FC<MenuTreeProps> = ({
                         'flex items-center justify-between p-4 transition-colors',
                         'hover:bg-gray-50',
                         !menu.isActive && 'opacity-50',
-                        isDraggedOver && 'bg-blue-50',
+                        isDraggedOver && isReordering && 'bg-blue-50 border-2 border-blue-300',
                         isReordering && 'cursor-move'
                     )}
                     style={{ paddingLeft: `${(level + 1) * 1}rem` }}
@@ -141,10 +175,10 @@ const MenuTree: React.FC<MenuTreeProps> = ({
                 >
                     <div className="flex items-center flex-1">
                         {isReordering && (
-                            <Bars2Icon className="h-4 w-4 text-gray-400 mr-2" />
+                            <Bars2Icon className="h-5 w-5 text-gray-400 mr-3" />
                         )}
 
-                        {hasChildren && (
+                        {hasChildren && !isReordering && (
                             <button
                                 onClick={() => toggleExpand(menu.id)}
                                 className="mr-2 p-1 hover:bg-gray-200 rounded transition-colors"
@@ -218,7 +252,7 @@ const MenuTree: React.FC<MenuTreeProps> = ({
                     </div>
                 </div>
 
-                {hasChildren && isExpanded && (
+                {hasChildren && (isExpanded || isReordering) && (
                     <div className="bg-gray-50" role="group">
                         {menu.children!.map((child) => renderMenu(child, level + 1, menu.id))}
                     </div>
