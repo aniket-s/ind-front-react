@@ -97,15 +97,17 @@ const Header: React.FC = () => {
                         {/* Contact Information */}
                         <div className="hidden md:flex items-center space-x-6">
                             <div className="flex items-center">
-                                <EnvelopeIcon className="h-4 w-4 mr-2" />
-                                <span>{info?.contact?.email || 'info@indpower.com'}</span>
+                                <EnvelopeIcon className="h-4 w-4 mr-2"/>
+                                <span
+                                    className="font-bold text-base">{info?.contact?.email || 'info@indpower.com'}</span>
                             </div>
                             <div className="flex items-center">
-                                <PhoneIcon className="h-4 w-4 mr-2" />
-                                <span>{info?.contact?.phone || '+91 123 456 7890'}</span>
+                                <PhoneIcon className="h-4 w-4 mr-2"/>
+                                <span
+                                    className="font-bold text-base">{info?.contact?.phone || '+91 123 456 7890'}</span>
                             </div>
                             <div className="flex items-center">
-                                <ClockIcon className="h-4 w-4 mr-2" />
+                                <ClockIcon className="h-4 w-4 mr-2"/>
                                 <span>Mon-Fri: 09AM - 06PM</span>
                             </div>
                         </div>
@@ -123,7 +125,7 @@ const Header: React.FC = () => {
                                         className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition"
                                         aria-label={social.name}
                                     >
-                                        <Icon className="w-4 h-4 text-white" />
+                                        <Icon className="w-4 h-4 text-white"/>
                                     </a>
                                 ) : null;
                             })}
@@ -137,7 +139,7 @@ const Header: React.FC = () => {
                 <nav className="flex items-center justify-between py-4 gap-6">
                     {/* Logo */}
                     <Link to="/" className="flex items-center flex-shrink-0">
-                        <Logo className="h-28" />
+                        <Logo className="h-28"/>
                     </Link>
 
                     {/* Desktop Navigation Menu - Center */}

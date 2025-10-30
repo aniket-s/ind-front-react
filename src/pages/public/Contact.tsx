@@ -125,11 +125,11 @@ const Contact: React.FC = () => {
                                 "w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform",
                                 channel.color
                             )}>
-                                <channel.icon className="h-7 w-7" />
+                                <channel.icon className="h-7 w-7"/>
                             </div>
                             <h3 className="font-semibold text-gray-900 mb-1">{channel.title}</h3>
                             <p className="text-sm text-gray-500 mb-2">{channel.subtitle}</p>
-                            <p className="text-blue-600 font-medium group-hover:text-blue-700">
+                            <p className="text-blue-600 font-bold text-lg group-hover:text-blue-700">
                                 {channel.value}
                             </p>
                         </a>
@@ -154,15 +154,16 @@ const Contact: React.FC = () => {
                                 <h3 className="font-semibold text-gray-800 mb-3 text-lg">Head Office</h3>
                                 <div className="space-y-3">
                                     <div className="flex items-start space-x-3">
-                                        <MapPinIcon className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
+                                        <MapPinIcon className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0"/>
                                         <p className="text-gray-600">
                                             {info?.contact?.address ||
                                                 "IndPower India Pvt. Ltd.\nCorporate Office, Tower A\nSector 16, Noida\nUttar Pradesh - 201301"}
                                         </p>
                                     </div>
                                     <div className="flex items-center space-x-3">
-                                        <PhoneIcon className="h-5 w-5 text-gray-400" />
-                                        <a href={`tel:${info?.contact?.phone || "+91 123 456 7890"}`} className="text-gray-600 hover:text-blue-600">
+                                        <PhoneIcon className="h-5 w-5 text-gray-400"/>
+                                        <a href={`tel:${info?.contact?.phone || "+91 123 456 7890"}`}
+                                           className="text-gray-600 hover:text-blue-600 font-bold text-base">
                                             {info?.contact?.phone || "+91 123 456 7890"}
                                         </a>
                                     </div>
@@ -175,7 +176,7 @@ const Contact: React.FC = () => {
                         {/* Business Hours */}
                         <div className="bg-blue-50 rounded-2xl p-8">
                             <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
-                                <ClockIcon className="h-6 w-6 mr-2 text-blue-600" />
+                            <ClockIcon className="h-6 w-6 mr-2 text-blue-600" />
                                 Business Hours
                             </h3>
                             <div className="space-y-2 text-gray-700">

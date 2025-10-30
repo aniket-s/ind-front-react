@@ -143,13 +143,13 @@ const Footer: React.FC = () => {
                             <div className="flex items-center">
                                 <PhoneIcon className="h-5 w-5 mr-3 text-[#E6B944] flex-shrink-0"/>
                                 <div>
-                                    <p className="text-white/80 text-sm">Support: {info?.contact?.phone || '+91-XXX-XXX-XXXX'}</p>
+                                    <p className="text-white/80 text-base font-bold">Support: {info?.contact?.phone || '+91-XXX-XXX-XXXX'}</p>
                                 </div>
                             </div>
                             <div className="flex items-center">
                                 <EnvelopeIcon className="h-5 w-5 mr-3 text-[#E6B944] flex-shrink-0"/>
                                 <div>
-                                    <p className="text-white/80 text-sm">{info?.contact?.email || 'info@indpower.com'}</p>
+                                    <p className="text-white/80 text-base font-bold">{info?.contact?.email || 'info@indpower.com'}</p>
                                 </div>
                             </div>
                         </div>
