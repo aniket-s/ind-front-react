@@ -450,7 +450,7 @@ const BecomePartner: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={mutation.isPending}
-                                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="w-full bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-black px-6 py-4 rounded-full font-bold text-lg hover:from-[#c88a2f] hover:to-[#e8c389] transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                 >
                                     {mutation.isPending ? (
                                         <>
@@ -459,8 +459,8 @@ const BecomePartner: React.FC = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <span>Submit</span>
-                                            <CheckCircleIcon className="h-6 w-6" />
+                                            <span style={{ color: "#000"}}>Submit</span>
+                                            <CheckCircleIcon className="h-6 w-6 text-black"/>
                                         </>
                                     )}
                                 </button>

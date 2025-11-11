@@ -15,10 +15,10 @@ import AuthLayout from './layouts/AuthLayout';
 import Home from './pages/public/Home';
 import Products from './pages/public/Products';
 import ProductDetail from './pages/public/ProductDetail';
+import Solar from './pages/public/Solar';
 import Contact from './pages/public/Contact';
 import About from './pages/public/About';
 import FAQs from './pages/public/FAQs';
-import Solar from './pages/public/Solar';
 import Privacy from './pages/public/Privacy';
 import Terms from './pages/public/Terms';
 import CookiePolicy from './pages/public/CookiePolicy';
@@ -46,6 +46,7 @@ import Profile from './pages/admin/Profile';
 
 // Components
 import ProtectedRoute from './components/shared/ProtectedRoute';
+import ScrollToTop from './components/shared/ScrollToTop';
 import BecomePartner from "@/pages/public/BecomePartner.tsx";
 
 const queryClient = new QueryClient({
@@ -64,16 +65,17 @@ function App() {
             <AuthProvider>
                 <CookieConsentProvider>
                     <Router>
+                        <ScrollToTop />
                         <Routes>
                             {/* Public Routes */}
                             <Route path="/" element={<PublicLayout />}>
                                 <Route index element={<Home />} />
                                 <Route path="products" element={<Products />} />
                                 <Route path="products/:slug" element={<ProductDetail />} />
+                                <Route path="solar" element={<Solar />} />
                                 <Route path="contact" element={<Contact />} />
                                 <Route path="about" element={<About />} />
                                 <Route path="faqs" element={<FAQs />} />
-                                <Route path="solar" element={<Solar />} />
                                 <Route path="dealer-locator" element={<BecomePartner />} />
                                 <Route path="privacy" element={<Privacy />} />
                                 <Route path="terms" element={<Terms />} />
