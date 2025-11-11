@@ -18,7 +18,7 @@ import ProductDetail from './pages/public/ProductDetail';
 import Contact from './pages/public/Contact';
 import About from './pages/public/About';
 import FAQs from './pages/public/FAQs';
-import DealerLocator from './pages/public/DealerLocator';
+import Solar from './pages/public/Solar';
 import Privacy from './pages/public/Privacy';
 import Terms from './pages/public/Terms';
 import CookiePolicy from './pages/public/CookiePolicy';
@@ -73,6 +73,7 @@ function App() {
                                 <Route path="contact" element={<Contact />} />
                                 <Route path="about" element={<About />} />
                                 <Route path="faqs" element={<FAQs />} />
+                                <Route path="solar" element={<Solar />} />
                                 <Route path="dealer-locator" element={<BecomePartner />} />
                                 <Route path="privacy" element={<Privacy />} />
                                 <Route path="terms" element={<Terms />} />

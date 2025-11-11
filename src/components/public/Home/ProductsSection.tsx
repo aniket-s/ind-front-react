@@ -21,7 +21,7 @@ interface Category {
     isText?: boolean;
     isImage?: boolean;
     imageUrl?: string;
-    link?: string; // Added link property
+    link?: string;
 }
 
 interface Product {
@@ -58,7 +58,7 @@ const iconMap: { [key: string]: IconDefinition } = {
     'fas fa-shield-alt': faShieldAlt,
 };
 
-// Category link mapping
+// Category link mapping - Updated Solar to use dedicated page
 const categoryLinkMap: { [key: string]: string } = {
     "Inverter": "/products?category=inverters",
     "Inverter Batteries": "/products?category=inverter-battery",
@@ -66,7 +66,7 @@ const categoryLinkMap: { [key: string]: string } = {
     "3 W Batteries": "/products?category=3-w-batteries",
     "4 W Batteries": "/products?category=4-w-batteries",
     "e-Rickshaw Batteries": "/products?category=e-rickshaw-batteries",
-    "Solar": "/products?category=solar",
+    "Solar": "/solar", // Updated to dedicated solar page
     "Tractor and CV": "/products?category=tractor-and-cv"
 };
 

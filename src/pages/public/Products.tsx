@@ -1,6 +1,6 @@
 // src/pages/public/Products.tsx
-import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
 import ProductGrid from '@/components/public/Products/ProductGrid';
@@ -13,11 +13,19 @@ import { cn } from '@/utils';
 
 const Products: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     // Use URL as single source of truth - derive state from URL params
     const urlSearch = searchParams.get('search') || '';
     const urlCategory = searchParams.get('category') || '';
     const urlPage = parseInt(searchParams.get('page') || '1');
+
+    // Redirect to /solar if category is solar or solars
+    useEffect(() => {
+        if (urlCategory === 'solar' || urlCategory === 'solars') {
+            navigate('/solar', { replace: true });
+        }
+    }, [urlCategory, navigate]);
 
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [viewMode] = useState<'grid' | 'list'>('grid');
@@ -258,23 +266,23 @@ const Products: React.FC = () => {
                         Our product experts are ready to help you find the perfect power solution for your needs
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-<a
-                        href="/contact"
-                        className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
+                        <a
+                            href="/contact"
+                            className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
                         >
-                        Get Expert Advice
-                    </a>
-<a
-                    href="/dealer-locator"
-                    className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                    >
-                    Find Nearest Dealer
-                </a>
+                            Get Expert Advice
+                        </a>
+                        <a
+                            href="/dealer-locator"
+                            className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+                        >
+                            Find Nearest Dealer
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-</div>
-</div>
-);
+    );
 };
 
 export default Products;
