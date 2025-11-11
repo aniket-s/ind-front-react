@@ -1,16 +1,16 @@
 // src/components/shared/CookieBanner.tsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { XMarkIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useCookieConsent } from '@/contexts/CookieConsentContext';
 
 const CookieBanner: React.FC = () => {
-    const { showBanner, acceptAll, declineNonEssential, openSettings } = useCookieConsent();
+    const { showBanner, acceptAll, dismiss, openSettings } = useCookieConsent();
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
         if (showBanner) {
-            // Delay to trigger slide-up animation
+            // Delay to trigger fade-in animation
             const timer = setTimeout(() => setIsVisible(true), 100);
             return () => clearTimeout(timer);
         }
@@ -23,100 +23,67 @@ const CookieBanner: React.FC = () => {
         setTimeout(acceptAll, 300);
     };
 
-    const handleDecline = () => {
+    const handleDismiss = () => {
         setIsVisible(false);
-        setTimeout(declineNonEssential, 300);
-    };
-
-    const handleSettings = () => {
-        openSettings();
+        setTimeout(dismiss, 300);
     };
 
     return (
-        <>
-            {/* Backdrop */}
-            <div
-                className={`fixed inset-0 bg-black/20 backdrop-blur-sm z-40 transition-opacity duration-300 ${
-                    isVisible ? 'opacity-100' : 'opacity-0'
-                }`}
-            />
-
-            {/* Cookie Banner */}
-            <div
-                className={`fixed bottom-0 left-0 right-0 z-50 transform transition-transform duration-500 ease-out ${
-                    isVisible ? 'translate-y-0' : 'translate-y-full'
-                }`}
-            >
-                <div className="bg-white border-t-4 border-blue-600 shadow-2xl">
-                    <div className="container mx-auto px-4 py-6 md:py-8">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                            {/* Content */}
+        <div
+            className={`fixed bottom-0 left-0 right-0 z-40 transform transition-all duration-500 ease-out ${
+                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+            }`}
+        >
+            <div className="bg-white border-t border-gray-200 shadow-lg">
+                <div className="container mx-auto px-4 py-4">
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                        {/* Cookie Icon & Content */}
+                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <div className="flex-shrink-0">
+                                <span className="text-2xl">🍪</span>
+                            </div>
                             <div className="flex-1">
-                                <div className="flex items-start gap-3 mb-3">
-                                    <div className="flex-shrink-0 mt-1">
-                                        <svg
-                                            className="w-6 h-6 text-blue-600"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={2}
-                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-bold text-gray-900 mb-2">
-                                            We Value Your Privacy
-                                        </h3>
-                                        <p className="text-sm text-gray-600 leading-relaxed">
-                                            IndPower uses cookies to enhance your browsing experience, serve
-                                            personalized content, and analyze our traffic. By clicking "Accept All",
-                                            you consent to our use of cookies.{' '}
-                                            <Link
-                                                to="/cookie-policy"
-                                                className="text-blue-600 hover:text-blue-700 underline font-medium"
-                                            >
-                                                Learn more
-                                            </Link>
-                                        </p>
-                                    </div>
-                                </div>
+                                <p className="text-sm text-gray-700 leading-relaxed">
+                                    This website uses cookies that help the website function and to help us understand how to interact with it. We use these cookies to provide you with improved and customized user experience. If you continue to use the website, we assume that you are okay with it.{' '}
+                                    <Link
+                                        to="/cookie-policy"
+                                        className="text-blue-600 hover:text-blue-700 underline font-medium whitespace-nowrap"
+                                    >
+                                        Learn more
+                                    </Link>
+                                </p>
                             </div>
+                        </div>
 
-                            {/* Actions */}
-                            <div className="flex flex-col sm:flex-row gap-3 md:flex-shrink-0">
-                                <button
-                                    onClick={handleSettings}
-                                    className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                    aria-label="Cookie Settings"
-                                >
-                                    <Cog6ToothIcon className="w-4 h-4" />
-                                    <span className="hidden sm:inline">Settings</span>
-                                </button>
+                        {/* Actions */}
+                        <div className="flex items-center gap-3 flex-shrink-0">
+                            <button
+                                onClick={openSettings}
+                                className="text-sm text-gray-600 hover:text-gray-800 underline font-medium hidden sm:inline"
+                                aria-label="Cookie Settings"
+                            >
+                                Settings
+                            </button>
 
-                                <button
-                                    onClick={handleDecline}
-                                    className="px-6 py-2.5 text-sm font-semibold text-gray-700 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                                >
-                                    Decline Non-Essential
-                                </button>
+                            <button
+                                onClick={handleAccept}
+                                className="px-6 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 whitespace-nowrap"
+                            >
+                                Got it
+                            </button>
 
-                                <button
-                                    onClick={handleAccept}
-                                    className="px-6 py-2.5 text-sm font-bold text-gray-900 bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] rounded-lg hover:from-[#C5A043] hover:to-[#8B6F2F] transition-all shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
-                                >
-                                    Accept All Cookies
-                                </button>
-                            </div>
+                            <button
+                                onClick={handleDismiss}
+                                className="p-2 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 rounded"
+                                aria-label="Dismiss"
+                            >
+                                <XMarkIcon className="w-5 h-5" />
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

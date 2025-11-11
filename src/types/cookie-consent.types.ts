@@ -19,6 +19,7 @@ export interface CookieConsentContextType {
     preferences: CookiePreferences;
     acceptAll: () => void;
     declineNonEssential: () => void;
+    dismiss: () => void;
     updatePreferences: (prefs: CookiePreferences) => void;
     openSettings: () => void;
     closeSettings: () => void;

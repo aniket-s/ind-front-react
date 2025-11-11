@@ -46,6 +46,7 @@ import Profile from './pages/admin/Profile';
 
 // Components
 import ProtectedRoute from './components/shared/ProtectedRoute';
+import BecomePartner from "@/pages/public/BecomePartner.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -72,7 +73,7 @@ function App() {
                                 <Route path="contact" element={<Contact />} />
                                 <Route path="about" element={<About />} />
                                 <Route path="faqs" element={<FAQs />} />
-                                <Route path="dealer-locator" element={<DealerLocator />} />
+                                <Route path="dealer-locator" element={<BecomePartner />} />
                                 <Route path="privacy" element={<Privacy />} />
                                 <Route path="terms" element={<Terms />} />
                                 <Route path="cookie-policy" element={<CookiePolicy />} />

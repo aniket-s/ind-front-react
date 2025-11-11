@@ -104,6 +104,13 @@ export const CookieConsentProvider: React.FC<CookieConsentProviderProps> = ({ ch
         setShowSettings(false);
     };
 
+    const dismiss = () => {
+        // When dismissed, only save essential cookies (same as decline non-essential)
+        saveConsent(defaultPreferences);
+        setShowBanner(false);
+        setShowSettings(false);
+    };
+
     const updatePreferences = (newPreferences: CookiePreferences) => {
         const prefs = {
             ...newPreferences,
@@ -135,6 +142,7 @@ export const CookieConsentProvider: React.FC<CookieConsentProviderProps> = ({ ch
                 preferences,
                 acceptAll,
                 declineNonEssential,
+                dismiss,
                 updatePreferences,
                 openSettings,
                 closeSettings,
