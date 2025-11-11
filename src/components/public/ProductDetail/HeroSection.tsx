@@ -36,7 +36,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                         {/* Category Badge */}
                         {product.Category && (
                             <span
-                                className="inline-block bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 px-4 py-1 rounded-full text-sm font-semibold mb-4 shadow-md">
+                                className="inline-block bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-gray-800 px-4 py-1 rounded-full text-sm font-semibold mb-4 shadow-md">
         {product.Category.name}
     </span>
                         )}
@@ -106,7 +106,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ product }) => {
                             className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start relative z-20">
                             <Link
                                 to="/dealer-locator"
-                                className="bg-gradient-to-r from-[#E6B944] via-[#C5A043] to-[#8B6F2F] text-gray-800 px-6 py-3 rounded-full font-semibold hover:from-[#C5A043] hover:to-[#8B6F2F] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-center cursor-pointer shadow-lg"
+                                className="bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-gray-800 px-6 py-3 rounded-full font-semibold hover:from-[#C5A043] hover:to-[#8B6F2F] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-center cursor-pointer shadow-lg"
                             >
                                 Find Dealer
                             </Link>

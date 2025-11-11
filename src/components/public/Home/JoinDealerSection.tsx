@@ -74,7 +74,7 @@ const JoinDealerSection: React.FC<JoinDealerSectionProps> = ({ section }) => {
             }}
         >
             {/* Optional overlay for better text readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-transparent"></div>
 
             <div className="container mx-auto relative z-10">
                 <div className="flex items-center min-h-[400px]">

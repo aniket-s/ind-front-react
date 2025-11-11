@@ -76,14 +76,14 @@ const StillHaveQuestionsSection: React.FC<StillHaveQuestionsSectionProps> = ({ s
                                 const baseClasses = "px-8 py-3 rounded-full font-semibold flex items-center gap-2 transition";
                                 const styleClasses = {
                                     primary: "bg-white text-blue-600 hover:bg-gray-100",
-                                    outline: "border-2 border-white text-white hover:bg-white hover:text-blue-600",
-                                    accent: "bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 hover:bg-yellow-300"
+                                    outline: "bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] border-2 border-white text-black hover:bg-white hover:text-blue-600",
+                                    accent: "bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-black hover:bg-yellow-300"
                                 };
 
                                 return (
                                     <button
                                         key={index}
-                                        className={`${baseClasses} ${styleClasses[option.style] || styleClasses.primary}`}
+                                        className={`${baseClasses} ${styleClasses[option.style] || styleClasses.primary}`} style={{ color: "#000"}}
                                     >
                                         <FontAwesomeIcon
                                             icon={typeof option.icon === 'string' ? iconMap[option.icon] || faComments : option.icon}

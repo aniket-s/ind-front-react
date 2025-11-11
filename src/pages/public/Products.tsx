@@ -1,5 +1,5 @@
 // src/pages/public/Products.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { publicService } from '@/services/public.service';
@@ -8,40 +8,57 @@ import ProductFilters from '@/components/public/Products/ProductFilters';
 import LoadingSpinner from '@/components/shared/LoadingSpinner';
 import Pagination from '@/components/shared/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faXmark, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { cn } from '@/utils';
 
 const Products: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
+
+    // Use URL as single source of truth - derive state from URL params
+    const urlSearch = searchParams.get('search') || '';
+    const urlCategory = searchParams.get('category') || '';
+    const urlPage = parseInt(searchParams.get('page') || '1');
+
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     const [viewMode] = useState<'grid' | 'list'>('grid');
-    const page = parseInt(searchParams.get('page') || '1');
 
     const { data: categories } = useQuery({
         queryKey: ['public-categories'],
         queryFn: () => publicService.getCategories(),
     });
 
+    // Updated query to include search parameter
     const { data, isLoading } = useQuery({
-        queryKey: ['products', { category: selectedCategory, page }],
+        queryKey: ['products', { category: urlCategory, page: urlPage, search: urlSearch }],
         queryFn: () => publicService.getProducts({
-            category: selectedCategory,
-            page,
+            category: urlCategory,
+            search: urlSearch,
+            page: urlPage,
             limit: 12,
         }),
     });
 
-    useEffect(() => {
-        const params: any = {};
-        if (selectedCategory) params.category = selectedCategory;
-        if (page > 1) params.page = page.toString();
-        setSearchParams(params);
-    }, [selectedCategory, page, setSearchParams]);
-
     const handlePageChange = (newPage: number) => {
-        setSearchParams({ ...Object.fromEntries(searchParams), page: newPage.toString() });
+        const params: Record<string, string> = {};
+        if (urlSearch) params.search = urlSearch;
+        if (urlCategory) params.category = urlCategory;
+        if (newPage > 1) params.page = newPage.toString();
+        setSearchParams(params);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleClearSearch = () => {
+        const params: Record<string, string> = {};
+        if (urlCategory) params.category = urlCategory;
+        setSearchParams(params);
+    };
+
+    const handleCategoryChange = (category: string) => {
+        setMobileFiltersOpen(false);
+        const params: Record<string, string> = {};
+        if (urlSearch) params.search = urlSearch;
+        if (category) params.category = category;
+        setSearchParams(params);
     };
 
     return (
@@ -60,8 +77,7 @@ const Products: React.FC = () => {
                         <div className="text-center">
                             <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Products</h1>
                             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-                                Discover our complete range of power solutions designed to meet all your backup power
-                                needs
+                                Discover our complete range of power solutions designed to meet all your backup power needs
                             </p>
                         </div>
                     </div>
@@ -70,13 +86,52 @@ const Products: React.FC = () => {
 
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+                {/* Search Display Banner */}
+                {urlSearch && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-3">
+                                <FontAwesomeIcon
+                                    icon={faMagnifyingGlass}
+                                    className="text-blue-600 text-lg"
+                                />
+                                <div>
+                                    <p className="text-sm text-blue-600 font-medium">
+                                        Searching for:
+                                    </p>
+                                    <p className="text-lg font-bold text-blue-900">
+                                        "{urlSearch}"
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                onClick={handleClearSearch}
+                                className="flex items-center gap-2 px-4 py-2 bg-white border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors text-blue-700 font-medium"
+                            >
+                                <FontAwesomeIcon icon={faXmark} />
+                                Clear Search
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 {/* Results Bar */}
                 <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div className="flex items-center gap-4">
                             <p className="text-gray-600">
-                                Showing <span className="font-semibold text-gray-900">{data?.products.length || 0}</span> of{' '}
-                                <span className="font-semibold text-gray-900">{data?.totalProducts || 0}</span> products
+                                {urlSearch ? (
+                                    <>
+                                        Found <span className="font-semibold text-gray-900">{data?.products.length || 0}</span> of{' '}
+                                        <span className="font-semibold text-gray-900">{data?.totalProducts || 0}</span> products
+                                        {' '}matching "{urlSearch}"
+                                    </>
+                                ) : (
+                                    <>
+                                        Showing <span className="font-semibold text-gray-900">{data?.products.length || 0}</span> of{' '}
+                                        <span className="font-semibold text-gray-900">{data?.totalProducts || 0}</span> products
+                                    </>
+                                )}
                             </p>
 
                             {/* Mobile Filter Toggle */}
@@ -101,11 +156,8 @@ const Products: React.FC = () => {
                             <div className="bg-white rounded-lg shadow-sm p-4">
                                 <ProductFilters
                                     categories={categories || []}
-                                    selectedCategory={selectedCategory}
-                                    onCategoryChange={(category) => {
-                                        setSelectedCategory(category);
-                                        setMobileFiltersOpen(false);
-                                    }}
+                                    selectedCategory={urlCategory}
+                                    onCategoryChange={handleCategoryChange}
                                 />
                             </div>
                         </div>
@@ -120,18 +172,67 @@ const Products: React.FC = () => {
                         ) : (
                             <>
                                 {/* Category Header */}
-                                {selectedCategory && (
+                                {urlCategory && !urlSearch && (
                                     <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
                                         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                                            {categories?.find(c => c.slug === selectedCategory)?.name || selectedCategory}
+                                            {categories?.find(c => c.slug === urlCategory)?.name || urlCategory}
                                         </h2>
                                         <p className="text-gray-600">
-                                            Explore our range of {categories?.find(c => c.slug === selectedCategory)?.name || 'products'} designed for reliable power backup
+                                            Explore our range of {categories?.find(c => c.slug === urlCategory)?.name || 'products'} designed for reliable power backup
                                         </p>
                                     </div>
                                 )}
 
-                                <ProductGrid products={data?.products || []} viewMode={viewMode} />
+                                {/* Search Results Header */}
+                                {urlSearch && data && data.products.length > 0 && (
+                                    <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                                            Search Results
+                                        </h2>
+                                        <p className="text-gray-600">
+                                            {data.totalProducts} {data.totalProducts === 1 ? 'product' : 'products'} found for "{urlSearch}"
+                                            {urlCategory && ` in ${categories?.find(c => c.slug === urlCategory)?.name}`}
+                                        </p>
+                                    </div>
+                                )}
+
+                                {/* No Results Message */}
+                                {urlSearch && data && data.products.length === 0 && (
+                                    <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+                                        <FontAwesomeIcon
+                                            icon={faMagnifyingGlass}
+                                            className="text-gray-300 text-6xl mb-4"
+                                        />
+                                        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                            No products found
+                                        </h3>
+                                        <p className="text-gray-600 mb-6">
+                                            We couldn't find any products matching "{urlSearch}"
+                                            {urlCategory && ` in ${categories?.find(c => c.slug === urlCategory)?.name}`}
+                                        </p>
+                                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                                            <button
+                                                onClick={handleClearSearch}
+                                                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+                                            >
+                                                Clear Search
+                                            </button>
+                                            {urlCategory && (
+                                                <button
+                                                    onClick={() => handleCategoryChange('')}
+                                                    className="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
+                                                >
+                                                    Browse All Categories
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Product Grid */}
+                                {data && data.products.length > 0 && (
+                                    <ProductGrid products={data.products} viewMode={viewMode} />
+                                )}
 
                                 {/* Pagination */}
                                 {data && data.totalPages > 1 && (
@@ -157,23 +258,23 @@ const Products: React.FC = () => {
                         Our product experts are ready to help you find the perfect power solution for your needs
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a
-                            href="/contact"
-                            className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
+<a
+                        href="/contact"
+                        className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
                         >
-                            Get Expert Advice
-                        </a>
-                        <a
-                            href="/dealer-locator"
-                            className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                        >
-                            Find Nearest Dealer
-                        </a>
-                    </div>
-                </div>
+                        Get Expert Advice
+                    </a>
+<a
+                    href="/dealer-locator"
+                    className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+                    >
+                    Find Nearest Dealer
+                </a>
             </div>
         </div>
-    );
+</div>
+</div>
+);
 };
 
 export default Products;

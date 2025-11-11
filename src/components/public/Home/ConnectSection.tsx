@@ -167,7 +167,7 @@ const ConnectSection: React.FC<ConnectSectionProps> = ({ section }) => {
                     <h2 className="text-4xl font-bold text-blue-600 mb-2">
                         {section.title || "Connect With Us"}
                     </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043] mx-auto mb-6"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] mx-auto mb-6"></div>
                     <p className="text-gray-600 max-w-2xl mx-auto">
                         {section.subtitle || "Stay updated with the latest news, product launches, and customer testimonials from IndPower social channels"}
                     </p>

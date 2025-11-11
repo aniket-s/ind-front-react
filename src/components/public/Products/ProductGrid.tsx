@@ -8,9 +8,10 @@ import { CubeIcon } from '@heroicons/react/24/outline';
 
 interface ProductGridProps {
     products: Product[];
+    viewMode?: 'grid' | 'list';
 }
 
-const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
+const ProductGrid: React.FC<ProductGridProps> = ({ products, viewMode = 'grid' }) => {
     if (products.length === 0) {
         return (
             <EmptyState
@@ -22,21 +23,30 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className={viewMode === 'grid'
+            ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            : "flex flex-col gap-4"
+        }>
             {products.map((product) => (
                 <Link
                     key={product.id}
                     to={`/products/${product.slug}`}
-                    className="group bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden"
+                    className={`group bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden ${
+                        viewMode === 'list' ? 'flex flex-row' : ''
+                    }`}
                 >
-                    <div className="aspect-w-4 aspect-h-3 bg-gray-200">
+                    <div className={`bg-gray-200 ${
+                        viewMode === 'list'
+                            ? 'w-48 h-48 flex-shrink-0'
+                            : 'aspect-w-4 aspect-h-3'
+                    }`}>
                         <img
                             src={getImageUrl(product.images[0])}
                             alt={product.name}
                             className="w-full h-full object-center object-cover group-hover:opacity-90 transition-opacity"
                         />
                     </div>
-                    <div className="p-4">
+                    <div className={`p-4 ${viewMode === 'list' ? 'flex-1' : ''}`}>
                         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors mb-1">
                             {product.name}
                         </h3>

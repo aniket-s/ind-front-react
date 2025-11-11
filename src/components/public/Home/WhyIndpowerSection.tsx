@@ -141,7 +141,7 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                 </h2>
                                 {section.subtitle && (
                                     <>
-                                        <div className="w-16 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043] mb-4"></div>
+                                        <div className="w-16 h-1 bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] mb-4"></div>
                                         <p className="text-white/90 text-base lg:text-lg max-w-sm">
                                             {section.subtitle}
                                         </p>
@@ -152,7 +152,7 @@ const WhyIndpowerSection: React.FC<WhyIndpowerSectionProps> = ({ section }) => {
                                     {features.map((feature, index) => (
                                         <div
                                             key={index}
-                                            className="bg-yellow-400/90 backdrop-blur-sm rounded-lg p-4 text-black group hover:bg-yellow-500 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
+                                            className="bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] backdrop-blur-sm rounded-lg p-4 text-black group hover:bg-yellow-500 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl"
                                         >
                                             {/* Compact Icon */}
                                             {hasCustomIcon(feature.title) ? (

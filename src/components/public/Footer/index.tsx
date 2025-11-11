@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-xl font-bold mb-4 relative">
                             Quick Links
-                            <div className="absolute bottom-0 left-0 w-28 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043]"></div>
+                            <div className="absolute bottom-0 left-0 w-28 h-1 bg-gradient-to-r from-[#e1a038] via-[#efdd71] to-[#f7d89f]"></div>
                         </h3>
                         <ul className="space-y-2 mt-6">
                             {quickLinks.map((link, index) => (
@@ -101,7 +101,7 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-xl font-bold mb-4 relative">
                             Our Products
-                            <div className="absolute bottom-0 left-0 w-32 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043]"></div>
+                            <div className="absolute bottom-0 left-0 w-32 h-1 bg-gradient-to-r from-[#e1a038] via-[#efdd71] to-[#f7d89f]"></div>
                         </h3>
                         <ul className="space-y-2 mt-6">
                             {products.map((product, index) => (
@@ -122,11 +122,11 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-xl font-bold mb-4 relative">
                             Contact Info
-                            <div className="absolute bottom-0 left-0 w-30 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043]"></div>
+                            <div className="absolute bottom-0 left-0 w-30 h-1 bg-gradient-to-r from-[#e1a038] via-[#efdd71] to-[#f7d89f]"></div>
                         </h3>
                         <div className="space-y-4 mt-6">
                             <div className="flex items-start">
-                                <MapPinIcon className="h-5 w-5 mt-1 mr-3 text-[#E6B944] flex-shrink-0"/>
+                                <MapPinIcon className="h-5 w-5 mt-1 mr-3 text-[#efdd71] flex-shrink-0"/>
                                 <div>
                                     <p className="font-semibold">IndPower India Pvt. Ltd.</p>
                                     <p className="text-white/80 text-sm">
@@ -141,13 +141,13 @@ const Footer: React.FC = () => {
                                 </div>
                             </div>
                             <div className="flex items-center">
-                                <PhoneIcon className="h-5 w-5 mr-3 text-[#E6B944] flex-shrink-0"/>
+                                <PhoneIcon className="h-5 w-5 mr-3 text-[#efdd71] flex-shrink-0"/>
                                 <div>
                                     <p className="text-white/80 text-base font-bold">Support: {info?.contact?.phone || '+91-XXX-XXX-XXXX'}</p>
                                 </div>
                             </div>
                             <div className="flex items-center">
-                                <EnvelopeIcon className="h-5 w-5 mr-3 text-[#E6B944] flex-shrink-0"/>
+                                <EnvelopeIcon className="h-5 w-5 mr-3 text-[#efdd71] flex-shrink-0"/>
                                 <div>
                                     <p className="text-white/80 text-base font-bold">{info?.contact?.email || 'info@indpower.com'}</p>
                                 </div>
@@ -166,8 +166,8 @@ const Footer: React.FC = () => {
                                     className="flex-1 px-4 py-2 bg-blue-700 border border-blue-500 rounded-l text-white placeholder-white/60 focus:outline-none focus:bg-blue-800"
                                 />
                                 <button
-                                    type="submit"
-                                    className="bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 px-6 py-2 rounded-r font-semibold hover:from-[#C5A043] hover:to-[#8B6F2F] transition"
+                                    type="submit" style={{ color: "#000" }}
+                                    className="bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-black px-6 py-2 rounded-r font-semibold hover:from-[#c88a2f] hover:to-[#e8c389] transition"
                                 >
                                     Subscribe
                                 </button>

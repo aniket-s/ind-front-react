@@ -148,7 +148,7 @@ const Header: React.FC = () => {
                             <Link
                                 key={link.name}
                                 to={link.href}
-                                className="text-white hover:text-[#E6B944] transition font-semibold text-lg whitespace-nowrap"
+                                className="text-white hover:text-[#efdd71] transition font-semibold text-lg whitespace-nowrap"
                             >
                                 {link.name}
                             </Link>
@@ -163,7 +163,7 @@ const Header: React.FC = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search for a product"
-                                className="w-64 xl:w-72 pl-10 pr-4 py-2.5 rounded-lg bg-blue-500/30 backdrop-blur-sm text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-[#C5A043] focus:bg-blue-500/40 transition-all"
+                                className="w-64 xl:w-72 pl-10 pr-4 py-2.5 rounded-lg bg-blue-500/30 backdrop-blur-sm text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-[#ebda73] focus:bg-blue-500/40 transition-all"
                             />
                             <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white" />
                             <button
@@ -175,10 +175,10 @@ const Header: React.FC = () => {
                             </button>
                         </form>
 
-                        {/* Let's Talk Button */}
+                        {/* Let's Talk Button - NEW GRADIENT */}
                         <Link
                             to="/contact"
-                            className="bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 px-6 py-2.5 rounded-full font-bold text-lg hover:from-[#C5A043] hover:to-[#8B6F2F] transition whitespace-nowrap shadow-lg"
+                            className="bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-gray-800 px-6 py-2.5 rounded-full font-bold text-lg hover:from-[#c88a2f] hover:to-[#e8c389] transition whitespace-nowrap shadow-lg"
                         >
                             Let's Talk
                         </Link>
@@ -221,13 +221,13 @@ const Header: React.FC = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search for a product"
-                                className="w-full pl-10 pr-12 py-3 rounded-lg bg-white text-gray-800 placeholder-gray-500 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#C5A043]"
+                                className="w-full pl-10 pr-12 py-3 rounded-lg bg-white text-gray-800 placeholder-gray-500 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#ebda73]"
                                 autoFocus
                             />
                             <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                             <button
                                 type="submit"
-                                className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 px-4 py-1.5 rounded-md font-semibold hover:from-[#C5A043] hover:to-[#8B6F2F] transition-colors text-sm"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-[#e1a038] via-[#efdd71] to-[#f7d89f] text-gray-800 px-4 py-1.5 rounded-md font-semibold hover:from-[#c88a2f] hover:to-[#e8c389] transition-colors text-sm"
                             >
                                 Search
                             </button>
@@ -243,7 +243,7 @@ const Header: React.FC = () => {
                                 <Link
                                     key={link.name}
                                     to={link.href}
-                                    className="text-white hover:text-[#E6B944] transition font-semibold text-lg"
+                                    className="text-white hover:text-[#efdd71] transition font-semibold text-lg"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     {link.name}

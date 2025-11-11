@@ -265,7 +265,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
                         {/* Best Seller Badge */}
                         <div className="mb-4 md:mb-6">
     <span
-        className="bg-gradient-to-r from-[#E6B944] to-[#C5A043] text-gray-800 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-sm font-semibold shadow-md">
+        className="bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-gray-800 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-sm font-semibold shadow-md">
         Best Seller
     </span>
                         </div>
@@ -296,7 +296,7 @@ const ProductsSection: React.FC<ProductsSectionProps> = ({ section }) => {
 
                                 {/* Warranty Badge */}
                                 <div
-                                    className="bg-gradient-to-r from-[#E6B944] via-[#C5A043] to-[#8B6F2F] text-gray-800 rounded-lg p-3 md:p-4 inline-flex items-center shadow-lg">
+                                    className="bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-gray-800 rounded-lg p-3 md:p-4 inline-flex items-center shadow-lg">
                                     <FontAwesomeIcon
                                         icon={faShieldAlt}
                                         className="mr-2 md:mr-3 text-xl md:text-2xl"

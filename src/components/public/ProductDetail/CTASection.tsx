@@ -15,7 +15,7 @@ interface CTASectionProps {
 
 export const CTASection: React.FC<CTASectionProps> = ({ product }) => {
     return (
-        <section className="bg-gradient-to-r from-[#E6B944] to-[#C5A043] py-8 md:py-16">
+        <section className="bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] py-8 md:py-16">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-2xl md:text-4xl font-bold text-blue-600 mb-4 md:mb-6">
                     Ready to Power Your Space with {product.name}?

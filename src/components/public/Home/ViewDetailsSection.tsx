@@ -58,7 +58,7 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
 
     // Render button based on link type
     const renderButton = (button: Button, index: number) => {
-        const buttonClasses = "bg-gradient-to-r from-[#E6B944] via-[#C5A043] to-[#8B6F2F] text-gray-800 px-8 py-3 rounded-full font-semibold hover:from-[#C5A043] hover:to-[#8B6F2F] transition-all duration-300 inline-flex items-center shadow-lg";
+        const buttonClasses = "bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] text-gray-800 px-8 py-3 rounded-full font-semibold hover:from-[#C5A043] hover:to-[#8B6F2F] transition-all duration-300 inline-flex items-center shadow-lg";
 
         if (isExternalOrFile(button.link)) {
             // For external links or files, use anchor tag
@@ -124,7 +124,7 @@ const ViewDetailsSection: React.FC<ViewDetailsSectionProps> = ({ section }) => {
                     <h2 className="text-3xl font-bold text-gray-800 mb-4">
                         {section.title || "VIEW COMPLETE DETAILS"}
                     </h2>
-                    <div className="w-24 h-1 bg-gradient-to-r from-[#E6B944] to-[#C5A043] mx-auto mb-8"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-[#e1a038] via-[#efdd71] via-[#f7f0aa] via-[#ebda73] to-[#f7d89f] mx-auto mb-8"></div>
 
                     <div className="space-y-6">
                         {buttons.map((button, index) => (

@@ -1,5 +1,32 @@
 @import "tailwindcss";
 
+@theme {
+  /* Override blue palette with new primary colors */
+  --color-blue-50: #eef0ff;
+  --color-blue-100: #dfe2ff;
+  --color-blue-200: #c6cbff;
+  --color-blue-300: #a3aaff;
+  --color-blue-400: #8087ff;
+  --color-blue-500: #6366ff;
+  --color-blue-600: #2531e7;
+  --color-blue-700: #0e2cc0;
+  --color-blue-800: #0a1f99;
+  --color-blue-900: #071770;
+  --color-blue-950: #030b3d;
+
+  /* Alternative primary naming */
+  --color-primary: #2531e7;
+  --color-primary-dark: #0e2cc0;
+  --color-primary-darker: #0a1f99;
+
+  /* Accent gradient colors */
+  --color-accent-1: #e1a038;
+  --color-accent-2: #efdd71;
+  --color-accent-3: #f7f0aa;
+  --color-accent-4: #ebda73;
+  --color-accent-5: #f7d89f;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -14,11 +41,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Golden Color System */
+  /* Legacy Golden Color System (kept for reference) */
   --gold-light: #E6B944;
   --gold-mid: #C5A043;
   --gold-dark: #8B6F2F;
   --gold-bronze: #9B7F35;
+
+  /* New Accent Gradient Colors */
+  --accent-1: #e1a038;
+  --accent-2: #efdd71;
+  --accent-3: #f7f0aa;
+  --accent-4: #ebda73;
+  --accent-5: #f7d89f;
 }
 
 #root {
@@ -89,44 +123,84 @@ button:focus-visible {
     overflow: hidden;
   }
 
-  /* Golden Gradient Utilities */
+  /* New Accent Gradient Utilities */
+  .bg-accent-gradient {
+    background: linear-gradient(to right, #e1a038, #efdd71, #f7f0aa, #ebda73, #f7d89f);
+  }
+
+  .bg-accent-gradient-horizontal {
+    background: linear-gradient(to right, #e1a038, #efdd71, #f7f0aa, #ebda73, #f7d89f);
+  }
+
+  .bg-accent-gradient-vertical {
+    background: linear-gradient(to bottom, #e1a038, #efdd71, #f7f0aa, #ebda73, #f7d89f);
+  }
+
+  .bg-accent-gradient-subtle {
+    background: linear-gradient(to bottom right, #ebda73, #e1a038);
+  }
+
+  .accent-metallic {
+    background: linear-gradient(to bottom, #e1a038, #efdd71, #f7d89f);
+    box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .text-accent {
+    color: #ebda73;
+  }
+
+  .text-accent-light {
+    color: #efdd71;
+  }
+
+  .text-accent-dark {
+    color: #e1a038;
+  }
+
+  .border-accent {
+    border-color: #ebda73;
+  }
+
+  .hover-accent-darken:hover {
+    background: linear-gradient(to right, #c88a2f, #d4c560, #e8e29a, #d4c562, #e8c389);
+  }
+
+  /* Legacy Gold Gradient Utilities - DEPRECATED */
   .bg-gold-gradient {
-    background: linear-gradient(to bottom, #E6B944, #C5A043, #8B6F2F);
+    background: linear-gradient(to bottom, #e1a038, #ebda73, #f7d89f);
   }
 
   .bg-gold-gradient-horizontal {
-    background: linear-gradient(to right, #E6B944, #C5A043);
-  }
-
-  .bg-gold-gradient-subtle {
-    background: linear-gradient(to bottom right, #C5A043, #9B7F35);
+    background: linear-gradient(to right, #e1a038, #efdd71);
   }
 
   .gold-metallic {
-    background: linear-gradient(to bottom, #E6B944, #C5A043, #8B6F2F);
+    background: linear-gradient(to bottom, #e1a038, #efdd71, #f7d89f);
     box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.3),
             inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   }
 
   .text-gold {
-    color: #C5A043;
+    color: #ebda73;
   }
 
   .text-gold-light {
-    color: #E6B944;
+    color: #efdd71;
   }
 
   .text-gold-dark {
-    color: #8B6F2F;
+    color: #e1a038;
   }
 
   .border-gold {
-    border-color: #C5A043;
+    border-color: #ebda73;
   }
 
   .hover-gold-darken:hover {
-    background: linear-gradient(to bottom, #C5A043, #8B6F2F);
+    background: linear-gradient(to bottom, #ebda73, #e1a038);
   }
 }
 
@@ -146,10 +220,10 @@ button:focus-visible {
   animation: slide-in 0.3s ease-out;
 }
 
-/* Tailwind blue override */
+/* Tailwind blue override - NOW USING NEW PRIMARY COLOR #2531e7 */
 .bg-blue-600 {
   --tw-bg-opacity: 1;
-  background-color: #0051BA;
+  background-color: #2531e7;
 }
 
 /* Progress bar animation for slider indicators */
@@ -208,12 +282,12 @@ button:focus-visible {
 .why-indpower-card {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  background: rgba(29, 78, 216, 0.5);
+  background: rgba(37, 49, 231, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .why-indpower-card:hover {
-  background: rgba(29, 78, 216, 0.7);
+  background: rgba(37, 49, 231, 0.7);
   transform: translateY(-4px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
@@ -239,7 +313,7 @@ button:focus-visible {
 }
 
 .why-indpower-indicator.active {
-  background: linear-gradient(to right, #E6B944, #C5A043);
+  background: linear-gradient(to right, #e1a038, #ebda73);
   width: 32px;
 }
 
@@ -256,10 +330,10 @@ button:focus-visible {
 .why-indpower-overlay {
   background: linear-gradient(
           135deg,
-          rgba(37, 99, 235, 0.9) 0%,
-          rgba(37, 99, 235, 0.7) 40%,
-          rgba(37, 99, 235, 0.5) 70%,
-          rgba(37, 99, 235, 0.8) 100%
+          rgba(37, 49, 231, 0.9) 0%,
+          rgba(37, 49, 231, 0.7) 40%,
+          rgba(37, 49, 231, 0.5) 70%,
+          rgba(37, 49, 231, 0.8) 100%
   );
 }
 
