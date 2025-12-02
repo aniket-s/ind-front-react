@@ -30,6 +30,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 
 // Admin Pages
 import Dashboard from './pages/admin/Dashboard';
+
 import ProductList from './pages/admin/products/ProductList';
 import ProductForm from './pages/admin/products/ProductForm';
 import CategoryList from './pages/admin/categories/CategoryList';
@@ -48,6 +49,7 @@ import Profile from './pages/admin/Profile';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import ScrollToTop from './components/shared/ScrollToTop';
 import BecomePartner from "@/pages/public/BecomePartner.tsx";
+import PartnershipEnquiries from "@/pages/admin/PartnershipEnquiries.tsx";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -102,6 +104,7 @@ function App() {
                                 <Route path="dashboard" element={<Dashboard />} />
 
                                 {/* Products */}
+                                <Route path="/admin/partnerships" element={<PartnershipEnquiries />} />
                                 <Route path="products" element={<ProductList />} />
                                 <Route path="products/new" element={<ProductForm />} />
                                 <Route path="products/:id/edit" element={<ProductForm />} />

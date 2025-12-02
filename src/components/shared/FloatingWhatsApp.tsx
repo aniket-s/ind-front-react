@@ -114,7 +114,7 @@ const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
                 className={cn(
                     'fixed z-[9999] flex items-center gap-3',
                     position === 'right' ? 'right-5 md:right-8' : 'left-5 md:left-8',
-                    'bottom-5 md:bottom-8'
+                    'bottom-16 md:bottom-22'
                 )}
             >
                 {/* Welcome Message Bubble - WhatsApp style */}

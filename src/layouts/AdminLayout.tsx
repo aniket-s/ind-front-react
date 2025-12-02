@@ -42,6 +42,12 @@ const navigation: NavItem[] = [
         icon: MapPinIcon,
         permission: ['super_admin', 'admin']
     },
+    {
+        name: 'Partnerships',
+        href: '/admin/partnerships',
+        icon: UserGroupIcon,
+        permission: ['super_admin', 'admin']
+    },
     { name: 'Sections', href: '/admin/sections', icon: Squares2X2Icon },
     { name: 'Menus', href: '/admin/menus', icon: Bars3Icon },
     { name: 'Contacts', href: '/admin/contacts', icon: EnvelopeIcon },
